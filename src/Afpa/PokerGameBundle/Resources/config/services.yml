@@ -1,0 +1,4 @@
+services:
+#    afpa_poker_game.example:
+#        class: Afpa\PokerGameBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]

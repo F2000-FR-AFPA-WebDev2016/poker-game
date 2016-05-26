@@ -1,0 +1,5 @@
+afpa_poker_game:
+    resource: "@AfpaPokerGameBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
