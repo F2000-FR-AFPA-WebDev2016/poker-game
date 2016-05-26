@@ -1,2 +1,4 @@
-# poker-game
-Poker game (Michel ; Fred)
+Symfony
+=======
+
+A Symfony project created on May 19, 2016, 9:57 am.
