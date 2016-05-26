@@ -3,3 +3,4 @@
 /var/logs/
 /var/sessions/
 /nbproject/private/
+/app/config/parameters.yml
