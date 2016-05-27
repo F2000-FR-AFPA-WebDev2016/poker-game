@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block header %}
+    
     <ul id="lien">
         <li><a href="{{ path('_register') }}">S'enregistrer</a></li>
     </ul>
@@ -23,7 +24,10 @@
 {% endblock %}
 {% block body %}
     
-
+    <section id="audio">
+        <audio src="{{ asset('env/audio/') }}"  autoplay ></audio>
+    </section>
+    
 <section id="firstImg" class="loading">
     <img src="{{ asset('env/images/acc1.jpg') }}" alt="photo accueil eteinte">
 </section>

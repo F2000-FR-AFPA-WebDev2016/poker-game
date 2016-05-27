@@ -7,6 +7,8 @@
                 $body = $('body'),
                 $first = $('#firstImg'),
                 $second = $('#secondImg'),
+                $audio = $('#audio audio'),
+                $val = $audio.attr('src'),
                 $tabAllu = [1000, 
                             20,20,20,20,20,20,20, 
                             600, 200, 200,
@@ -19,6 +21,7 @@
                     $body.addClass('is-loading');
                     $first.removeClass('loading');
                     loadImage();
+                    loadAudio();
             }, 800);
         });
         
@@ -29,6 +32,18 @@
                     $second.toggleClass('loading');
                 }, $current);
             });
+        }
+        
+        function loadAudio(){
+            window.setTimeout(function() {
+                $audio.attr('src', $val + 'click.mp3');
+            }, 500);
+            window.setTimeout(function() {
+                $audio.attr('src', $val + 'elec.mp3');
+            }, 1000);
+            window.setTimeout(function() {
+                $audio.attr('src', $val + '');
+            }, 3200);
         }
         
         
