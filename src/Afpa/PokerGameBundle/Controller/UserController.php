@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class UserController extends Controller {
 
     /**
-     * @Route("/register")
+     * @Route("/register", name="_register")
      */
     public function registerAction(Request $request) {
         $oUser = new User();
@@ -60,7 +60,11 @@ class UserController extends Controller {
     }
 
     /**
+<<<<<<< HEAD
      * @Route("/login", name="login")
+=======
+     * @Route("/login", name="_login")
+>>>>>>> 66f6c1c79385a2967f6fbed2c0abc3ee1a5db8ad
      */
     public function loginAction(Request $request) {
         //$session = $request->getSession()->clear();

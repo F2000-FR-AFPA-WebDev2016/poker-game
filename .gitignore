@@ -2,4 +2,5 @@
 /var/cache/
 /var/logs/
 /var/sessions/
-/nbproject/private/
+/nbproject/
+/app/config/parameters.yml
