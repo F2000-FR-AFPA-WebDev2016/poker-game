@@ -1,7 +1,42 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}Poker Game | Bienvenue{% endblock %}
+{% block title %}{{parent()}}Bienvenue{% endblock %}
 
+
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('env/css/style.css') }}" />
+{% endblock %}
+
+{% block header %}
+    <ul id="lien">
+        <li><a href="">S'enregistrer</a></li>
+    </ul>
+    
+    <form action="#" method="POST">
+        <ul id="connection">
+            <li>{{form_widget(form.mail)}}</li>
+            <li>{{form_widget(form.password)}}</li>
+            <li>{{form_widget(form.save)}}</li>
+        </ul>
+    </form>
+{% endblock %}
 {% block body %}
-<h1>Poker Game</h1>
+    
+
+<section id="firstImg" class="loading">
+    <img src="{{ asset('env/images/acc1.jpg') }}" alt="photo accueil eteinte">
+</section>
+<section id="secondImg" class="loading">
+    <img src="{{ asset('env/images/acc2.jpg') }}" alt="photo accueil allume">
+</section>
+
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{parent()}}
+    <script src="{{ asset('env/js/main.js') }}" type="text/javascript"></script>
 {% endblock %}
