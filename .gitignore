@@ -3,4 +3,4 @@
 /var/logs/
 /var/sessions/
 /nbproject/
-/app/config/para*
+/app/config/parameters.yml
