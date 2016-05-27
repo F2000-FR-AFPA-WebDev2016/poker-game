@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class UserController extends Controller
 {
     /**
-     * @Route("/register")
+     * @Route("/register", name="_register")
      */
     public function registerAction()
     {
@@ -18,7 +18,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/login")
+     * @Route("/login", name="_login")
      */
     public function loginAction()
     {
