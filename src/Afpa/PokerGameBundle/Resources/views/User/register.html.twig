@@ -1,7 +1,21 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}AfpaPokerGameBundle:User:register{% endblock %}
+{% block title %}{{parent()}}Register{% endblock %}
 
 {% block body %}
-<h1>Welcome to the User:register page</h1>
+
+    {% set flash_message = app.session.flashBag.get('notice')|last %}
+
+    {{ flash_message }}
+
+
+
+    <h1></h1>
+    <form method="POST" >
+        {{form_widget(form)}}
+    </form>
+
+
+
+
 {% endblock %}
