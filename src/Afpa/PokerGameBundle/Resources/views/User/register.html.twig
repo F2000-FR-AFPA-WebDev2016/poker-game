@@ -2,18 +2,34 @@
 
 {% block title %}{{parent()}}Register{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('env/css/style.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('env/css/styleUser.css') }}" />
+{% endblock %}
+
+{% block header %}
+
+{% endblock %}
+
 {% block body %}
-
-    {% set flash_message = app.session.flashBag.get('notice')|last %}
-
-    {{ flash_message }}
+    <section id ="register">
+        {% set flash_message = app.session.flashBag.get('notice')|last %}
 
 
+        <p>{{ flash_message }}<p>
+            {#<form method="POST" >
+                {{form_widget(form)}}
+            </form>#}
+            {{ form_start(form) }}
+        <ul >
+            <li>{{form_widget(form.pseudo)}}</li>
+            <li>{{form_widget(form.password)}}</li>
+            <li>{{form_widget(form.mail)}}</li>
+            <li>{{form_widget(form.submit)}}</li>
+        </ul>
+        {{ form_end(form) }}
+    </section>
 
-    <h1></h1>
-    <form method="POST" >
-        {{form_widget(form)}}
-    </form>
 
 
 

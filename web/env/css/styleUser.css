@@ -1,0 +1,41 @@
+body{
+
+    background-image: none;
+
+}
+#register{
+    color: #FFFFFF;
+    top: 12rem;
+    font-size: 1.5rem;
+}
+
+#register form input{
+    border: 0;
+    padding: 1.1rem 2rem;
+    box-shadow: 0rem 0rem 1.5rem #a5a5a5;
+    border-radius: 1.5rem;
+    font-size: 1.8rem;
+
+    color: #fff;
+    background-color: #000;
+    border: 0.1rem solid #fff;
+    margin: 2rem;
+}
+
+#register form button{
+    border: 0;
+    padding: 1.1rem 2rem;
+    box-shadow: 0rem 0rem 1.5rem #a5a5a5;
+    border-radius: 1.5rem;
+    font-size: 1.8rem;
+    color: #fff;
+    background-color: #000;
+    border: 0.1rem solid #fff;
+    margin: 2rem;
+}
+
+
+
+#register p{
+    color: #ADFF2F;
+}
