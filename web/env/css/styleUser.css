@@ -21,6 +21,13 @@ body{
     border: 0.1rem solid #fff;
     margin: 2rem;
 }
+#register form input:hover{
+    color: #ADFF2F;
+    box-shadow: 0rem 0rem 1rem #a5a5a5 inset;
+}
+#register form input:active{
+    box-shadow: 0rem 0rem 3rem #a5a5a5 inset;
+}
 
 #register form button{
     border: 0;
@@ -33,7 +40,13 @@ body{
     border: 0.1rem solid #fff;
     margin: 2rem;
 }
-
+#register form button:hover{
+    color: #ADFF2F;
+    box-shadow: 0rem 0rem 1rem #a5a5a5 inset;
+}
+#register form button:active{
+    box-shadow: 0rem 0rem 3rem #a5a5a5 inset;
+}
 
 
 #register p{
