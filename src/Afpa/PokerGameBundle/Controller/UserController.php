@@ -37,7 +37,7 @@ class UserController extends Controller {
             if ($oForm->isValid()) {
                 $repo = $this->getDoctrine()->getRepository('AfpaPokerGameBundle:User');
                 $oUserPseudoExist = $repo->findOneByPseudo($oUser->getPseudo());
-                $oUserMailExist = $repo->findOneByPseudo($oUser->getMail());
+                $oUserMailExist = $repo->findOneByMail($oUser->getMail());
                 //On teste si le pseudo ou le mail est déjà présent dans User
                 if (!$oUserPseudoExist && !$oUserMailExist) {
                     $oUser->setVirtualMoney(150);
