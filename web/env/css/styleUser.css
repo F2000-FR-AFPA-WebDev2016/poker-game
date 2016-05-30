@@ -1,6 +1,6 @@
 body{
 
-    background-image: none;
+    /*background-image: none*/;
 
 }
 #register{
@@ -53,8 +53,8 @@ body{
     color: #ADFF2F;
 }
 
-menu {
-    float: right;
+.menu {
+    float: right !important;
     width:auto;
     margin-right: 1rem;
 }

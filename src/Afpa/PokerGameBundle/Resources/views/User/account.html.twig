@@ -15,5 +15,22 @@
     {% set flash_message = app.session.flashBag.get('notice')|last %}
 
     {{ flash_message }}
-    <h1>Welcome to the User:account page</h1>
+    <section id ="register">
+        {% set flash_message = app.session.flashBag.get('notice')|last %}
+
+
+        <p>{{ flash_message }}<p>
+            {#<form method="POST" >
+                {{form_widget(form)}}
+            </form>#}
+            {{ form_start(form) }}
+        <ul >
+            <li>{{form_widget(form.pseudo)}}</li>
+            <li>{{form_widget(form.password)}}</li>
+            <li>{{form_widget(form.mail)}}</li>
+            <li>{{form_widget(form.avatar)}}</li>
+            <li>{{form_widget(form.submit)}}</li>
+        </ul>
+        {{ form_end(form) }}
+    </section>
 {% endblock %}

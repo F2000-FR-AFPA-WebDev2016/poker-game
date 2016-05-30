@@ -10,8 +10,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Afpa\PokerGameBundle\Models\Encrypt;
 use Symfony\Component\HttpFoundation\Session\Session;
+
+//use Symfony\Component\Form\FormBuilderInterface;
+//use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserController extends Controller {
 
@@ -79,10 +83,25 @@ class UserController extends Controller {
       >>>>>>> 66f6c1c79385a2967f6fbed2c0abc3ee1a5db8ad
      */
     public function loginAction(Request $request) {
-        //$session = $request->getSession()->clear();
-        return $this->render('AfpaPokerGameBundle:User:login.html.twig', array(
-                        // ...
-        ));
+
+        if ($request->isMethod('POST')) {
+
+            /* if ($oFormLogin->isValid()) {
+              $repo = $this->getdoctrine()->getRepository('AfpaPokerGameBundle:User');
+              } */
+        }
+
+
+//        $oForm = $this->createFormBuilder($oUser)
+//                ->add('pseudo', TextType::class, array('required' => true, 'attr' => array('placeholder' => 'Choisissez un pseudo')))
+//                ->add('password', PasswordType::class, array('required' => true, 'attr' => array('placeholder' => 'Choisissez un mot passe')))
+//                ->add('mail', EmailType::class, array('required' => true, 'attr' => array('placeholder' => 'Saisir votre e-mail')))
+//                ->add('avatar', FileType::class, array('attr' => array('placeholder' => 'Envoyer votre avatar')))
+//                ->add('submit', SubmitType::class, array('label' => 'OK'))
+//                ->getForm();
+//        return $this->render('AfpaPokerGameBundle:User:account.html.twig', array(
+//                    'form' => $oForm->createView(),
+//        ));
     }
 
     /**
