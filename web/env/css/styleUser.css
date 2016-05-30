@@ -48,8 +48,12 @@
 }
 
 
-#register p{
+p.notice{
     color: #ADFF2F;
+}
+
+p.warning{
+    color: #cc0000;
 }
 
 .menu {

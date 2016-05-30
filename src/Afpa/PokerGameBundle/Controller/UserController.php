@@ -20,9 +20,9 @@ class UserController extends Controller {
      */
     public function registerAction(Request $request) {
         $oUser = new User();
-        //message flash
-        $this->addFlash('notice', 'Vous êtes sur le point de vous enregistrer sur le site Poker Game');
-
+        
+        //effacement des ancien message flash
+        $request->getSession()->getBag('flashes')->clear(); 
         
         $form = $this->createFormBuilder()
                 ->setMethod('POST')
@@ -60,15 +60,16 @@ class UserController extends Controller {
                     $em->persist($oUser);
                     $em->flush();
 
-
                     // Après l'enregistrement redirection sur la route login avec message flash
+                    
                     $this->addFlash('notice', 'Nous sommes heureux de vous compter parmi nos joueurs. Vous pouvez maintenant modifier vos informations personnelles ou et rejoindre une table de Poker');
+                     
                     $session = new Session();
                     $session->set('user', $oUser);
                     return $this->redirectToRoute('account');
                 } else {
                     // Si le pseudo ou le mail existe déjà dans User
-                    $this->addFlash('notice', 'Il est possible que vous soyez déjà inscrit, sinon choisissez un autre pseudo');
+                    $this->addFlash('warning', 'Il est possible que vous soyez déjà inscrit, sinon choisissez un autre pseudo');
                     return $this->render('AfpaPokerGameBundle:User:register.html.twig', array(
                                 'form' => $oForm->createView(),
                                 'form2' => $form->createView(),
@@ -76,7 +77,8 @@ class UserController extends Controller {
                 }
             }
         }
-
+        
+        $this->addFlash('notice', 'Vous êtes sur le point de vous enregistrer sur le site Poker Game');
         return $this->render('AfpaPokerGameBundle:User:register.html.twig', array(
                     'form' => $oForm->createView(),
                     'form2' => $form->createView(),

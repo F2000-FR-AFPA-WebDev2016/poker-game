@@ -12,8 +12,12 @@
     {{include('AfpaPokerGameBundle:User:menuTemplate.html.twig')}}
 {% endblock %}
 {% block body %}
-    {% set flash_message = app.session.flashBag.get('notice')|last %}
-
-    {{ flash_message }}
+    <section>
+        {% set flash_message_notice = app.session.flashBag.get('notice')|last %}
+        <p class="notice">{{ flash_message_notice }}</p>
+        {% set flash_message_warning = app.session.flashBag.get('warning')|last %}
+        <p class="warning">{{ flash_message_warning }}</p>
+    </section>
+    
     <h1>Welcome to the User:account page</h1>
 {% endblock %}
