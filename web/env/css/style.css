@@ -18,8 +18,8 @@ body{
     background-color: #000;
     font-family: Tahoma, Geneva, Kalimati, sans-serif;
 }
- 
-body.home{
+
+body._home{
     background-image: url("../images/giphy.gif");
     background-repeat: no-repeat;
     background-position: center center;
