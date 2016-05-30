@@ -17,18 +17,12 @@
         <ul id="lien">
             <li><a href="{{ path('_register') }}">S'enregistrer</a></li>
         </ul>
-
-        <form action="{{ path('_login') }}" method="POST">
-            <ul id="connection">
-                <li>{{form_widget(form.mail)}}</li>
-                <li>{{form_widget(form.password)}}</li>
-                <li>{{form_widget(form.save)}}</li>
-            </ul>
-        </form>
+        {{ render(controller('AfpaPokerGameBundle:User:login')) }}
     {% endif %}
-{% endblock %}
-{% block body %}
 
+{% endblock %}
+
+{% block body %}
     <section id="audio">
         <audio src="{{ asset('env/audio/') }}"  autoplay ></audio>
     </section>

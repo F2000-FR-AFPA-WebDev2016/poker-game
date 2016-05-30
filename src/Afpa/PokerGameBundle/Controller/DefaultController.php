@@ -11,17 +11,10 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 class DefaultController extends Controller {
 
     /**
-     * @Route("/" , name="home")
+     * @Route("/" , name="_home")
      */
     public function indexAction() {
-        $form = $this->createFormBuilder()
-                ->setMethod('POST')
-                ->add('mail', TextType::class, array('attr' => array('placeholder' => 'Votre mail')))
-                ->add('password', PasswordType::class, array('attr' => array('placeholder' => 'Votre mot de passe')))
-                ->add('save', SubmitType::class, array('label' => 'Se connecter'))
-                ->getForm();
-
-        return $this->render('AfpaPokerGameBundle:Default:index.html.twig', array('form' => $form->createView()));
+        return $this->render('AfpaPokerGameBundle:Default:index.html.twig');
     }
 
 }

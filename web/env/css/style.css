@@ -15,12 +15,15 @@ html{
 
 body{
     width: 100%;
+    background-color: #000;
+    font-family: Tahoma, Geneva, Kalimati, sans-serif;
+}
+ 
+body.home{
     background-image: url("../images/giphy.gif");
     background-repeat: no-repeat;
     background-position: center center;
-    background-color: #000;
     background-size: 750px;
-    font-family: Tahoma, Geneva, Kalimati, sans-serif;
 }
 
 
@@ -69,6 +72,10 @@ nav #lien li a{
 
 nav #lien li:hover{
     box-shadow: 0rem 0rem 1rem #a5a5a5 inset;
+}
+
+nav #lien li:hover a, nav form input:hover, nav form button:hover{
+    color: #ADFF2F;
 }
 
 nav #lien li:active{

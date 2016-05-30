@@ -5,6 +5,7 @@ namespace Afpa\PokerGameBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Afpa\PokerGameBundle\Entity\User;
+use Afpa\PokerGameBundle\Entity\TablePoker;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -24,10 +25,20 @@ class UserController extends Controller {
      */
     public function registerAction(Request $request) {
         $oUser = new User();
-        //message flash
+//message flash
         $this->addFlash('notice', 'Vous êtes sur le point de vous enregistrer sur le site Poker Game');
 
-        //Création du formulaire d'inscription
+
+        $form = $this->createFormBuilder()
+                ->setMethod('POST')
+                ->add('mail', TextType::class, array('attr' => array('placeholder' => 'Votre mail')))
+                ->add('password', PasswordType::class, array('attr' => array('placeholder' => 'Votre mot de passe')))
+                ->add('save', SubmitType::class, array('label' => 'Se connecter'))
+                ->getForm();
+
+
+
+//Création du formulaire d'inscription
         $oForm = $this->createFormBuilder($oUser)
                 ->add('pseudo', TextType::class, array('required' => true, 'attr' => array('placeholder' => 'Choisissez un pseudo')))
                 ->add('password', PasswordType::class, array('required' => true, 'attr' => array('placeholder' => 'Choisissez un mot passe')))
@@ -35,18 +46,18 @@ class UserController extends Controller {
                 ->add('submit', SubmitType::class, array('label' => 'OK'))
                 ->getForm();
 
-        // Récupération des données sur méthode POST
+// Récupération des données sur méthode POST
         if ($request->isMethod('POST')) {
             $oForm->handleRequest($request);
-            // Si le formulaire est valid on stockera l'utilisateur dans la table User
+// Si le formulaire est valid on stockera l'utilisateur dans la table User
             if ($oForm->isValid()) {
                 $repo = $this->getDoctrine()->getRepository('AfpaPokerGameBundle:User');
                 $oUserPseudoExist = $repo->findOneByPseudo($oUser->getPseudo());
                 $oUserMailExist = $repo->findOneByMail($oUser->getMail());
-                //On teste si le pseudo ou le mail est déjà présent dans User
+//On teste si le pseudo ou le mail est déjà présent dans User
                 if (!$oUserPseudoExist && !$oUserMailExist) {
                     $oUser->setVirtualMoney(150);
-                    //cryptage du mot de passe avec salt + md5 - class Encrypt
+//cryptage du mot de passe avec salt + md5 - class Encrypt
                     $oEncrypt = new Encrypt($oUser->getPassword());
                     $oUser->setPassword($oEncrypt->getEncryption());
                     $oUser->setTimeLastCredit(new \DateTime('now'));
@@ -55,16 +66,17 @@ class UserController extends Controller {
                     $em->flush();
 
 
-                    // Après l'enregistrement redirection sur la route login avec message flash
+// Après l'enregistrement redirection sur la route login avec message flash
                     $this->addFlash('notice', 'Nous sommes heureux de vous compter parmi nos joueurs. Vous pouvez maintenant modifier vos informations personnelles ou et rejoindre une table de Poker');
                     $session = new Session();
                     $session->set('user', $oUser);
                     return $this->redirectToRoute('account');
                 } else {
-                    // Si le pseudo ou le mail existe déjà dans User
+// Si le pseudo ou le mail existe déjà dans User
                     $this->addFlash('notice', 'Il est possible que vous soyez déjà inscrit, sinon choisissez un autre pseudo');
                     return $this->render('AfpaPokerGameBundle:User:register.html.twig', array(
                                 'form' => $oForm->createView(),
+                                'form2' => $form->createView(),
                     ));
                 }
             }
@@ -72,36 +84,38 @@ class UserController extends Controller {
 
         return $this->render('AfpaPokerGameBundle:User:register.html.twig', array(
                     'form' => $oForm->createView(),
+                    'form2' => $form->createView(),
         ));
     }
 
     /**
-      <<<<<<< HEAD
-     * @Route("/login", name="login")
-      =======
      * @Route("/login", name="_login")
-      >>>>>>> 66f6c1c79385a2967f6fbed2c0abc3ee1a5db8ad
      */
     public function loginAction(Request $request) {
+        $oUser = new User();
+        $oFormLogin = $this->createFormBuilder($oUser)
+                ->setMethod('POST')
+                ->add('mail', TextType::class, array('attr' => array('placeholder' => 'Votre mail')))
+                ->add('password', PasswordType::class, array('attr' => array('placeholder' => 'Votre mot de passe')))
+                ->add('save', SubmitType::class, array('label' => 'Se connecter'))
+                ->getForm();
 
-        if ($request->isMethod('POST')) {
+        $oFormLogin->handleRequest($request);
+        if ($oFormLogin->isSubmitted() && $oFormLogin->isValid()) {
+            $repo = $this->getdoctrine()->getRepository('AfpaPokerGameBundle:User');
+            $oUserTest = $repo->findOneByMail($oUser->getMail());
 
-            /* if ($oFormLogin->isValid()) {
-              $repo = $this->getdoctrine()->getRepository('AfpaPokerGameBundle:User');
-              } */
+            $oEncryptPwd = new Encrypt($oUser->getPassword());
+            if ($oUserTest && $oUserTest->getPassword() === $oEncryptPwd->getEncryption()) {
+                $session = new Session();
+                $session->set('user', $oUserTest);
+                return $this->redirectToRoute('account');
+            }
         }
 
-
-//        $oForm = $this->createFormBuilder($oUser)
-//                ->add('pseudo', TextType::class, array('required' => true, 'attr' => array('placeholder' => 'Choisissez un pseudo')))
-//                ->add('password', PasswordType::class, array('required' => true, 'attr' => array('placeholder' => 'Choisissez un mot passe')))
-//                ->add('mail', EmailType::class, array('required' => true, 'attr' => array('placeholder' => 'Saisir votre e-mail')))
-//                ->add('avatar', FileType::class, array('attr' => array('placeholder' => 'Envoyer votre avatar')))
-//                ->add('submit', SubmitType::class, array('label' => 'OK'))
-//                ->getForm();
-//        return $this->render('AfpaPokerGameBundle:User:account.html.twig', array(
-//                    'form' => $oForm->createView(),
-//        ));
+        return $this->render('AfpaPokerGameBundle:User:login.html.twig', array(
+                    'form' => $oFormLogin->createView()
+        ));
     }
 
     /**
@@ -110,10 +124,10 @@ class UserController extends Controller {
     public function logoutAction(Request $request) {
         $session = $request->getSession();
         $session->clear();
-        return $this->redirectToRoute('home');
-        // return $this->render('AfpaPokerGameBundle:User:logout.html.twig', array(
-        //                // ...
-        //));
+        return $this->redirectToRoute('_home');
+// return $this->render('AfpaPokerGameBundle:User:logout.html.twig', array(
+//                // ...
+//));
     }
 
     /**
@@ -121,7 +135,7 @@ class UserController extends Controller {
      */
     public function accountAction() {
         return $this->render('AfpaPokerGameBundle:User:account.html.twig', array(
-                        // ...
+// ...
         ));
     }
 

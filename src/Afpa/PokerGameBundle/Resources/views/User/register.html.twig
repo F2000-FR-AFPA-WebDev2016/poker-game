@@ -9,7 +9,15 @@
 
 {% block header %}
 
+    {% if app.request.session.get("user") %}
+        {{include('AfpaPokerGameBundle:User:menuTemplate.html.twig')}}
+    {% else %}
+        <ul id="lien">
+            <li><a href="{{ path('_home') }}">Accueil</a></li>
+        </ul>
 
+        {{ render(controller('AfpaPokerGameBundle:User:login')) }}
+    {% endif %}
 {% endblock %}
 
 {% block body %}
