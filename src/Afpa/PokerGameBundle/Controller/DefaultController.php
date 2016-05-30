@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 class DefaultController extends Controller {
 
     /**
-     * @Route("/")
+     * @Route("/" , name="home")
      */
     public function indexAction() {
         $form = $this->createFormBuilder()

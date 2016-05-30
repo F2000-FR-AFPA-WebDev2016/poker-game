@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Afpa\PokerGameBundle\Models\Encrypt;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class UserController extends Controller {
 
@@ -48,9 +49,13 @@ class UserController extends Controller {
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($oUser);
                     $em->flush();
+
+
                     // Après l'enregistrement redirection sur la route login avec message flash
-                    $this->addFlash('notice', 'Nous sommes heureux de vous compter parmi nos joueurs. Vous pouvez maintenant vous connecter et rejoindre une table de Poker');
-                    return $this->redirectToRoute('login');
+                    $this->addFlash('notice', 'Nous sommes heureux de vous compter parmi nos joueurs. Vous pouvez maintenant modifier vos informations personnelles ou et rejoindre une table de Poker');
+                    $session = new Session();
+                    $session->set('user', $oUser);
+                    return $this->redirectToRoute('account');
                 } else {
                     // Si le pseudo ou le mail existe déjà dans User
                     $this->addFlash('notice', 'Il est possible que vous soyez déjà inscrit, sinon choisissez un autre pseudo');
@@ -81,16 +86,19 @@ class UserController extends Controller {
     }
 
     /**
-     * @Route("/logout")
+     * @Route("/logout" , name="logout")
      */
-    public function logoutAction() {
-        return $this->render('AfpaPokerGameBundle:User:logout.html.twig', array(
-                        // ...
-        ));
+    public function logoutAction(Request $request) {
+        $session = $request->getSession();
+        $session->clear();
+        return $this->redirectToRoute('home');
+        // return $this->render('AfpaPokerGameBundle:User:logout.html.twig', array(
+        //                // ...
+        //));
     }
 
     /**
-     * @Route("/account")
+     * @Route("/account", name="account")
      */
     public function accountAction() {
         return $this->render('AfpaPokerGameBundle:User:account.html.twig', array(

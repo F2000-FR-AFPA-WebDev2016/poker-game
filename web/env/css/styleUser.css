@@ -52,3 +52,9 @@ body{
 #register p{
     color: #ADFF2F;
 }
+
+menu {
+    float: right;
+    width:auto;
+    margin-right: 1rem;
+}

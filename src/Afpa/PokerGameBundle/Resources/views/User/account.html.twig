@@ -1,7 +1,19 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}AfpaPokerGameBundle:User:account{% endblock %}
+{% block title %}{{parent()}}Mon compte{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('env/css/style.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('env/css/styleUser.css') }}" />
+{% endblock %}
+
+{% block header %}
+
+    {{include('AfpaPokerGameBundle:User:menuTemplate.html.twig')}}
+{% endblock %}
 {% block body %}
-<h1>Welcome to the User:account page</h1>
+    {% set flash_message = app.session.flashBag.get('notice')|last %}
+
+    {{ flash_message }}
+    <h1>Welcome to the User:account page</h1>
 {% endblock %}

@@ -6,21 +6,26 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('env/css/style.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('env/css/styleUser.css') }}" />
 {% endblock %}
 
 {% block header %}
 
-    <ul id="lien">
-        <li><a href="{{ path('_register') }}">S'enregistrer</a></li>
-    </ul>
-
-    <form action="{{ path('_login') }}" method="POST">
-        <ul id="connection">
-            <li>{{form_widget(form.mail)}}</li>
-            <li>{{form_widget(form.password)}}</li>
-            <li>{{form_widget(form.save)}}</li>
+    {% if app.request.session.get("user") %}
+        {{include('AfpaPokerGameBundle:User:menuTemplate.html.twig')}}
+    {% else %}
+        <ul id="lien">
+            <li><a href="{{ path('_register') }}">S'enregistrer</a></li>
         </ul>
-    </form>
+
+        <form action="{{ path('_login') }}" method="POST">
+            <ul id="connection">
+                <li>{{form_widget(form.mail)}}</li>
+                <li>{{form_widget(form.password)}}</li>
+                <li>{{form_widget(form.save)}}</li>
+            </ul>
+        </form>
+    {% endif %}
 {% endblock %}
 {% block body %}
 
