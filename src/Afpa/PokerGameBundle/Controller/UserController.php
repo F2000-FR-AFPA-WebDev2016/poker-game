@@ -23,6 +23,16 @@ class UserController extends Controller {
         //message flash
         $this->addFlash('notice', 'Vous êtes sur le point de vous enregistrer sur le site Poker Game');
 
+        
+        $form = $this->createFormBuilder()
+                ->setMethod('POST')
+                ->add('mail', TextType::class, array('attr' => array('placeholder' => 'Votre mail')))
+                ->add('password', PasswordType::class, array('attr' => array('placeholder' => 'Votre mot de passe')))
+                ->add('save', SubmitType::class, array('label' => 'Se connecter'))
+                ->getForm();
+        
+        
+        
         //Création du formulaire d'inscription
         $oForm = $this->createFormBuilder($oUser)
                 ->add('pseudo', TextType::class, array('required' => true, 'attr' => array('placeholder' => 'Choisissez un pseudo')))
@@ -61,6 +71,7 @@ class UserController extends Controller {
                     $this->addFlash('notice', 'Il est possible que vous soyez déjà inscrit, sinon choisissez un autre pseudo');
                     return $this->render('AfpaPokerGameBundle:User:register.html.twig', array(
                                 'form' => $oForm->createView(),
+                                'form2' => $form->createView(),
                     ));
                 }
             }
@@ -68,6 +79,7 @@ class UserController extends Controller {
 
         return $this->render('AfpaPokerGameBundle:User:register.html.twig', array(
                     'form' => $oForm->createView(),
+                    'form2' => $form->createView(),
         ));
     }
 

@@ -1,8 +1,7 @@
 body{
-
-    background-image: none;
-
+    /*background-image: none;*/
 }
+
 #register{
     color: #FFFFFF;
     top: 12rem;
@@ -21,10 +20,12 @@ body{
     border: 0.1rem solid #fff;
     margin: 2rem;
 }
+
 #register form input:hover{
     color: #ADFF2F;
     box-shadow: 0rem 0rem 1rem #a5a5a5 inset;
 }
+
 #register form input:active{
     box-shadow: 0rem 0rem 3rem #a5a5a5 inset;
 }
@@ -53,8 +54,8 @@ body{
     color: #ADFF2F;
 }
 
-menu {
-    float: right;
+.menu {
+    float: right !important;
     width:auto;
     margin-right: 1rem;
 }

@@ -71,6 +71,10 @@ nav #lien li:hover{
     box-shadow: 0rem 0rem 1rem #a5a5a5 inset;
 }
 
+nav #lien li:hover a, nav form input:hover, nav form button:hover{
+    color: #ADFF2F;
+}
+
 nav #lien li:active{
     box-shadow: 0rem 0rem 3rem #a5a5a5 inset;
 }

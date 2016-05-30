@@ -9,7 +9,21 @@
 
 {% block header %}
 
+    {% if app.request.session.get("user") %}
+        {{include('AfpaPokerGameBundle:User:menuTemplate.html.twig')}}
+    {% else %}
+        <ul id="lien">
+            <li><a href="{{ path('home') }}">Accueil</a></li>
+        </ul>
 
+        <form action="{{ path('_login') }}" method="POST">
+            <ul id="connection">
+                <li>{{form_widget(form2.mail)}}</li>
+                <li>{{form_widget(form2.password)}}</li>
+                <li>{{form_widget(form2.save)}}</li>
+            </ul>
+        </form>
+    {% endif %}
 {% endblock %}
 
 {% block body %}
