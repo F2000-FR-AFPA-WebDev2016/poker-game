@@ -342,3 +342,4 @@ class TablePoker
         return $this->packOfCards;
     }
 }
+
