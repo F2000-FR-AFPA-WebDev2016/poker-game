@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="table_poker")
  * @ORM\Entity(repositoryClass="Afpa\PokerGameBundle\Repository\TablePokerRepository")
  */
-class TablePoker
-{
+class TablePoker {
+
     /**
      * @var int
      *
@@ -73,14 +73,14 @@ class TablePoker
     /**
      * @var string
      *
-     * @ORM\Column(name="player_list", type="text")
+     * @ORM\Column(name="player_list", type="text", nullable=true)
      */
     private $playerList;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="pot", type="integer")
+     * @ORM\Column(name="pot", type="integer", nullable=true)
      */
     private $pot;
 
@@ -91,14 +91,12 @@ class TablePoker
      */
     private $packOfCards;
 
-
     /**
      * Get id
      *
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -109,8 +107,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setNbPosition($nbPosition)
-    {
+    public function setNbPosition($nbPosition) {
         $this->nbPosition = $nbPosition;
 
         return $this;
@@ -121,8 +118,7 @@ class TablePoker
      *
      * @return int
      */
-    public function getNbPosition()
-    {
+    public function getNbPosition() {
         return $this->nbPosition;
     }
 
@@ -133,8 +129,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setTimeLevel($timeLevel)
-    {
+    public function setTimeLevel($timeLevel) {
         $this->timeLevel = $timeLevel;
 
         return $this;
@@ -145,8 +140,7 @@ class TablePoker
      *
      * @return int
      */
-    public function getTimeLevel()
-    {
+    public function getTimeLevel() {
         return $this->timeLevel;
     }
 
@@ -157,8 +151,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setTimeStart($timeStart)
-    {
+    public function setTimeStart($timeStart) {
         $this->timeStart = $timeStart;
 
         return $this;
@@ -169,8 +162,7 @@ class TablePoker
      *
      * @return \DateTime
      */
-    public function getTimeStart()
-    {
+    public function getTimeStart() {
         return $this->timeStart;
     }
 
@@ -181,8 +173,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setTimeEnd($timeEnd)
-    {
+    public function setTimeEnd($timeEnd) {
         $this->timeEnd = $timeEnd;
 
         return $this;
@@ -193,8 +184,7 @@ class TablePoker
      *
      * @return \DateTime
      */
-    public function getTimeEnd()
-    {
+    public function getTimeEnd() {
         return $this->timeEnd;
     }
 
@@ -205,8 +195,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setInitialBet($initialBet)
-    {
+    public function setInitialBet($initialBet) {
         $this->initialBet = $initialBet;
 
         return $this;
@@ -217,8 +206,7 @@ class TablePoker
      *
      * @return int
      */
-    public function getInitialBet()
-    {
+    public function getInitialBet() {
         return $this->initialBet;
     }
 
@@ -229,8 +217,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setFactor($factor)
-    {
+    public function setFactor($factor) {
         $this->factor = $factor;
 
         return $this;
@@ -241,8 +228,7 @@ class TablePoker
      *
      * @return int
      */
-    public function getFactor()
-    {
+    public function getFactor() {
         return $this->factor;
     }
 
@@ -253,8 +239,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setOpenCards($openCards)
-    {
+    public function setOpenCards($openCards) {
         $this->openCards = $openCards;
 
         return $this;
@@ -265,8 +250,7 @@ class TablePoker
      *
      * @return string
      */
-    public function getOpenCards()
-    {
+    public function getOpenCards() {
         return $this->openCards;
     }
 
@@ -277,8 +261,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setPlayerList($playerList)
-    {
+    public function setPlayerList($playerList) {
         $this->playerList = $playerList;
 
         return $this;
@@ -289,8 +272,7 @@ class TablePoker
      *
      * @return string
      */
-    public function getPlayerList()
-    {
+    public function getPlayerList() {
         return $this->playerList;
     }
 
@@ -301,8 +283,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setPot($pot)
-    {
+    public function setPot($pot) {
         $this->pot = $pot;
 
         return $this;
@@ -313,8 +294,7 @@ class TablePoker
      *
      * @return int
      */
-    public function getPot()
-    {
+    public function getPot() {
         return $this->pot;
     }
 
@@ -325,8 +305,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setPackOfCards($packOfCards)
-    {
+    public function setPackOfCards($packOfCards) {
         $this->packOfCards = $packOfCards;
 
         return $this;
@@ -337,9 +316,8 @@ class TablePoker
      *
      * @return string
      */
-    public function getPackOfCards()
-    {
+    public function getPackOfCards() {
         return $this->packOfCards;
     }
-}
 
+}

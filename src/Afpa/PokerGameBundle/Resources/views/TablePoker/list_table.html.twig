@@ -1,0 +1,22 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AfpaPokerGameBundle:TablePokerController:listTable{% endblock %}
+
+{% block body %}
+    <h1>Welcome to the TablePokerController:listTable page</h1>
+    <table>
+        <tr>
+            <td>nom de la table</td>
+            <td>nombre de places</td>
+            <td>inscrits</td>
+        </tr>
+        {% for pendingTable in pendingTables %}
+            <tr>
+                <td><a href="{{ path('_play', {'idTable' : pendingTable.id}) }}"  target="_blank">table {{ pendingTable.id }}</a></td>
+                <td>{{ pendingTable.nbPosition }}</td>
+                <td>
+                    0</td>
+            </tr>
+        {% endfor %}
+
+    {% endblock %}

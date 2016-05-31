@@ -1,0 +1,14 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AfpaPokerGameBundle:TablePokerController:play{% endblock %}
+
+{% block body %}
+
+    <h1>Welcome to the TablePokerController:play page</h1>
+
+    test liste des joueurs
+
+    <div id="game">
+        {{ render(controller('AfpaPokerGameBundle:TablePoker:gameView', {'idTable': idTable})) }}
+    </div>
+{% endblock %}
