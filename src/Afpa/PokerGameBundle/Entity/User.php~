@@ -38,13 +38,6 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="avatar", type="string", length=100, nullable=true)
-     */
-    private $avatar;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="mail", type="string", length=100, unique=true)
      */
     private $mail;
@@ -96,30 +89,6 @@ class User
     public function getPseudo()
     {
         return $this->pseudo;
-    }
-
-    /**
-     * Set avatar
-     *
-     * @param string $avatar
-     *
-     * @return User
-     */
-    public function setAvatar($avatar)
-    {
-        $this->avatar = $avatar;
-
-        return $this;
-    }
-
-    /**
-     * Get avatar
-     *
-     * @return string
-     */
-    public function getAvatar()
-    {
-        return $this->avatar;
     }
 
     /**
@@ -218,3 +187,4 @@ class User
         return $this->timeLastCredit;
     }
 }
+

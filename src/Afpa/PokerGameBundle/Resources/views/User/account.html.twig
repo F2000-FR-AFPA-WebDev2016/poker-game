@@ -4,7 +4,6 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('env/css/style.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('env/css/styleUser.css') }}" />
 {% endblock %}
 
 {% block header %}
@@ -13,10 +12,72 @@
 {% endblock %}
 {% block body %}
     <section>
-        {% set flash_message_notice = app.session.flashBag.get('notice')|last %}
-        <p class="notice">{{ flash_message_notice }}</p>
-        {% set flash_message_warning = app.session.flashBag.get('warning')|last %}
-        <p class="warning">{{ flash_message_warning }}</p>
+        
+        <div class="profil">
+            <span class="photo">
+                <img src="{{asset('env/images/profil/'~user.avatar)}}" tab="avatar" width="200px">
+                <span class="load_photo">
+                    <form action="{{ path('_account') }}" method="POST" enctype="multipart/form-data">
+                        {{form_widget(formImage.avatar)}}
+                        {{form_widget(formImage.imageSave)}}
+                        {{form_rest(formImage)}}
+                    </form>
+                </span>
+            </span>
+            <div class="info">
+                <h3>Informations Personnelles</h3>
+                
+            {% set flash_message_notice = app.session.flashBag.get('success_account')|last %}
+            <p class="success">{{ flash_message_notice }}</p>
+            {% set flash_message_warning = app.session.flashBag.get('warning_account')|last %}
+            <p class="warning">{{ flash_message_warning }}</p>
+                    <ul>
+                        <li>
+                            <span>Pseudo </span>
+                            <span>
+                                <form action="{{ path('_account') }}" method="POST">
+                                    {{form_widget(formPseudo.pseudo)}}
+                                    {{form_widget(formPseudo.pseudoSave)}}
+                                    {{form_rest(formPseudo)}}
+                                </form>
+                            </span>
+                        </li>
+                        <li>
+                            <span>Mail </span>
+                            <span>
+                                <form action="{{ path('_account') }}" method="POST">
+                                    {{form_widget(formMail.mail)}}
+                                    {{form_widget(formMail.mailSave)}}
+                                    {{form_rest(formMail)}}
+                                </form>
+                            </span>
+                        </li>
+                        <li>
+                            <span>Modification mot de passe </span>
+                            <span>
+                                <form action="{{ path('_account') }}" method="POST">
+                                    {{form_widget(formPass.password)}}
+                                    {{form_widget(formPass.passwordSave)}}
+                                    {{form_rest(formPass)}}
+                                </form>
+                            </span>
+                        </li>
+                        <li>
+                            <span>Monnaie : {{user.virtualMoney}}</span>
+                            <span>
+                                <form action="{{ path('_account') }}" method="POST">
+                                    {{form_widget(formMoney.moneySave)}}
+                                    {{form_rest(formMoney)}}
+                                </form>
+                            </span>
+                        </li>
+                    </ul>
+                        
+                
+            </div>
+            
+        </div>
+        
     </section>
 
     <h1>Welcome to the User:account page</h1>

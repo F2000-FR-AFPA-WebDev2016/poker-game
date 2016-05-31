@@ -4,5 +4,10 @@
         <li>{{form_widget(form.password)}}</li>
         <li>{{form_widget(form.save)}}</li>
             {{form_rest(form)}}
+        
+        {% set flash_message_notice = app.session.flashBag.get('notice_connect')|last %}
+        <p class="notice">{{ flash_message_notice }}</p>
+        {% set flash_message_warning = app.session.flashBag.get('warning_connect')|last %}
+        <p class="warning">{{ flash_message_warning }}</p>
     </ul>
 </form>

@@ -1,6 +1,6 @@
 html, body, div, span, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, img, dl,
 dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot,
-thead, tr, th, td, article, aside, footer, header, nav, section{
+thead, tr, th, td, article, aside, footer, header, nav, section, input, button{
     margin: 0;
     padding: 0;
     border: 0;
@@ -26,7 +26,28 @@ body._home{
     background-size: 750px;
 }
 
+p.notice{
+    text-align: center;
+    color: #ADFF2F;
+}
 
+p.warning{
+    text-align: center;
+    color: #cc0000;
+}
+
+p.success{
+    text-align: center;
+    color: #ADFF2F;
+}
+
+body._home p.notice, body._home p.warning{
+    font-size: 1.5rem;
+}
+
+body._register p.notice, body._register p.warning{
+    font-size: 1.7rem;
+}
 
 body.is-loading{
     background-image: url("");
@@ -128,6 +149,188 @@ section{
     opacity: 0;
 }
 
-section img{
+body._home section img{
     width: 75rem;
+}
+
+#register{
+    top: 12rem;
+}
+
+#register form input{
+    border: 0;
+    padding: 1.1rem 2rem;
+    box-shadow: 0rem 0rem 1.5rem #a5a5a5;
+    border-radius: 1.5rem;
+    font-size: 1.8rem;
+    color: #fff;
+    background-color: #000;
+    border: 0.1rem solid #fff;
+    margin: 2rem;
+}
+
+#register form input:hover{
+    color: #ADFF2F;
+    box-shadow: 0rem 0rem 1rem #a5a5a5 inset;
+}
+
+#register form input:active{
+    box-shadow: 0rem 0rem 3rem #a5a5a5 inset;
+}
+
+#register form button{
+    border: 0;
+    padding: 1.1rem 2rem;
+    box-shadow: 0rem 0rem 1.5rem #a5a5a5;
+    border-radius: 1.5rem;
+    font-size: 1.8rem;
+    color: #fff;
+    background-color: #000;
+    border: 0.1rem solid #fff;
+    margin: 2rem;
+}
+
+#register form button:hover{
+    color: #ADFF2F;
+    box-shadow: 0rem 0rem 1rem #a5a5a5 inset;
+}
+
+#register form button:active{
+    box-shadow: 0rem 0rem 3rem #a5a5a5 inset;
+}
+
+.menu {
+    float: right !important;
+    width:auto;
+    margin-right: 1rem;
+}
+
+
+
+section .profil{
+    width: 109rem;
+    margin: auto;
+    margin-top: 10rem;
+    background-color: #fcfcfc;
+    text-align: left;
+    position: relative;
+    border-radius: 1rem;
+    min-height: 500px;
+}
+
+.profil .photo{
+    display: block;
+    width: 20rem;
+    position: absolute;
+    padding-bottom : 5rem;
+    top: 5rem;
+    left: 2rem;
+}
+
+.profil .load_photo{
+    display: block;
+    width: 20rem;
+    height: 5rem;
+    position: absolute;
+    bottom: 0rem;
+    background-color: #fff;
+}
+
+.profil .info{
+    display: block;
+    width: 87rem;
+    position: relative;
+    left: 22rem;
+}
+
+.profil .info h3{
+    text-align: center;
+    color: #ccc;
+    font-size: 2.2rem;
+    margin: 0 0 3rem 0;
+    padding-top: 5rem;
+}
+
+.profil .info ul{
+    margin-left: 3rem;
+    color: #fff;
+    font-size: 1.8rem;
+}
+
+.profil .info ul span{
+    display: inline-block;
+    height: 5rem;
+    line-height: 4rem;
+}
+
+.profil .info ul li span:first-child{
+    color: #565656;
+    width: calc(38% - 0.5rem);
+}
+
+.profil .info ul li span:last-child{
+    width: calc(62% - 0.5rem);
+}
+
+.profil .info input{
+    width: 33rem;
+    height: 3.4rem;
+    line-height: 3.5rem;
+    border-radius: 1rem;
+    border: 3px solid #ccc;
+    box-shadow: 0px 0px 5px  #000 inset;
+    padding-left: 2rem;
+    font-size: 1.6rem;
+    color: #000;
+}
+
+.profil .info input:focus{
+    box-shadow: 0px 0px 2px  #ccc;
+}
+
+.profil .info button{
+    width: 10rem;
+    height: 3.5rem;
+    border-radius: 1.2rem;
+    border: 3px solid #ccc;
+    box-shadow: 0px 0px 5px  #6c6159 inset;
+    font-size: 1.6rem;
+    color: #6c6159;
+}
+
+.profil .info button:hover{
+    box-shadow: 0px 0px 5px  #ccc ;
+}
+
+.profil .info button:active{
+    box-shadow: 0px 0px 5px  #000 inset;
+}
+
+.profil .photo input{
+    width: 20rem;
+    height: 3.5rem;
+    border: 3px solid #ccc;
+    box-shadow: 0px 0px 5px  #6c6159 inset;
+    font-size: 1.6rem;
+    color: #6c6159;
+}
+
+.profil .photo button{
+    display: block;
+    width: 10rem;
+    height: 3.5rem;
+    border-radius: 1.2rem;
+    border: 3px solid #ccc;
+    box-shadow: 0px 0px 5px  #6c6159 inset;
+    font-size: 1.6rem;
+    color: #6c6159;
+    margin: auto;
+    margin-top : 1rem;
+}
+
+.profil .info p{
+    position : absolute;
+    width: 100%;
+    font-size: 1.8rem;
+    top: 8rem;
 }
