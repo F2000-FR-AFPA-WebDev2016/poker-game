@@ -29,6 +29,11 @@ body._home{
     background-position: center center;
     background-size: 750px;
 }
+#logo{
+    float:left;
+    width: 6.5rem;
+
+}
 
 p.notice{
     text-align: center;
@@ -77,6 +82,7 @@ nav{
 
 nav #lien{
     float:left;
+    margin-left: 2rem;
 }
 
 nav #lien li{
@@ -355,7 +361,7 @@ section .profil{
 }
 
 #list_table table tr:first-child td {
-    background-color: #ADFF2F;
+    background-color: rgba(173, 255, 47, 0.8);
     border-radius: 1.5rem;
     padding:  0.7rem;
 
