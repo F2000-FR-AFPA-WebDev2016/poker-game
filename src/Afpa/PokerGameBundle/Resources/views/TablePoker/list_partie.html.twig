@@ -1,0 +1,40 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}{{parent()}}Liste des tables{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('env/css/style.css') }}" />
+{% endblock %}
+
+{% block header %}
+    {% if app.request.session.get("user") %}
+        {{include('AfpaPokerGameBundle:User:menuTemplate.html.twig')}}
+    {% else %}
+        <ul id="lien">
+            <li><a href="{{ path('_home') }}">Accueil</a></li>
+        </ul>
+
+        {{ render(controller('AfpaPokerGameBundle:User:login')) }}
+    {% endif %}
+
+{% endblock %}
+
+{% block body %}
+
+    <section id="list_table">
+        
+        <table>
+            {{ render(controller('AfpaPokerGameBundle:TablePoker:listTableRefresh')) }}
+            
+        </table>
+        
+    </section>
+{% endblock %}
+
+
+
+
+{% block javascripts %}
+    {{parent()}}
+    <script src="{{ asset('env/js/ajax.js') }}" type="text/javascript"></script>
+{% endblock %}

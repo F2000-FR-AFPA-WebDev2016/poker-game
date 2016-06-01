@@ -29,6 +29,10 @@ body._home{
     background-position: center center;
     background-size: 750px;
 }
+
+body section.first{
+    padding-top: 15rem;
+}
 #logo{
     float:left;
     width: 6.5rem;
@@ -101,6 +105,28 @@ nav #lien li a{
     line-height: 5rem;
 }
 
+section #lien {
+    margin: 0 0 2rem 0;
+}
+
+section #lien li {
+    display: inline-block;
+    border: 0.1rem solid #fff;
+    box-shadow: 0rem 0rem 1.5rem #a5a5a5;
+    text-align: center;
+    border-radius: 1.5rem;
+    cursor: pointer;
+    font-size: 2rem;
+    margin: 0 1rem;
+}
+
+section #lien li a{
+    text-decoration: none;
+    color: #fff;
+    padding: 1.3rem 2rem;
+    line-height: 3rem;
+}
+
 nav #lien li:hover{
     box-shadow: 0rem 0rem 1rem #a5a5a5 inset;
 }
@@ -147,12 +173,18 @@ nav form button{
 }
 
 section{
-    position: absolute;
-    top: 80px;
+    position: relative;
     width: 100%;
     text-align: center;
     z-index: 10;
+}
 
+#firstImg, #secondImg{
+    position: absolute;
+    top: 12rem;
+    width: 100%;
+    text-align: center;
+    z-index: 10;
 }
 
 .loading{
@@ -220,7 +252,6 @@ body._home section img{
 section .profil{
     width: 109rem;
     margin: auto;
-    margin-top: 10rem;
     background-color: #fcfcfc;
     text-align: left;
     position: relative;
@@ -345,10 +376,6 @@ section .profil{
     top: 8rem;
 }
 
-#list_table{
-    top: 12rem;
-
-}
 #list_table table{
     color: #fff;
     font-size: 1.5rem;
