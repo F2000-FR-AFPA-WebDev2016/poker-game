@@ -11,6 +11,7 @@
 {% block header %}
 
     {% if app.request.session.get("user") %}
+
         {{include('AfpaPokerGameBundle:User:menuTemplate.html.twig')}}
     {% else %}
         <ul id="lien">
@@ -32,7 +33,7 @@
     <section id="secondImg" class="loading">
         <img src="{{ asset('env/images/acc2.jpg') }}" alt="photo accueil allume">
     </section>
-        
+
 
 
 
