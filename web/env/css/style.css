@@ -8,6 +8,10 @@ thead, tr, th, td, article, aside, footer, header, nav, section, input, button{
     list-style: none;
 }
 
+.invisible{
+    display: none;
+}
+
 html{
     font-size: 62.5%;
     height: 100%;
