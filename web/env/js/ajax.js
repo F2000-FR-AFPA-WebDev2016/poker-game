@@ -31,23 +31,22 @@
         
             // TODO : timer
             
-            var game = $('#game'),
-                table = $('.tableNumber').html();
+            var $table = $('#list_table table');
              $.ajax({
-                 url: "../view/"+table,
+                 url: "listTableRefresh",
                  method: 'POST',
                  success: function (data) {
-                     game.html(data);
+                     $table.html(data);
                  }
 
              });
              
             window.setTimeout(function () {
-                     refreshGameView();
+                     refreshListTable();
             }, 3000);
 
     }
-         refreshGameView();
+    refreshListTable();
     
 
 })(jQuery);

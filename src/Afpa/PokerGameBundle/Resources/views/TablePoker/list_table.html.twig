@@ -22,36 +22,12 @@
 {% block body %}
 
     <section id="list_table">
-        <h1>Welcome to the TablePokerController:listTable page</h1>
+        
         <table>
-            <tr>
-                <td>table</td>
-                <td>inscrits</td>
-                <td>stack</td>
-                <td>buy-in</td>
-                <td>Inscription</td>
-            </tr>
-
-            {#{{dump(pendingTables)}}#}
-            {% for pendingTable in pendingTables %}
-
-                <tr>
-                    <td><strong><a href="{{ path('_play', {'idTable' : pendingTable.table.id}) }}"  target="_blank">table {{ pendingTable.table.id }}</a></strong></td>
-                    <td>0/{{ pendingTable.table.nbPosition }}</td>
-                    <td>ex : 1500</td>
-                    <td>ex : 5</td>
-                    <td>
-                        <form action="" method="POST">
-                        {% if pendingTable.form.inscription is defined  %}
-                            {{form_widget(pendingTable.form.inscription)}}
-                            {{form_rest(pendingTable.form)}}
-                        {% endif %}
-                        </form>
-                    </td>
-                </tr>
-
-            {% endfor %}
+            {{ render(controller('AfpaPokerGameBundle:TablePoker:listTableRefresh')) }}
+            
         </table>
+        
     </section>
 {% endblock %}
 
