@@ -122,6 +122,16 @@ class TablePokerController extends Controller {
     
     
     /**
+     * @Route("/listPartie", name="_list_partie")
+     */
+    public function listPartieAction(Request $request) {
+        
+        return $this->render('AfpaPokerGameBundle:TablePoker:list_partie.html.twig');
+            
+    }
+    
+    
+    /**
      * @Route("/listTable", name="_list_table")
      */
     public function listTableAction(Request $request) {
