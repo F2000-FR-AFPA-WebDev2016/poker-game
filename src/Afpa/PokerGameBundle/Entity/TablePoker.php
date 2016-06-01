@@ -31,6 +31,13 @@ class TablePoker {
     /**
      * @var int
      *
+     * @ORM\Column(name="nombre_inscrit", type="integer", nullable=true)
+     */
+    private $nbInscrit;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="time_level", type="integer")
      */
     private $timeLevel;
@@ -119,6 +126,28 @@ class TablePoker {
      */
     public function getId() {
         return $this->id;
+    }
+
+    /**
+     * Set nbInscrit
+     *
+     * @param integer $nbInscrit
+     *
+     * @return TablePoker
+     */
+    public function setNbInscrit($nbInscrit) {
+        $this->nbInscrit = $nbInscrit;
+
+        return $this;
+    }
+
+    /**
+     * Get nbInscrit
+     *
+     * @return int
+     */
+    public function getNbInscrit() {
+        return $this->nbInscrit;
     }
 
     /**
