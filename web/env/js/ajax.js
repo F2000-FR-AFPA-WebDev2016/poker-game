@@ -1,7 +1,20 @@
 
 (function ($) {
-
-
+    var $arrayPath = window.location.pathname.split('/'),
+        $dev = false,
+        $cible = '';
+        
+        if($arrayPath.length > 2){
+            if($arrayPath[1] === 'app_dev.php'){
+                $dev = true;
+                $cible = $arrayPath[2] === '' ? 'home' : $arrayPath[2];
+            }else{
+                $cible = $arrayPath[1] === '' ? 'home' : $arrayPath[1];
+            }
+        }else{
+            $cible = $arrayPath[1] === '' ? 'home' : $arrayPath[1];
+        }
+        
     /*function refreshGameView() {
         // appel JQuery
         // + modification $('#game')
@@ -25,6 +38,7 @@
 
     }
          refreshGameView();*/
+    
     function refreshListTable() {
         // appel JQuery
         // + modification $('#game')
@@ -46,7 +60,10 @@
             }, 3000);
 
     }
-    refreshListTable();
+    if($cible === 'listTable'){
+        refreshListTable();
+    }
+    
     
 
 })(jQuery);
