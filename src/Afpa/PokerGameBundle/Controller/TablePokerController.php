@@ -11,10 +11,10 @@ use Afpa\PokerGameBundle\Models\Player;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
-
 class TablePokerController extends Controller {
 
     private $inscriptionTable;
+
     private $em;
     private $nbTable = 2;
     private $nameTable = array( 'Heads up', 'Heads up turbo');
@@ -138,32 +138,30 @@ class TablePokerController extends Controller {
                 }
                 $array = array_values($array);
             }
+
             $table->setPlayerList(serialize($array));
             $this->em->flush();
         }
-        
-       /*
-        for($i= 0; $i <= count($aPendingTables); $i++){
-            $form = $this->createFormBuilder()
-                ->add('inscription', SubmitType::class, array('label' => 'S\'inscrire'))
-                ->getForm();
-            $form->handleRequest($request);
-            $listForm[] = $form->createView();
-        }*/
+
+        /*
+          for($i= 0; $i <= count($aPendingTables); $i++){
+          $form = $this->createFormBuilder()
+          ->add('inscription', SubmitType::class, array('label' => 'S\'inscrire'))
+          ->getForm();
+          $form->handleRequest($request);
+          $listForm[] = $form->createView();
+          } */
         //creation formulaire inscription table
-        
-        
+
+
         return $this->render('AfpaPokerGameBundle:TablePoker:list_table.html.twig', array(
                     'pendingTables' => $aPendingTables,
         ));
     }
-    
-    
-    public function verifInscription(){
-        
+
+    public function verifInscription() {
+
     }
-    
-    
 
     /**
      * @Route("/play/{idTable}", name="_play")

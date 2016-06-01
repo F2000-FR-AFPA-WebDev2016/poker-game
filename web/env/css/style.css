@@ -338,3 +338,69 @@ section .profil{
     font-size: 1.8rem;
     top: 8rem;
 }
+
+#list_table{
+    top: 12rem;
+
+}
+#list_table table{
+    color: #fff;
+    font-size: 1.5rem;
+    width:80%;
+    margin: auto;
+}
+#list_table table tr:first-child {
+    font-size: 2rem;
+    color: #000;
+}
+
+#list_table table tr:first-child td {
+    background-color: #ADFF2F;
+    border-radius: 1.5rem;
+    padding:  0.7rem;
+
+}
+
+#list_table tr:nth-child(n+1) td{
+    width:20%;
+    min-width: 12rem;
+    padding:  0.4rem;
+}
+
+
+#list_table form button{
+    border: 0;
+    padding: 1.1rem 2rem;
+    box-shadow: 0rem 0rem 1.5rem #a5a5a5;
+    border-radius: 1.5rem;
+    font-size: 1.2rem;
+    color: #fff;
+    background-color: #000;
+    border: 0.1rem solid #fff;
+    margin: 1rem;
+}
+
+#list_table form button:hover{
+    color: #ADFF2F;
+    box-shadow: 0rem 0rem 1rem #a5a5a5 inset;
+}
+
+#list_table form button:active{
+    box-shadow: 0rem 0rem 3rem #a5a5a5 inset;
+}
+
+#list_table a{
+    color: #FF8C00;
+    text-decoration:none;
+}
+
+
+
+#list_table a:hover{
+    color: #ADFF2F;
+}
+
+#list_table :active{
+    color: #FFF;
+}
+
