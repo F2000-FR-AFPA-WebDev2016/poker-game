@@ -11,11 +11,10 @@ use Afpa\PokerGameBundle\Models\Player;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
-
 class TablePokerController extends Controller {
 
     private $inscriptionTable;
-    
+
     /**
      * @Route("/listTable", name="_list_table")
      */
@@ -25,14 +24,14 @@ class TablePokerController extends Controller {
         if (!$oSession->get('user') instanceof User) {
             return $this->redirect($this->generateUrl('_home'));
         }
-        
+
         //Liste des tables en attente
-        
+
         $em = $this->getDoctrine()->getManager();
         $aPendingTables = $em->getRepository('AfpaPokerGameBundle:TablePoker')->findAll();
         $nb = count($aPendingTables) == 0 ? 4 : 4 - count($aPendingTables);
-        if($nb > 0){
-            for($i = 0; $i < $nb; $i++){
+        if ($nb > 0) {
+            for ($i = 0; $i < $nb; $i++) {
                 $oTablePoker = new TablePoker();
                 $oTablePoker->setFactor(1);
                 $oTablePoker->setInitialBet(1);
@@ -43,75 +42,72 @@ class TablePokerController extends Controller {
                 $aPendingTables[] = $oTablePoker;
             }
         }
-        
-        foreach ($aPendingTables as $key => $value){
+
+        foreach ($aPendingTables as $key => $value) {
             $userInscrit = false;
             $user = $oSession->get('user')->getId();
             $array = is_array(unserialize($value->getPlayerList())) ? unserialize($value->getPlayerList()) : array();
-            foreach($array as $val){
-                if($val->getIdPlayer() == $user){
+            foreach ($array as $val) {
+                if ($val->getIdPlayer() == $user) {
                     $userInscrit = true;
                     break;
                 }
             }
             $verifNbInscrit = count($array);
-            if($verifNbInscrit == 2 && $userInscrit == false){
+            if ($verifNbInscrit == 2 && $userInscrit == false) {
                 $form = $this->createFormBuilder()
-                    ->add('id', HiddenType::class, array('data' => $value->getId()))
-                    ->getForm();
-            }else{
+                        ->add('id', HiddenType::class, array('data' => $value->getId()))
+                        ->getForm();
+            } else {
                 $form = $this->createFormBuilder()
-                    ->add('id', HiddenType::class, array('data' => $value->getId()))
-                    ->add('action', HiddenType::class, array('data' => $userInscrit == false ? 'in' : 'out' ))
-                    ->add('inscription', SubmitType::class, array('label' => $userInscrit == false ? 'S\'inscrire' : 'Se désinscrire'))
-                    ->getForm();
+                        ->add('id', HiddenType::class, array('data' => $value->getId()))
+                        ->add('action', HiddenType::class, array('data' => $userInscrit == false ? 'in' : 'out'))
+                        ->add('inscription', SubmitType::class, array('label' => $userInscrit == false ? 'S\'inscrire' : 'Se désinscrire'))
+                        ->getForm();
             }
             $form->handleRequest($request);
-            
-            $aPendingTables[$key] = array('form' => $form->createView(), 'table' => $value, );
-            
-            
+
+            $aPendingTables[$key] = array('form' => $form->createView(), 'table' => $value,);
+
+
             if ($form->isSubmitted() && $form->isValid()) {
-                dump($form);die();
-                
-                
-                
+
+
+
+
                 $this->inscriptionTable = $form->getNormData()['id'];
             }
         }
-        
-        if($this->inscriptionTable != null){
+
+        if ($this->inscriptionTable != null) {
             $table = $em->getRepository('AfpaPokerGameBundle:TablePoker')->findOneById($this->inscriptionTable);
             $oPlayer = new Player($oSession->get('user'));
-            
+
             $array = unserialize($table->getPlayerList());
             $array[] = $oPlayer;
             $table->setPlayerList(serialize($array));
             $em->flush();
         }
-        
-       /*
-        for($i= 0; $i <= count($aPendingTables); $i++){
-            $form = $this->createFormBuilder()
-                ->add('inscription', SubmitType::class, array('label' => 'S\'inscrire'))
-                ->getForm();
-            $form->handleRequest($request);
-            $listForm[] = $form->createView();
-        }*/
+
+        /*
+          for($i= 0; $i <= count($aPendingTables); $i++){
+          $form = $this->createFormBuilder()
+          ->add('inscription', SubmitType::class, array('label' => 'S\'inscrire'))
+          ->getForm();
+          $form->handleRequest($request);
+          $listForm[] = $form->createView();
+          } */
         //creation formulaire inscription table
-        
-        
+
+
         return $this->render('AfpaPokerGameBundle:TablePoker:list_table.html.twig', array(
                     'pendingTables' => $aPendingTables,
         ));
     }
-    
-    
-    public function verifInscription(){
-        
+
+    public function verifInscription() {
+
     }
-    
-    
 
     /**
      * @Route("/play/{idTable}", name="_play")
