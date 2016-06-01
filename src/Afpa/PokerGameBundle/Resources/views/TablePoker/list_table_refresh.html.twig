@@ -1,0 +1,28 @@
+
+            <tr>
+                <td>table</td>
+                <td>inscrits</td>
+                <td>stack</td>
+                <td>buy-in</td>
+                <td>Inscriptions</td>
+            </tr>
+
+            {% for pendingTable in pendingTables %}
+
+                <tr>
+                    <td><strong><a href="{{ path('_play', {'idTable' : pendingTable.table.id}) }}"  target="_blank"> {{ pendingTable.table.name }}</a></strong></td>
+                    <td>{{ pendingTable.table.nbInscrit }}/{{ pendingTable.table.nbPosition }}</td>
+                    <td>{{ pendingTable.table.stackTable }}</td>
+                    <td>{{ pendingTable.table.buyIn }}</td>
+                    <td>
+                        <form action="{{ path('_list_table') }}" method="POST">
+                        {% if pendingTable.form.inscription is defined  %}
+                            {{form_widget(pendingTable.form.inscription)}}
+                            {{form_rest(pendingTable.form)}}
+                        {% endif %}
+                        </form>
+                    </td>
+                </tr>
+
+            {% endfor %}
+        
