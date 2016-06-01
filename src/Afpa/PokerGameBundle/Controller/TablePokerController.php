@@ -12,7 +12,7 @@ use Afpa\PokerGameBundle\Models\Player;
 class TablePokerController extends Controller {
 
     /**
-     * @Route("/listTable", name="list_table")
+     * @Route("/listTable", name="_list_table")
      */
     public function listTableAction(Request $request) {
         $oSession = $request->getSession();

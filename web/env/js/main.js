@@ -50,19 +50,24 @@
     function refreshGameView() {
         // appel JQuery
         // + modification $('#game')
+
+        // TODO : timer
+        $.ajax({
+            url: '../view/8',
+            type: 'POST',
+            success: function (data) {
+                $('#game').html(data);
+            },
+            error: function (data) {
+                console.log(data);
+            },
+        })
+        window.setTimeout(function () {
+            refreshGameView();
+        }, 3000);
     }
-    // TODO : timer
-    $.ajax({
-        url: '_game_view',
-        type: 'POST',
-        dataType: 'html',
-        success: function (data) {
-
-
-        }
-
-    });
-    setTimeout(refreshGameView, 3000);
+    ;
+    refreshGameView();
 
 })(jQuery);
 

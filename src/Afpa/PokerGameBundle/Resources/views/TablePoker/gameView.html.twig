@@ -1,9 +1,11 @@
+
+
 {% for player in listPlayer %}
     {{player.idPlayer}}
 {% endfor %}
 
 
 {% block javascripts %}
-    {{parent()}}
+    <script src="{{ asset('env/js/jquery/jquery-2.1.1.js') }}" type="text/javascript"></script>
     <script src="{{ asset('env/js/main.js') }}" type="text/javascript"></script>
 {% endblock %}
