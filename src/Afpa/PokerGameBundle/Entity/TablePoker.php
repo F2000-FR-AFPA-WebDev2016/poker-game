@@ -66,6 +66,27 @@ class TablePoker {
     /**
      * @var string
      *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="stack_table", type="integer")
+     */
+    private $stackTable;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="buy_in", type="integer")
+     */
+    private $buyIn;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="open_cards", type="string", length=255, nullable=true)
      */
     private $openCards;
@@ -211,6 +232,28 @@ class TablePoker {
     }
 
     /**
+     * Set stackTable
+     *
+     * @param integer $stackTable
+     *
+     * @return TablePoker
+     */
+    public function setStackTable($stackTable) {
+        $this->stackTable = $stackTable;
+
+        return $this;
+    }
+
+    /**
+     * Get stackTable
+     *
+     * @return int
+     */
+    public function getStackTable() {
+        return $this->stackTable;
+    }
+
+    /**
      * Set factor
      *
      * @param integer $factor
@@ -233,6 +276,28 @@ class TablePoker {
     }
 
     /**
+     * Set buyIn
+     *
+     * @param integer $buyIn
+     *
+     * @return TablePoker
+     */
+    public function setBuyIn($buyIn) {
+        $this->buyIn = $buyIn;
+
+        return $this;
+    }
+
+    /**
+     * Get buyIn
+     *
+     * @return int
+     */
+    public function getBuyIn() {
+        return $this->buyIn;
+    }
+
+    /**
      * Set openCards
      *
      * @param string $openCards
@@ -252,6 +317,28 @@ class TablePoker {
      */
     public function getOpenCards() {
         return $this->openCards;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return TablePoker
+     */
+    public function setName($name) {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
     }
 
     /**

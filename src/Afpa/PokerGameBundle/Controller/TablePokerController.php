@@ -15,7 +15,94 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 class TablePokerController extends Controller {
 
     private $inscriptionTable;
+    private $em;
+    private $nbTable = 2;
+    private $nameTable = array( 'Heads up', 'Heads up turbo');
+    private $tableInit = array( 
+                            'Heads up' => array( 'nbPos' => 2, 'factor' => 2, 'timeLevel' => 2, 'initialBet' => 15, 'stack' => 5000, 'buyIn' => 5),
+                            'Heads up turbo' => array( 'nbPos' => 2, 'factor' => 2, 'timeLevel' => 1, 'initialBet' => 100, 'stack' => 1500, 'buyIn' => 10));
     
+    public function createTable($em, $nb, $aPendingTables, $nameTable){
+        for($i = 0; $i < $nb; $i++){
+            $oTablePoker = new TablePoker();
+            $oTablePoker->setName($nameTable);
+            $oTablePoker->setNbPosition($this->tableInit[$nameTable]['nbPos']);
+            $oTablePoker->setFactor($this->tableInit[$nameTable]['factor']);
+            $oTablePoker->setTimeLevel($this->tableInit[$nameTable]['timeLevel']);
+            $oTablePoker->setInitialBet($this->tableInit[$nameTable]['initialBet']);
+            $oTablePoker->setStackTable($this->tableInit[$nameTable]['stack']);
+            $oTablePoker->setBuyIn($this->tableInit[$nameTable]['buyIn']);
+            $em->persist($oTablePoker);
+            $em->flush();
+            $aPendingTables[] = $oTablePoker;
+        }
+        return $aPendingTables;
+    }
+    
+    public function recupTable(){
+        $tables = array();
+        $this->em = $em = $this->getDoctrine()->getManager();
+        foreach($this->nameTable as $value){
+            $aPendingTables = $em->getRepository('AfpaPokerGameBundle:TablePoker')->findByName($value);
+            
+            $nb = count($aPendingTables) == 0 ? $this->nbTable : $this->nbTable - count($aPendingTables);
+            if($nb > 0){
+                $tables = array_merge($tables, $this->createTable($em, $nb, $aPendingTables, $value));;
+            }else{
+                $tables = array_merge($tables, $aPendingTables);
+            }
+        }
+        
+        return $tables;
+    }
+    
+    public function PlayerInscrit($value, $user){
+        $array = is_array(unserialize($value->getPlayerList())) ? unserialize($value->getPlayerList()) : array();
+        $result = array( 'nb' => count($array), 'user' => false);
+        foreach($array as $val){
+            if($val->getIdPlayer() == $user){
+                $result['user'] = true;
+                return $result;
+            }
+        }
+        return $result;
+    }
+    
+    public function addFormTable(){
+        
+    }
+    
+    public function initialiseTable($user, Request $request){
+        $aPendingTables = $this->recupTable();
+        foreach ($aPendingTables as $key => $value){
+            $inscrit = $this->PlayerInscrit($value, $user);
+            
+            
+            
+            if($inscrit['nb'] < 2 | ($inscrit['nb'] == 2 && $inscrit['user'] == true)){
+                $form = $this->createFormBuilder()
+                    ->add('id', HiddenType::class, array('data' => $value->getId()))
+                    ->add('action', HiddenType::class, array('data' => $inscrit['user'] == false ? 'in' : 'out' ))
+                    ->add('inscription', SubmitType::class, array('label' => $inscrit['user'] == false ? 'S\'inscrire' : 'Se désinscrire'))
+                    ->getForm();
+                
+                $form->handleRequest($request);
+                
+                $aPendingTables[$key] = array('form' => $form->createView(), 'table' => $value, );
+                
+            }
+            
+            if (isset($form) && $form->isSubmitted() && $form->isValid()) {
+                $this->inscriptionTable = array( 'action' => $form->getNormData()['action'], 'idTable' => $form->getNormData()['id']);
+                
+            }
+        }
+        
+        return $aPendingTables;
+        
+    }
+
+
     /**
      * @Route("/listTable", name="_list_table")
      */
@@ -26,68 +113,33 @@ class TablePokerController extends Controller {
             return $this->redirect($this->generateUrl('_home'));
         }
         
-        //Liste des tables en attente
+        $aPendingTables = $this->initialiseTable($oSession->get('user')->getId(), $request);
         
-        $em = $this->getDoctrine()->getManager();
-        $aPendingTables = $em->getRepository('AfpaPokerGameBundle:TablePoker')->findAll();
-        $nb = count($aPendingTables) == 0 ? 4 : 4 - count($aPendingTables);
-        if($nb > 0){
-            for($i = 0; $i < $nb; $i++){
-                $oTablePoker = new TablePoker();
-                $oTablePoker->setFactor(1);
-                $oTablePoker->setInitialBet(1);
-                $oTablePoker->setNbPosition(2);
-                $oTablePoker->setTimeLevel(1);
-                $em->persist($oTablePoker);
-                $em->flush();
-                $aPendingTables[] = $oTablePoker;
-            }
-        }
         
-        foreach ($aPendingTables as $key => $value){
-            $userInscrit = false;
-            $user = $oSession->get('user')->getId();
-            $array = is_array(unserialize($value->getPlayerList())) ? unserialize($value->getPlayerList()) : array();
-            foreach($array as $val){
-                if($val->getIdPlayer() == $user){
-                    $userInscrit = true;
-                    break;
-                }
-            }
-            $verifNbInscrit = count($array);
-            if($verifNbInscrit == 2 && $userInscrit == false){
-                $form = $this->createFormBuilder()
-                    ->add('id', HiddenType::class, array('data' => $value->getId()))
-                    ->getForm();
-            }else{
-                $form = $this->createFormBuilder()
-                    ->add('id', HiddenType::class, array('data' => $value->getId()))
-                    ->add('action', HiddenType::class, array('data' => $userInscrit == false ? 'in' : 'out' ))
-                    ->add('inscription', SubmitType::class, array('label' => $userInscrit == false ? 'S\'inscrire' : 'Se désinscrire'))
-                    ->getForm();
-            }
-            $form->handleRequest($request);
-            
-            $aPendingTables[$key] = array('form' => $form->createView(), 'table' => $value, );
-            
-            
-            if ($form->isSubmitted() && $form->isValid()) {
-                dump($form);die();
-                
-                
-                
-                $this->inscriptionTable = $form->getNormData()['id'];
-            }
-        }
         
         if($this->inscriptionTable != null){
-            $table = $em->getRepository('AfpaPokerGameBundle:TablePoker')->findOneById($this->inscriptionTable);
-            $oPlayer = new Player($oSession->get('user'));
+            $table = $this->em->getRepository('AfpaPokerGameBundle:TablePoker')->findOneById($this->inscriptionTable['idTable']);
             
-            $array = unserialize($table->getPlayerList());
-            $array[] = $oPlayer;
+                $oPlayer = new Player($oSession->get('user'));
+            
+            $array = is_array(unserialize($table->getPlayerList())) ? unserialize($table->getPlayerList()) : array();
+            
+            if($this->inscriptionTable['action'] == 'in'){
+                if(!in_array($oPlayer, $array)){
+                    $array[] = $oPlayer;
+                }
+            }else{
+                if(in_array($oPlayer, $array)){
+                    foreach($array as $key => $value){
+                        if($value->getIdPlayer() == $oPlayer->getIdPlayer()){
+                            unset($array[$key]);break;
+                        }
+                    }
+                }
+                $array = array_values($array);
+            }
             $table->setPlayerList(serialize($array));
-            $em->flush();
+            $this->em->flush();
         }
         
        /*

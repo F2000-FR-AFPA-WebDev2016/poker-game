@@ -8,6 +8,8 @@
         <tr>
             <td>nom de la table</td>
             <td>inscrits</td>
+            <td>stack</td>
+            <td>buy-in</td>
             <td>Inscription</td>
         </tr>
         
@@ -17,7 +19,16 @@
             <tr>
                 <td><a href="{{ path('_play', {'idTable' : pendingTable.table.id}) }}"  target="_blank">table {{ pendingTable.table.id }}</a></td>
                 <td>0/{{ pendingTable.table.nbPosition }}</td>
-                <td><form action="" method="POST">{{form_widget(pendingTable.form.inscription)}}{{form_rest(pendingTable.form)}}</form></td>
+                <td>ex : 1500</td>
+                <td>ex : 5</td>
+                <td>
+                    <form action="" method="POST">
+                        {% if pendingTable.form.inscription is defined  %}
+                            {{form_widget(pendingTable.form.inscription)}}
+                            {{form_rest(pendingTable.form)}}
+                        {% endif %}
+                    </form>
+                </td>
             </tr>
         {% endfor %}
 
