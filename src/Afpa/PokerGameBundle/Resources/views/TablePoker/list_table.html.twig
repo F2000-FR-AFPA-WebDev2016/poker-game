@@ -7,16 +7,23 @@
     <table>
         <tr>
             <td>nom de la table</td>
-            <td>nombre de places</td>
             <td>inscrits</td>
+            <td>Inscription</td>
         </tr>
+        
+        {{dump(pendingTables)}}
         {% for pendingTable in pendingTables %}
+            
             <tr>
-                <td><a href="{{ path('_play', {'idTable' : pendingTable.id}) }}"  target="_blank">table {{ pendingTable.id }}</a></td>
-                <td>{{ pendingTable.nbPosition }}</td>
-                <td>
-                    0</td>
+                <td><a href="{{ path('_play', {'idTable' : pendingTable.table.id}) }}"  target="_blank">table {{ pendingTable.table.id }}</a></td>
+                <td>0/{{ pendingTable.table.nbPosition }}</td>
+                <td><form action="" method="POST">{{form_widget(pendingTable.form.inscription)}}{{form_rest(pendingTable.form)}}</form></td>
             </tr>
         {% endfor %}
 
-    {% endblock %}
+{% endblock %}
+{% block javascripts %}
+    {{parent()}}
+    <script src="{{ asset('env/js/ajax.js') }}" type="text/javascript"></script>
+   
+{% endblock %}

@@ -46,24 +46,6 @@
         }
     });
 
-
-    function refreshGameView() {
-        // appel JQuery
-        // + modification $('#game')
-    }
-    // TODO : timer
-    $.ajax({
-        url: '_game_view',
-        type: 'POST',
-        dataType: 'html',
-        success: function (data) {
-
-
-        }
-
-    });
-    setTimeout(refreshGameView, 3000);
-
 })(jQuery);
 
 
