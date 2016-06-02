@@ -12,6 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class TablePoker {
 
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Player", mappedBy="tablePoker")
+     */
+    protected $players;
+    
     /**
      * @var int
      *

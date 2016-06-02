@@ -10,8 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="Afpa\PokerGameBundle\Repository\UserRepository")
  */
-class User
-{
+class User{
+    
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Player", mappedBy="user")
+     */
+    protected $players;
+            
     /**
      * @var int
      *

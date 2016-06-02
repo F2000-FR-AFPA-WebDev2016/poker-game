@@ -60,10 +60,26 @@
             }, 3000);
 
     }
+    
+    function openTable(){
+        
+        $.ajax({
+            url: "openTableRefresh",
+            method: 'POST',
+            success: function (data) {
+                
+            }
+
+        });
+             
+            window.setTimeout(function () {
+                     openTable();
+            }, 5000);
+    }
     if($cible === 'listTable'){
         refreshListTable();
     }
-    
+    openTable();
     
 
 })(jQuery);

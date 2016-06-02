@@ -1,0 +1,19 @@
+
+            <tr>
+                <td>table</td>
+                <td>inscrits</td>
+                <td>stack</td>
+                <td>buy-in</td>
+            </tr>
+
+            {% for pendingTable in pendingTables %}
+
+                <tr>
+                    <td><strong><a href="{{ path('_play', {'idTable' : pendingTable.id}) }}"  target="_blank"> {{ pendingTable.name }}</a></strong></td>
+                    <td>{{ pendingTable.nbInscrit }}/{{ pendingTable.nbPosition }}</td>
+                    <td>{{ pendingTable.stackTable }}</td>
+                    <td>{{ pendingTable.buyIn }}</td>
+                </tr>
+
+            {% endfor %}
+        
