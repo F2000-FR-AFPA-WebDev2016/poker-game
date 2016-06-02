@@ -226,17 +226,15 @@ class TablePokerController extends Controller {
         if ($testTemp) {
 //test si user est player
             foreach ($aListPlayer as $key => $value) {
-                if ($value->getIdPlayer() == $oSession->get('user')->getId()) {
-
-                    $verif = true;
-                }
+//                if ($value->getIdPlayer() == $oSession->get('user')->getId()) {
+                $verif = $value->getIdPlayer() == $oSession->get('user')->getId();
+//                }
                 if ($verif) {
                     $oCard = new Card();
                     $aCards = $oCard->getDeck();
                     $oTablePoker->setPackOfCards(serialize($aCards));
-
-
-
+                    $em->persist($oTablePoker);
+                    $em->flush();
                     return $this->render('AfpaPokerGameBundle:TablePoker:play.html.twig', array(
                                 'listPlayer' => $aListPlayer,
                                 'idTable' => $idTable

@@ -22,7 +22,7 @@ Class Card {
             }
         }
         $var = date("s");
-        for ($i = 0; $i < $var; $i++) {
+        for ($i = 10; $i < $var + 10; $i++) {
             shuffle($aDeck);
         }
         return($aDeck);
