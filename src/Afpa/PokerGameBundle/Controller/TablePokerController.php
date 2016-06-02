@@ -45,9 +45,14 @@ class TablePokerController extends Controller {
     public function recupTable() {
         $tables = array();
         $this->em = $em = $this->getDoctrine()->getManager();
-        foreach ($this->nameTable as $value) {
-            $aPendingTables = $em->getRepository('AfpaPokerGameBundle:TablePoker')->findByName($value);
-
+        foreach($this->nameTable as $value){
+            $query = $em->createQuery(
+                                "SELECT t
+                                FROM AfpaPokerGameBundle:TablePoker t
+                                WHERE t.name = :name
+                                AND t.nbPosition > t.nbInscrit"
+                            )->setParameter(':name', $value);
+                    $aPendingTables = $query->getResult();
             $nb = count($aPendingTables) == 0 ? $this->nbTable : $this->nbTable - count($aPendingTables);
             if ($nb > 0) {
                 $tables = array_merge($tables, $this->createTable($em, $nb, $aPendingTables, $value));
@@ -60,7 +65,25 @@ class TablePokerController extends Controller {
         return $tables;
     }
 
-    public function PlayerInscrit($value, $user) {
+    
+    public function recupTablePleine(){
+        $tables = array();
+        $this->em = $em = $this->getDoctrine()->getManager();
+        foreach($this->nameTable as $value){
+            $query = $em->createQuery(
+                                "SELECT t
+                                FROM AfpaPokerGameBundle:TablePoker t
+                                WHERE t.name = :name
+                                AND t.nbPosition = t.nbInscrit"
+                            )->setParameter(':name', $value);
+                    $aPendingTables = $query->getResult();
+            
+            $tables = array_merge($tables, $aPendingTables);
+        }
+        return $tables;
+    }
+    
+    public function PlayerInscrit($value, $user){
         $array = is_array(unserialize($value->getPlayerList())) ? unserialize($value->getPlayerList()) : array();
         $result = array('nb' => count($array), 'user' => false);
         foreach ($array as $val) {
@@ -75,9 +98,8 @@ class TablePokerController extends Controller {
     public function addFormTable($aPendingTables, $user, Request $request) {
         foreach ($aPendingTables as $key => $value) {
             $inscrit = $this->PlayerInscrit($value, $user);
-
-
-            if ($inscrit['nb'] < 2 | ($inscrit['nb'] == 2 && $inscrit['user'] == true)) {
+            
+            if($inscrit['nb'] < 2 ){
                 $form = $this->createFormBuilder()
                         ->add('id', HiddenType::class, array('data' => $value->getId()))
                         ->add('action', HiddenType::class, array('data' => $inscrit['user'] == false ? 'in' : 'out'))
@@ -99,14 +121,28 @@ class TablePokerController extends Controller {
         return $aPendingTables;
     }
 
-    public function initialiseTable($user, Request $request) {
-        $aTables = $this->recupTable();
-
-        $aPendingTables = $this->addFormTable($aTables, $user, $request);
-
-
-
-        return $aPendingTables;
+    
+    public function initialiseTable($user, Request $request, $pleine = null){
+        
+        if($pleine == null){
+            $aTables = $this->recupTable();
+            $aPendingTables = $this->addFormTable($aTables, $user, $request);
+            return $aPendingTables;
+        }else{
+            $aTables = $this->recupTablePleine();
+        }
+        
+        return $aTables;
+        
+    }
+   
+    
+    /**
+     * @Route("/openTableRefresh", name="_open_table_refresh")
+     */
+    public function openTableRefreshAction(Request $request){
+        $oSession = $request->getSession();
+        return new \Symfony\Component\HttpFoundation\Response(dump($oSession->get('partie')));
     }
 
     /**
@@ -120,6 +156,18 @@ class TablePokerController extends Controller {
     }
 
     /**
+     * @Route("/listTable", name="_list_table")
+     */
+    public function listTableAction(Request $request) {
+        if($request->getMethod('POST')){
+            $this->miseAJourTable($request);
+        }
+        return $this->render('AfpaPokerGameBundle:TablePoker:list_table.html.twig');
+            
+    }
+    
+    
+    /**
      * @Route("/listPartie", name="_list_partie")
      */
     public function listPartieAction(Request $request) {
@@ -128,13 +176,14 @@ class TablePokerController extends Controller {
     }
 
     /**
-     * @Route("/listTable", name="_list_table")
+     * @Route("/listPartie", name="_list_partie_refresh")
      */
-    public function listTableAction(Request $request) {
-        if ($request->getMethod('POST')) {
-            $this->miseAJourTable($request);
-        }
-        return $this->render('AfpaPokerGameBundle:TablePoker:list_table.html.twig');
+
+    public function listPartieRefreshAction(Request $request) {
+        $aPendingTables = $this->miseAJourTable($request, true);
+        return $this->render('AfpaPokerGameBundle:TablePoker:list_partie_refresh.html.twig', array(
+                    'pendingTables' => $aPendingTables,
+            ));
     }
 
     public function miseAJourPlayerCredit(Request $request, $oPlayer, $credit) {
@@ -146,18 +195,20 @@ class TablePokerController extends Controller {
         $userSession->setVirtualMoney($newMonnaie);
         $oPlayer->setEnCoursJetons($oPlayer->getEnCoursJetons() + $credit);
         $oPlayer->setEnCoursMise($oPlayer->getEnCoursMise() - $credit);
-    }
 
-    public function miseAJourTable(Request $request) {
+        return $oPlayer;
+    }
+    
+    public function miseAJourTable(Request $request, $pleine = null){
         $oSession = $request->getSession();
 
         if (!$oSession->get('user') instanceof User) {
             return $this->redirect($this->generateUrl('_home'));
         }
-
-        $aPendingTables = $this->initialiseTable($oSession->get('user')->getId(), $request);
-
-        if ($this->inscriptionTable != null) {
+        
+        $aPendingTables = $this->initialiseTable($oSession->get('user')->getId(), $request, $pleine);
+        
+        if($this->inscriptionTable != null){
             $table = $this->em->getRepository('AfpaPokerGameBundle:TablePoker')->findOneById($this->inscriptionTable['idTable']);
 
             $oPlayer = new Player($oSession->get('user'));
@@ -176,25 +227,38 @@ class TablePokerController extends Controller {
                 if ($verif == false) {
                     $array[] = $oPlayer;
                     $nbInscrit++;
+                    $oPlayer = $this->miseAJourPlayerCredit($request, $oPlayer, $table->getBuyIn()* -1);
+                    if(!$oSession->get('partie')){
+                        $oSession->set('partie', array( $this->inscriptionTable['idTable'] => $oPlayer));
+                    }else{
+                        $partie = $oSession->get('partie');
+                        $partie[$this->inscriptionTable['idTable']] = $oPlayer;
+                        $oSession->set('partie', $partie);
+                    }
                 }
-                $this->miseAJourPlayerCredit($request, $oPlayer, $table->getBuyIn() * -1);
             } elseif ($this->inscriptionTable['action'] == 'out') {
 
                 foreach ($array as $key => $value) {
                     if ($value->getIdPlayer() == $oPlayer->getIdPlayer()) {
                         unset($array[$key]);
                         $nbInscrit--;
+                        $array = array_values($array);
+
+                        $oPlayer = $this->miseAJourPlayerCredit($request, $oPlayer, $table->getBuyIn() );
+                        if(count($oSession->get('partie')) < 2){
+                            
+                            $oSession->remove('partie');
+                        }else{
+                            $partie = $oSession->get('partie');
+                            unset($partie[$this->inscriptionTable['idTable']]) ;
+                            $oSession->set('partie', $partie);
+                        }
                         break;
                     }
                 }
-
-                $array = array_values($array);
-
-                $this->miseAJourPlayerCredit($request, $oPlayer, $table->getBuyIn());
             }
             $aPendingTables[$this->inscriptionTable['arrayTable']]['table']->setNbInscrit($nbInscrit);
-// dump($this->inscriptionTable);
-//dump($aPendingTables); die ();
+
 
             $table->setPlayerList(serialize($array));
             $table->setNbInscrit($nbInscrit);
