@@ -5,8 +5,10 @@ namespace Afpa\PokerGameBundle\Models;
 Class Card {
 
     protected $id;
-    protected $colorCard;
-    protected $valueCard;
+//Pique, Coeur, Carreau, Trèfle => Spades, Hearts, Diamonds, Clubs
+    private $colorCard = array('S', 'H', 'D', 'C');
+//
+    private $valueCard = array('A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2');
     protected $deck;
 
     public function __construct() {
@@ -14,11 +16,16 @@ Class Card {
     }
 
     public function getDeck() {
-
-    }
-
-    public function shuffleDeck() {
-
+        foreach ($this->valueCard as $value) {
+            foreach ($this->colorCard as $color) {
+                $aDeck[] = $value . $color;
+            }
+        }
+        $var = date("s");
+        for ($i = 0; $i < $var; $i++) {
+            shuffle($aDeck);
+        }
+        return($aDeck);
     }
 
 }
