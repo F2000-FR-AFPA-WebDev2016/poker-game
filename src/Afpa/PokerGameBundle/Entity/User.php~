@@ -10,8 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="Afpa\PokerGameBundle\Repository\UserRepository")
  */
-class User
-{
+class User{
+    
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Player", mappedBy="user")
+     */
+    protected $players;
+    
     /**
      * @var int
      *
@@ -34,6 +40,13 @@ class User
      * @ORM\Column(name="password", type="string", length=100)
      */
     private $password;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="avatar", type="string", length=100, nullable=true)
+     */
+    private $avatar;
 
     /**
      * @var string
@@ -89,6 +102,30 @@ class User
     public function getPseudo()
     {
         return $this->pseudo;
+    }
+
+    /**
+     * Set avatar
+     *
+     * @param string $avatar
+     *
+     * @return User
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * Get avatar
+     *
+     * @return string
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
     }
 
     /**
@@ -186,5 +223,82 @@ class User
     {
         return $this->timeLastCredit;
     }
-}
+    
 
+    /**
+     * Add table
+     *
+     * @param \Afpa\PokerGameBundle\Entity\TablePoker $table
+     *
+     * @return User
+     */
+    public function addTable(\Afpa\PokerGameBundle\Entity\TablePoker $table)
+    {
+        $this->tables[] = $table;
+
+        return $this;
+    }
+
+    /**
+     * Remove table
+     *
+     * @param \Afpa\PokerGameBundle\Entity\TablePoker $table
+     */
+    public function removeTable(\Afpa\PokerGameBundle\Entity\TablePoker $table)
+    {
+        $this->tables->removeElement($table);
+    }
+
+    /**
+     * Get tables
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTables()
+    {
+        return $this->tables;
+    }
+
+    /**
+     * Add player
+     *
+     * @param \Afpa\PokerGameBundle\Entity\Player $player
+     *
+     * @return User
+     */
+    public function addPlayer(\Afpa\PokerGameBundle\Entity\Player $player)
+    {
+        $this->players[] = $player;
+
+        return $this;
+    }
+
+    /**
+     * Remove player
+     *
+     * @param \Afpa\PokerGameBundle\Entity\Player $player
+     */
+    public function removePlayer(\Afpa\PokerGameBundle\Entity\Player $player)
+    {
+        $this->players->removeElement($player);
+    }
+
+    /**
+     * Get players
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPlayers()
+    {
+        return $this->players;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->tables = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->players = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+}

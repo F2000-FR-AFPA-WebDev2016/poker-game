@@ -17,7 +17,7 @@ class User{
      * @ORM\OneToMany(targetEntity="Player", mappedBy="user")
      */
     protected $players;
-            
+    
     /**
      * @var int
      *
@@ -223,4 +223,82 @@ class User{
     {
         return $this->timeLastCredit;
     }
+    
+
+    /**
+     * Add table
+     *
+     * @param \Afpa\PokerGameBundle\Entity\TablePoker $table
+     *
+     * @return User
+     */
+    public function addTable(\Afpa\PokerGameBundle\Entity\TablePoker $table)
+    {
+        $this->tables[] = $table;
+
+        return $this;
+    }
+
+    /**
+     * Remove table
+     *
+     * @param \Afpa\PokerGameBundle\Entity\TablePoker $table
+     */
+    public function removeTable(\Afpa\PokerGameBundle\Entity\TablePoker $table)
+    {
+        $this->tables->removeElement($table);
+    }
+
+    /**
+     * Get tables
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTables()
+    {
+        return $this->tables;
+    }
+
+    /**
+     * Add player
+     *
+     * @param \Afpa\PokerGameBundle\Entity\Player $player
+     *
+     * @return User
+     */
+    public function addPlayer(\Afpa\PokerGameBundle\Entity\Player $player)
+    {
+        $this->players[] = $player;
+
+        return $this;
+    }
+
+    /**
+     * Remove player
+     *
+     * @param \Afpa\PokerGameBundle\Entity\Player $player
+     */
+    public function removePlayer(\Afpa\PokerGameBundle\Entity\Player $player)
+    {
+        $this->players->removeElement($player);
+    }
+
+    /**
+     * Get players
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPlayers()
+    {
+        return $this->players;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->tables = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->players = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
 }

@@ -442,4 +442,82 @@ class TablePoker {
         return $this->packOfCards;
     }
 
+
+    /**
+     * Add user
+     *
+     * @param \Afpa\PokerGameBundle\Entity\User $user
+     *
+     * @return TablePoker
+     */
+    public function addUser(\Afpa\PokerGameBundle\Entity\User $user)
+    {
+        $this->users[] = $user;
+
+        return $this;
+    }
+
+    /**
+     * Remove user
+     *
+     * @param \Afpa\PokerGameBundle\Entity\User $user
+     */
+    public function removeUser(\Afpa\PokerGameBundle\Entity\User $user)
+    {
+        $this->users->removeElement($user);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * Add player
+     *
+     * @param \Afpa\PokerGameBundle\Entity\Player $player
+     *
+     * @return TablePoker
+     */
+    public function addPlayer(\Afpa\PokerGameBundle\Entity\Player $player)
+    {
+        $this->players[] = $player;
+
+        return $this;
+    }
+
+    /**
+     * Remove player
+     *
+     * @param \Afpa\PokerGameBundle\Entity\Player $player
+     */
+    public function removePlayer(\Afpa\PokerGameBundle\Entity\Player $player)
+    {
+        $this->players->removeElement($player);
+    }
+
+    /**
+     * Get players
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPlayers()
+    {
+        return $this->players;
+    }
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->players = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
 }
