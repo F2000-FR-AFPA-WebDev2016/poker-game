@@ -58,7 +58,6 @@
         window.setTimeout(function () {
             refreshListTable();
         }, 3000);
-
     }
     
     function openTable(){
@@ -79,7 +78,7 @@
     if($cible === 'listTable'){
         refreshListTable();
     }
-    openTable();
+    /*openTable();*/
     
 
 })(jQuery);
