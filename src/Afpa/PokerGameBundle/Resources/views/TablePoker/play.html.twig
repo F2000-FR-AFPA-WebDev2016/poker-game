@@ -7,12 +7,21 @@
     <h1>Welcome to the TablePokerController:play page</h1>
 
     test liste des joueurs
-<span class="tableNumber invisible">{{idTable}}</span>
+    <span class="tableNumber invisible">{{idTable}}</span>
+
+    <div id="J1">
+        <img src="{{asset('env/images/profil/'~avatar[0])}}" tab="avatar" width="200px">
+    </div>
+
+    <div id="J2">
+        <img src="{{asset('env/images/profil/'~avatar[1])}}" tab="avatar" width="200px">
+    </div>
+
     <div id="game">
         {{ render(controller('AfpaPokerGameBundle:TablePoker:gameView', {'idTable': idTable})) }}
     </div>
 {% endblock %}
 {% block javascripts %}
     {{parent()}}
-   
+
 {% endblock %}

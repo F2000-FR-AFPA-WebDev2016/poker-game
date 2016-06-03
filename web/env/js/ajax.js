@@ -39,48 +39,48 @@
      }
      refreshGameView();*/
 
-    function refreshListTable() {
-        // appel JQuery
-        // + modification $('#game')
+//    function refreshListTable() {
+//        // appel JQuery
+//        // + modification $('#game')
+//
+//        // TODO : timer
+//
+//        var $table = $('#list_table table');
+//        $.ajax({
+//            url: "listTableRefresh",
+//            method: 'POST',
+//            success: function (data) {
+//                $table.html(data);
+//            }
+//
+//        });
+//
+//        window.setTimeout(function () {
+//            refreshListTable();
+//        }, 3000);
+//
+//    }
 
-        // TODO : timer
+    function openTable() {
 
-        var $table = $('#list_table table');
         $.ajax({
-            url: "listTableRefresh",
+            url: "openTableRefresh",
             method: 'POST',
             success: function (data) {
-                $table.html(data);
+
             }
 
         });
 
         window.setTimeout(function () {
-            refreshListTable();
-        }, 3000);
-
+            openTable();
+        }, 5000);
     }
-    
-    function openTable(){
-        
-        $.ajax({
-            url: "openTableRefresh",
-            method: 'POST',
-            success: function (data) {
-                
-            }
-
-        });
-             
-            window.setTimeout(function () {
-                     openTable();
-            }, 5000);
-    }
-    if($cible === 'listTable'){
+    if ($cible === 'listTable') {
         refreshListTable();
     }
     openTable();
-    
+
 
 })(jQuery);
 
