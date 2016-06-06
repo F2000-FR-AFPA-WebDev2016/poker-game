@@ -10,8 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="table_poker")
  * @ORM\Entity(repositoryClass="Afpa\PokerGameBundle\Repository\TablePokerRepository")
  */
-class TablePoker
-{
+class TablePoker {
+
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Player", mappedBy="tablePoker")
+     */
+    protected $players;
+    
     /**
      * @var int
      *
@@ -27,6 +33,13 @@ class TablePoker
      * @ORM\Column(name="nb_position", type="integer")
      */
     private $nbPosition;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nombre_inscrit", type="integer", nullable=true)
+     */
+    private $nbInscrit;
 
     /**
      * @var int
@@ -66,6 +79,27 @@ class TablePoker
     /**
      * @var string
      *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="stack_table", type="integer")
+     */
+    private $stackTable;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="buy_in", type="integer")
+     */
+    private $buyIn;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="open_cards", type="string", length=255, nullable=true)
      */
     private $openCards;
@@ -73,14 +107,14 @@ class TablePoker
     /**
      * @var string
      *
-     * @ORM\Column(name="player_list", type="text")
+     * @ORM\Column(name="player_list", type="text", nullable=true)
      */
     private $playerList;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="pot", type="integer")
+     * @ORM\Column(name="pot", type="integer", nullable=true)
      */
     private $pot;
 
@@ -91,15 +125,35 @@ class TablePoker
      */
     private $packOfCards;
 
-
     /**
      * Get id
      *
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
+    }
+
+    /**
+     * Set nbInscrit
+     *
+     * @param integer $nbInscrit
+     *
+     * @return TablePoker
+     */
+    public function setNbInscrit($nbInscrit) {
+        $this->nbInscrit = $nbInscrit;
+
+        return $this;
+    }
+
+    /**
+     * Get nbInscrit
+     *
+     * @return int
+     */
+    public function getNbInscrit() {
+        return $this->nbInscrit;
     }
 
     /**
@@ -109,8 +163,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setNbPosition($nbPosition)
-    {
+    public function setNbPosition($nbPosition) {
         $this->nbPosition = $nbPosition;
 
         return $this;
@@ -121,8 +174,7 @@ class TablePoker
      *
      * @return int
      */
-    public function getNbPosition()
-    {
+    public function getNbPosition() {
         return $this->nbPosition;
     }
 
@@ -133,8 +185,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setTimeLevel($timeLevel)
-    {
+    public function setTimeLevel($timeLevel) {
         $this->timeLevel = $timeLevel;
 
         return $this;
@@ -145,8 +196,7 @@ class TablePoker
      *
      * @return int
      */
-    public function getTimeLevel()
-    {
+    public function getTimeLevel() {
         return $this->timeLevel;
     }
 
@@ -157,8 +207,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setTimeStart($timeStart)
-    {
+    public function setTimeStart($timeStart) {
         $this->timeStart = $timeStart;
 
         return $this;
@@ -169,8 +218,7 @@ class TablePoker
      *
      * @return \DateTime
      */
-    public function getTimeStart()
-    {
+    public function getTimeStart() {
         return $this->timeStart;
     }
 
@@ -181,8 +229,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setTimeEnd($timeEnd)
-    {
+    public function setTimeEnd($timeEnd) {
         $this->timeEnd = $timeEnd;
 
         return $this;
@@ -193,8 +240,7 @@ class TablePoker
      *
      * @return \DateTime
      */
-    public function getTimeEnd()
-    {
+    public function getTimeEnd() {
         return $this->timeEnd;
     }
 
@@ -205,8 +251,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setInitialBet($initialBet)
-    {
+    public function setInitialBet($initialBet) {
         $this->initialBet = $initialBet;
 
         return $this;
@@ -217,9 +262,30 @@ class TablePoker
      *
      * @return int
      */
-    public function getInitialBet()
-    {
+    public function getInitialBet() {
         return $this->initialBet;
+    }
+
+    /**
+     * Set stackTable
+     *
+     * @param integer $stackTable
+     *
+     * @return TablePoker
+     */
+    public function setStackTable($stackTable) {
+        $this->stackTable = $stackTable;
+
+        return $this;
+    }
+
+    /**
+     * Get stackTable
+     *
+     * @return int
+     */
+    public function getStackTable() {
+        return $this->stackTable;
     }
 
     /**
@@ -229,8 +295,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setFactor($factor)
-    {
+    public function setFactor($factor) {
         $this->factor = $factor;
 
         return $this;
@@ -241,9 +306,30 @@ class TablePoker
      *
      * @return int
      */
-    public function getFactor()
-    {
+    public function getFactor() {
         return $this->factor;
+    }
+
+    /**
+     * Set buyIn
+     *
+     * @param integer $buyIn
+     *
+     * @return TablePoker
+     */
+    public function setBuyIn($buyIn) {
+        $this->buyIn = $buyIn;
+
+        return $this;
+    }
+
+    /**
+     * Get buyIn
+     *
+     * @return int
+     */
+    public function getBuyIn() {
+        return $this->buyIn;
     }
 
     /**
@@ -253,8 +339,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setOpenCards($openCards)
-    {
+    public function setOpenCards($openCards) {
         $this->openCards = $openCards;
 
         return $this;
@@ -265,9 +350,30 @@ class TablePoker
      *
      * @return string
      */
-    public function getOpenCards()
-    {
+    public function getOpenCards() {
         return $this->openCards;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return TablePoker
+     */
+    public function setName($name) {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
     }
 
     /**
@@ -277,8 +383,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setPlayerList($playerList)
-    {
+    public function setPlayerList($playerList) {
         $this->playerList = $playerList;
 
         return $this;
@@ -289,8 +394,7 @@ class TablePoker
      *
      * @return string
      */
-    public function getPlayerList()
-    {
+    public function getPlayerList() {
         return $this->playerList;
     }
 
@@ -301,8 +405,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setPot($pot)
-    {
+    public function setPot($pot) {
         $this->pot = $pot;
 
         return $this;
@@ -313,8 +416,7 @@ class TablePoker
      *
      * @return int
      */
-    public function getPot()
-    {
+    public function getPot() {
         return $this->pot;
     }
 
@@ -325,8 +427,7 @@ class TablePoker
      *
      * @return TablePoker
      */
-    public function setPackOfCards($packOfCards)
-    {
+    public function setPackOfCards($packOfCards) {
         $this->packOfCards = $packOfCards;
 
         return $this;
@@ -337,9 +438,86 @@ class TablePoker
      *
      * @return string
      */
-    public function getPackOfCards()
-    {
+    public function getPackOfCards() {
         return $this->packOfCards;
     }
-}
 
+
+    /**
+     * Add user
+     *
+     * @param \Afpa\PokerGameBundle\Entity\User $user
+     *
+     * @return TablePoker
+     */
+    public function addUser(\Afpa\PokerGameBundle\Entity\User $user)
+    {
+        $this->users[] = $user;
+
+        return $this;
+    }
+
+    /**
+     * Remove user
+     *
+     * @param \Afpa\PokerGameBundle\Entity\User $user
+     */
+    public function removeUser(\Afpa\PokerGameBundle\Entity\User $user)
+    {
+        $this->users->removeElement($user);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * Add player
+     *
+     * @param \Afpa\PokerGameBundle\Entity\Player $player
+     *
+     * @return TablePoker
+     */
+    public function addPlayer(\Afpa\PokerGameBundle\Entity\Player $player)
+    {
+        $this->players[] = $player;
+
+        return $this;
+    }
+
+    /**
+     * Remove player
+     *
+     * @param \Afpa\PokerGameBundle\Entity\Player $player
+     */
+    public function removePlayer(\Afpa\PokerGameBundle\Entity\Player $player)
+    {
+        $this->players->removeElement($player);
+    }
+
+    /**
+     * Get players
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPlayers()
+    {
+        return $this->players;
+    }
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->players = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+}

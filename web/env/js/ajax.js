@@ -73,13 +73,13 @@
         });
 
         window.setTimeout(function () {
-            openTable();
-        }, 5000);
+            refreshListTable();
+        }, 3000);
     }
     if ($cible === 'listTable') {
         refreshListTable();
     }
-    openTable();
+    /*openTable();*/
 
 
 })(jQuery);

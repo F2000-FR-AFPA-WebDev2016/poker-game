@@ -1,6 +1,42 @@
+
 {% for player in listPlayer %}
-    <div>
-        totot
+    <div class="player" id="player{{player.position}}">
+        {% if player.user.id==user%}
+            <img class="card" src="{{asset('env/images/' ~ player.cardOne ~ '.jpg')}}" >
+            <img class="card" src="{{asset('env/images/' ~ player.cardTwo ~ '.jpg')}}" >
+        {% else %}
+            <img class="card" src="{{asset('env/images/backCard.jpg')}}" >
+            <img class="card" src="{{asset('env/images/backCard.jpg')}}" >
+        {% endif %}
+        <div id="enCours{{player.position}}">
+
+            jetons {{player.encoursJetons}}
+        </div>
     </div>
 
 {% endfor %}
+
+
+<div id="pot">
+    pot {{tablePoker.pot}}
+</div>
+
+<div id="#oc" class="oc" >
+    <img class="card" src="{{asset('env/images/2h.jpg')}}">
+    <img class="card" src="{{asset('env/images/2h.jpg')}}">
+    <img class="card" src="{{asset('env/images/2h.jpg')}}">
+    <img class="card" src="{{asset('env/images/2h.jpg')}}">
+    <img class="card" src="{{asset('env/images/2h.jpg')}}">
+</div>
+
+
+<div id='betting'>
+    {{ form_start(formBet) }}
+    <span>{{form_widget(formBet.fold)}}</span>
+    <span>{{form_widget(formBet.bet)}}</span>
+    <span>{{form_widget(formBet.bet2)}}</span>
+    <span>{{form_widget(formBet.check)}}</span>
+    <span>{{form_widget(formBet.raise)}}</span>
+
+    {{ form_end(formBet) }}
+</div>

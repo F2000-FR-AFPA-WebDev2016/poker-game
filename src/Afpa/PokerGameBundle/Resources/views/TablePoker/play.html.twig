@@ -1,25 +1,28 @@
 {% extends "::base.html.twig" %}
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('env/css/table.css') }}" />
+{% endblock %}
 
 {% block title %}AfpaPokerGameBundle:TablePokerController:play{% endblock %}
 
 {% block body %}
 
-    <h1>Welcome to the TablePokerController:play page</h1>
 
-    test liste des joueurs
-    <span class="tableNumber invisible">{{idTable}}</span>
 
-    <div id="J1">
-        <img src="{{asset('env/images/profil/'~avatar[0])}}" tab="avatar" width="200px">
-    </div>
+    <span class="tableNumber invisible">Table {{idTable}}</span>
 
-    <div id="J2">
-        <img src="{{asset('env/images/profil/'~avatar[1])}}" tab="avatar" width="200px">
-    </div>
+    {% for a in avatar %}
+        {%set av=avatar[loop.index0]%}
+        <div id="a{{loop.index}}">
+            <img class="avatar" src="{{asset('env/images/profil/'~avatar[loop.index0])}}" >
+        </div>
+    {% endfor %}
+
 
     <div id="game">
         {{ render(controller('AfpaPokerGameBundle:TablePoker:gameView', {'idTable': idTable})) }}
     </div>
+
 {% endblock %}
 {% block javascripts %}
     {{parent()}}
