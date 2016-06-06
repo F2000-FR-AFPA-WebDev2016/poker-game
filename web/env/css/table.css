@@ -1,0 +1,52 @@
+
+html{
+    font-size: 62.5%;
+    height: 100%;
+}
+#game{
+    text-align: center;
+}
+
+.avatar{
+    max-height: 5rem;
+}
+
+#a1{
+    position: absolute;
+    right: 100px;
+    top: 5rem;
+}
+
+#a2{
+    position: absolute;
+    left: 100px;
+    top: 5rem;
+}
+.player{
+    position: absolute;
+    top: 12rem;
+}
+#player1{
+    right: 100px;
+}
+#player2{
+    left: 100px;
+}
+#enCours1{
+
+}
+#enCours2{
+
+}
+.card{
+    max-height: 9rem;
+}
+
+#betting{
+
+    position: absolute;
+    width:100%;
+    text-align: center;
+    margin: auto;
+    bottom: 12rem;
+}

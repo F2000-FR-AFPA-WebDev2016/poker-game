@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class DefaultController extends Controller {
-
+    
     /**
      * @Route("/" , name="_home")
      */
