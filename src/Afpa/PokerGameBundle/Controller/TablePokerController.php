@@ -301,6 +301,7 @@ class TablePokerController extends Controller {
      * @Route("/openTableRefresh", name="_open_table_refresh")
      */
     public function openTableRefreshAction(Request $request){
+        $array = array();
         $this->session = $request->getSession();
         $this->em = $this->getDoctrine()->getManager();
         $arrayPartie = $this->session->get('partie');
@@ -308,28 +309,28 @@ class TablePokerController extends Controller {
             $table = $this->em->getRepository('AfpaPokerGameBundle:TablePoker')->findOneById($key);
             if($table->getNbInscrit() == $table->getNbPosition()){
                 foreach($this->session->get('ouverture') as $ouverture){
-                    if($ouverture['table'] == $key && $ouverture['allReady'] == FALSE ){
-                        
+                    if($ouverture['table'] == $key && $ouverture['allReady'] == FALSE && $ouverture['permission'] == FALSE){
+                        $array[] = array( 
+                            'table' => $key,
+                            'permission' => true,
+                            'allReady' => false);
+                    }else{
+                        $array[] = array( 
+                            'table' => $key,
+                            'permission' => false,
+                            'allReady' => true);
                     }
                 }
-                    
-                $array[] = array( 
-                    'table' => $key,
-                    'permission' => true,
-                    'allReady' => false);
-                
-                $this->session->set('ouverture', $array);
             }else{
                 $array[] = array( 
                     'table' => $key,
                     'permission' => false,
                     'allReady' => false);
-                
-                $this->session->set('ouverture', $array);
             }
         }
-        
-        return new \Symfony\Component\HttpFoundation\Response(dump($this->session));
+        return $this->render('AfpaPokerGameBundle:TablePoker:open_table_refresh.html.twig', array(
+                    'popUp' => $array,
+        ));
     }
     
     
