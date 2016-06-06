@@ -301,9 +301,17 @@ class UserController extends Controller {
             $oUserTest = $repo->findOneByMail($oUser->getMail());
             $oEncryptPwd = new Encrypt($oUser->getPassword());
             if ($oUserTest && $oUserTest->getPassword() === $oEncryptPwd->getEncryption()) {
+                $player = $this->getdoctrine()->getManager()->getRepository('AfpaPokerGameBundle:Player')->findByUser($oUserTest->getId());
                 $session = new Session();
+                if(count($player) > 0){
+                    foreach($player as $value){
+                        $array[$value->getTablePoker()->getId()] = $value;
+                    }
+                $session->set('partie', $array);
+                }
                 $session->set('user', $oUserTest);
                 $this->addFlash('warning_connect', 'Vous êtes connecté');
+                
                 return '_account';
             }else{
                 $this->addFlash('warning_connect', 'Les identifiants entrés sont incorrects !');

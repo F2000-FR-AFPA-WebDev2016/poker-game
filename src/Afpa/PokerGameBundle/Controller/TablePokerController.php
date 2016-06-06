@@ -71,14 +71,13 @@ class TablePokerController extends Controller {
             return $this->redirect($this->generateUrl('_home'));
         }
         $this->tablePlay = true;
-
+        
         return $this->render('AfpaPokerGameBundle:TablePoker:list_partie.html.twig');
     }
-
+    
     /**
      * @Route("/listPartieRefresh", name="_list_partie_refresh")
      */
-
     public function listPartieRefreshAction(Request $request) {
         $this->session = $request->getSession();
         if (!$this->session->get('user') instanceof User) {
@@ -110,6 +109,7 @@ class TablePokerController extends Controller {
                 }
             }
             if($userExist == false && $this->inscriptionTable['action'] == 'in'){
+                $this->miseAJourPlayerCredit($request, $user->getId(), $table->getBuyIn() * -1);
                 $table->setNbInscrit(++$nbInscrit);
                 $this->em->persist($player);
                 $this->em->flush();
@@ -121,8 +121,9 @@ class TablePokerController extends Controller {
                     $this->session->set('partie', $partie);
                 }
             }elseif($userExist == true && $this->inscriptionTable['action'] == 'out'){
+                $this->miseAJourPlayerCredit($request, $user->getId(), $table->getBuyIn());
                 $table->setNbInscrit(--$nbInscrit);
-                $this->em->remove($player);
+                $this->em->remove($onePlayer);
                 $this->em->flush();
                 if(count($this->session->get('partie')) < 2){
                             
@@ -241,6 +242,16 @@ class TablePokerController extends Controller {
         }
         $this->aPendingTables = $tables;
     }
+
+    public function miseAJourPlayerCredit(Request $request, $id, $credit) {
+        $user = $this->em->getRepository('AfpaPokerGameBundle:User')->findOneById($id);
+        $newMonnaie = $user->getVirtualMoney() + $credit;
+        $user->setVirtualMoney($newMonnaie);
+        $this->em->flush();
+        $userSession = $request->getSession()->get('user');
+        $userSession->setVirtualMoney($newMonnaie);
+
+    }
     
     
     
@@ -290,21 +301,35 @@ class TablePokerController extends Controller {
      * @Route("/openTableRefresh", name="_open_table_refresh")
      */
     public function openTableRefreshAction(Request $request){
-        $oSession = $request->getSession();
-        return new \Symfony\Component\HttpFoundation\Response(dump($oSession->get('partie')));
-    }
-
-    public function miseAJourPlayerCredit(Request $request, $oPlayer, $credit) {
-        $user = $this->em->getRepository('AfpaPokerGameBundle:User')->findOneById($oPlayer->getIdPlayer());
-        $newMonnaie = $user->getVirtualMoney() + $credit;
-        $user->setVirtualMoney($newMonnaie);
-        $this->em->flush();
-        $userSession = $request->getSession()->get('user');
-        $userSession->setVirtualMoney($newMonnaie);
-        $oPlayer->setEnCoursJetons($oPlayer->getEnCoursJetons() + $credit);
-        $oPlayer->setEnCoursMise($oPlayer->getEnCoursMise() - $credit);
-
-        return $oPlayer;
+        $this->session = $request->getSession();
+        $this->em = $this->getDoctrine()->getManager();
+        $arrayPartie = $this->session->get('partie');
+        foreach($arrayPartie as $key => $value){
+            $table = $this->em->getRepository('AfpaPokerGameBundle:TablePoker')->findOneById($key);
+            if($table->getNbInscrit() == $table->getNbPosition()){
+                foreach($this->session->get('ouverture') as $ouverture){
+                    if($ouverture['table'] == $key && $ouverture['allReady'] == FALSE ){
+                        
+                    }
+                }
+                    
+                $array[] = array( 
+                    'table' => $key,
+                    'permission' => true,
+                    'allReady' => false);
+                
+                $this->session->set('ouverture', $array);
+            }else{
+                $array[] = array( 
+                    'table' => $key,
+                    'permission' => false,
+                    'allReady' => false);
+                
+                $this->session->set('ouverture', $array);
+            }
+        }
+        
+        return new \Symfony\Component\HttpFoundation\Response(dump($this->session));
     }
     
     
