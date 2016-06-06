@@ -110,7 +110,7 @@ class TablePokerController extends Controller {
 
             if ($userExist == false && $this->inscriptionTable['action'] == 'in') {
                 $this->miseAJourPlayerCredit($request, $user->getId(), $table->getBuyIn() * -1);
-                $table->setNbInscrit( ++$nbInscrit);
+                $table->setNbInscrit(++$nbInscrit);
                 $this->em->persist($player);
                 $this->em->flush();
                 if (!$this->session->get('partie')) {
@@ -122,7 +122,7 @@ class TablePokerController extends Controller {
                 }
             } elseif ($userExist == true && $this->inscriptionTable['action'] == 'out') {
                 $this->miseAJourPlayerCredit($request, $user->getId(), $table->getBuyIn());
-                $table->setNbInscrit( --$nbInscrit);
+                $table->setNbInscrit(--$nbInscrit);
                 $this->em->remove($onePlayer);
                 $this->em->flush();
                 if (count($this->session->get('partie')) < 2) {
@@ -263,14 +263,12 @@ class TablePokerController extends Controller {
      */
     public function openTableRefreshAction(Request $request) {
         $array = array();
-
         $this->session = $request->getSession();
         $this->em = $this->getDoctrine()->getManager();
         $arrayPartie = $this->session->get('partie') ? $this->session->get('partie') : array();
         foreach ($arrayPartie as $key => $value) {
             $table = $this->em->getRepository('AfpaPokerGameBundle:TablePoker')->findOneById($key);
-
-            if ($table->getNbInscrit() == $table->getNbPosition()) {
+            if ($table->getNbInscrit() == $table->getNbPosition() && $this->session->get('ouverture')) {
                 foreach ($this->session->get('ouverture') as $ouverture) {
                     if ($ouverture['table'] == $key && $ouverture['allReady'] == FALSE && $ouverture['permission'] == FALSE) {
                         $array[] = array(
@@ -291,6 +289,7 @@ class TablePokerController extends Controller {
                     'allReady' => false);
             }
         }
+        $this->session->set('ouverture', $array);
         return $this->render('AfpaPokerGameBundle:TablePoker:open_table_refresh.html.twig', array(
                     'popUp' => $array,
         ));
@@ -320,7 +319,6 @@ class TablePokerController extends Controller {
         $aListPlayer = $repoP->findBy(array('tablePoker' => $idTable));
 
 
-
 //$nbPlayer = count($aListPlayer);
         $nbPlayer = $oTablePoker->getNbPosition();
 
@@ -334,7 +332,7 @@ class TablePokerController extends Controller {
                 $aCards = $oCard->getDeck();
                 $oTablePoker->setPackOfCards(serialize($aCards));
                 $oTablePoker->setTimeStart(new \dateTime('now'));
-                dump($oTablePoker);
+
 
                 $this->em->persist($oTablePoker);
                 $this->em->flush();
@@ -342,8 +340,9 @@ class TablePokerController extends Controller {
 //Tableau Avatars
                 $repo2 = $this->getDoctrine()->getRepository('AfpaPokerGameBundle:User');
                 for ($i = 0; $i < $nbPlayer; $i++) {
-                    $aAvatar[] = $aListPlayer[$i]->getUser()->getAvatar();
+
                     $aPseudo[] = $aListPlayer[$i]->getUser()->getPseudo();
+                    $aAvatar[] = $aListPlayer[$i]->getUser()->getAvatar() == null ? 'avatar_null.jpg' : $aListPlayer[$i]->getUser()->getAvatar();
                 }
 
 

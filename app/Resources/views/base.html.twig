@@ -23,7 +23,9 @@
 
 <footer>
 {% block footer %}{% endblock %}
-{#{{ render(controller('AfpaPokerGameBundle:TablePoker:openTableRefresh')) }}#}
+<span id="openRefresh">
+    {{ render(controller('AfpaPokerGameBundle:TablePoker:openTableRefresh')) }}
+</span>
 </footer>
 
 {% block javascripts %}
