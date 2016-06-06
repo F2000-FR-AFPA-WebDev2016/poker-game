@@ -23,6 +23,7 @@
 
 <footer>
 {% block footer %}{% endblock %}
+{{ render(controller('AfpaPokerGameBundle:TablePoker:openTableRefresh')) }}
 </footer>
 
 {% block javascripts %}

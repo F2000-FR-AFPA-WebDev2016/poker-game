@@ -1,0 +1,10 @@
+
+            {% for popUpLines in popUp %}
+
+                <span style="display:none" class="table-{{popUpLines.table}}">
+                    <span class="permission">{{popUpLines.permission}}</span>
+                    <span class="ouverture">{{popUpLines.allReady}}</span>
+                </span>
+                
+            {% endfor %}
+        
