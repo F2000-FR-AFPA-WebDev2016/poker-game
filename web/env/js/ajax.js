@@ -2,7 +2,8 @@
 (function ($) {
     var $arrayPath = window.location.pathname.split('/'),
             $dev = false,
-            $cible = '';
+            $cible = '',
+            $open = $('footer span.table-68');
 
     if ($arrayPath.length > 2) {
         if ($arrayPath[1] === 'app_dev.php') {
@@ -14,6 +15,8 @@
     } else {
         $cible = $arrayPath[1] === '' ? 'home' : $arrayPath[1];
     }
+    console.log($open);
+    
 
     /*function refreshGameView() {
      // appel JQuery
