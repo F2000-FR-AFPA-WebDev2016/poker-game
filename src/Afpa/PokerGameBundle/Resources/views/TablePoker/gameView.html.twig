@@ -2,11 +2,11 @@
 {% for player in listPlayer %}
     <div class="player" id="player{{player.position}}">
         {% if player.user.id==user%}
-            <img class="card" src="{{asset('env/images/' ~ player.cardOne ~ '.jpg')}}" >
-            <img class="card" src="{{asset('env/images/' ~ player.cardTwo ~ '.jpg')}}" >
+            <img class="card" src="{{asset('env/images/' ~ player.cardOne ~ '.png')}}" >
+            <img class="card" src="{{asset('env/images/' ~ player.cardTwo ~ '.png')}}" >
         {% else %}
-            <img class="card" src="{{asset('env/images/backCard.jpg')}}" >
-            <img class="card" src="{{asset('env/images/backCard.jpg')}}" >
+            <img class="card" src="{{asset('env/images/verso.png')}}" >
+            <img class="card" src="{{asset('env/images/verso.png')}}" >
         {% endif %}
         <div id="enCours{{player.position}}">
 
@@ -22,11 +22,11 @@
 </div>
 
 <div id="#oc" class="oc" >
-    <img class="card" src="{{asset('env/images/2h.jpg')}}">
-    <img class="card" src="{{asset('env/images/2h.jpg')}}">
-    <img class="card" src="{{asset('env/images/2h.jpg')}}">
-    <img class="card" src="{{asset('env/images/2h.jpg')}}">
-    <img class="card" src="{{asset('env/images/2h.jpg')}}">
+    <img class="card" src="{{asset('env/images/2h.png')}}">
+    <img class="card" src="{{asset('env/images/2h.png')}}">
+    <img class="card" src="{{asset('env/images/2h.png')}}">
+    <img class="card" src="{{asset('env/images/2h.png')}}">
+    <img class="card" src="{{asset('env/images/2h.png')}}">
 </div>
 
 

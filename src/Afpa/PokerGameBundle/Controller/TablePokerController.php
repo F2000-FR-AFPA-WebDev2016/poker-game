@@ -314,11 +314,10 @@ class TablePokerController extends Controller {
 //TablePoker en cours
         $repo = $this->getDoctrine()->getRepository('AfpaPokerGameBundle:TablePoker');
         $oTablePoker = $repo->find($idTable);
-
+        
 //PlayerList
         $repoP = $this->getDoctrine()->getRepository('AfpaPokerGameBundle:Player');
         $aListPlayer = $repoP->findBy(array('tablePoker' => $idTable));
-
 
 
 //$nbPlayer = count($aListPlayer);
@@ -334,7 +333,7 @@ class TablePokerController extends Controller {
                 $aCards = $oCard->getDeck();
                 $oTablePoker->setPackOfCards(serialize($aCards));
                 $oTablePoker->setTimeStart(new \dateTime('now'));
-                dump($oTablePoker);
+                
 
                 $this->em->persist($oTablePoker);
                 $this->em->flush();
@@ -343,7 +342,7 @@ class TablePokerController extends Controller {
                 $repo2 = $this->getDoctrine()->getRepository('AfpaPokerGameBundle:User');
                 for ($i = 0; $i < $nbPlayer; $i++) {
 
-                    $aAvatar[] = $aListPlayer[$i]->getUser()->getAvatar();
+                    $aAvatar[] = $aListPlayer[$i]->getUser()->getAvatar() == null ? 'avatar_null.jpg'  : $aListPlayer[$i]->getUser()->getAvatar();
                 }
 
 

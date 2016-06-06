@@ -64,17 +64,8 @@
     }
     
     function openTable(){
-        var $table = $('#openRefresh');
-        $.ajax({
-            url: "openTableRefresh",
-            method: 'POST',
-            success: function (data) {
-                $table.html(data);
-            }
-
-        });
-        
-        var $open = $('footer span.table');
+        var $table = $('#openRefresh'),
+            $open = $('footer span.table');
         
         $.each($open, function () {
             var $numTable = $(this).attr('class').split(' '),
@@ -84,15 +75,28 @@
                 var myWindow = window.open("http://poker-game.dev/app_dev.php/play/"+$numTable[1], "_blank");
             }
         });
-             
-        window.setTimeout(function () {
-                 openTable();
-        }, 5000);
+        
+        
+        $.ajax({
+            url: "openTableRefresh",
+            method: 'POST',
+            success: function (data) {
+                $table.html(data);
+            }
+
+        });
     }
     if($cible === 'listTable'){
         refreshListTable();
     }
-    openTable();
+    
+    if($cible !== 'play'){
+        window.setInterval(function () {
+                 openTable();
+        }, 5000);
+    }
+             console.log($cible);
+        
     
 
 })(jQuery);
