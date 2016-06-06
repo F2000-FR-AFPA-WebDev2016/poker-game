@@ -9,11 +9,12 @@
 
 
 
-    <span class="tableNumber invisible">Table {{idTable}}</span>
+    <span class="tableNumber invisible"Table >{{idTable}}</span>
 
     {% for a in avatar %}
         {%set av=avatar[loop.index0]%}
         <div id="a{{loop.index}}">
+            {{pseudo[loop.index0]}}
             <img class="avatar" src="{{asset('env/images/profil/'~avatar[loop.index0])}}" >
         </div>
     {% endfor %}

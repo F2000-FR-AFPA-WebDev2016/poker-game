@@ -61,6 +61,7 @@
 //
 //    }
 
+
     function openTable() {
 
         $.ajax({
@@ -81,6 +82,23 @@
     }
     /*openTable();*/
 
+
+
+
+    $('form').on('click', function (e) {
+        e.preventDefault();
+        var table = $('.tableNumber').html(),
+                action = e.target.id.split('_')[1];
+
+
+        $.ajax({
+            url: "../" + action + "/" + table,
+            method: 'POST',
+            success: function (data) {
+                $('#betting').html(data);
+            },
+        })
+    })
 
 })(jQuery);
 

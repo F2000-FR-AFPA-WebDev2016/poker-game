@@ -10,21 +10,20 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="player")
  * @ORM\Entity(repositoryClass="Afpa\PokerGameBundle\Repository\PlayerRepository")
  */
-class Player
-{
-    
+class Player {
+
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="players")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     protected $user;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="TablePoker", inversedBy="players")
      * @ORM\JoinColumn(name="table_poker_id", referencedColumnName="id", nullable=false)
      */
     protected $tablePoker;
-    
+
     /**
      * @var int
      *
@@ -69,14 +68,19 @@ class Player
      */
     private $position;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="turn", type="boolean",  options={"default":false})
+     */
+    private $turn;
 
     /**
      * Get id
      *
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -87,8 +91,7 @@ class Player
      *
      * @return Player
      */
-    public function setCardOne($cardOne)
-    {
+    public function setCardOne($cardOne) {
         $this->cardOne = $cardOne;
 
         return $this;
@@ -99,8 +102,7 @@ class Player
      *
      * @return string
      */
-    public function getCardOne()
-    {
+    public function getCardOne() {
         return $this->cardOne;
     }
 
@@ -111,8 +113,7 @@ class Player
      *
      * @return Player
      */
-    public function setCardTwo($cardTwo)
-    {
+    public function setCardTwo($cardTwo) {
         $this->cardTwo = $cardTwo;
 
         return $this;
@@ -123,8 +124,7 @@ class Player
      *
      * @return string
      */
-    public function getCardTwo()
-    {
+    public function getCardTwo() {
         return $this->cardTwo;
     }
 
@@ -135,8 +135,7 @@ class Player
      *
      * @return Player
      */
-    public function setEncoursJetons($encoursJetons)
-    {
+    public function setEncoursJetons($encoursJetons) {
         $this->encoursJetons = $encoursJetons;
 
         return $this;
@@ -147,8 +146,7 @@ class Player
      *
      * @return int
      */
-    public function getEncoursJetons()
-    {
+    public function getEncoursJetons() {
         return $this->encoursJetons;
     }
 
@@ -159,8 +157,7 @@ class Player
      *
      * @return Player
      */
-    public function setMiseJetons($miseJetons)
-    {
+    public function setMiseJetons($miseJetons) {
         $this->miseJetons = $miseJetons;
 
         return $this;
@@ -171,8 +168,7 @@ class Player
      *
      * @return int
      */
-    public function getMiseJetons()
-    {
+    public function getMiseJetons() {
         return $this->miseJetons;
     }
 
@@ -183,8 +179,7 @@ class Player
      *
      * @return Player
      */
-    public function setPosition($position)
-    {
+    public function setPosition($position) {
         $this->position = $position;
 
         return $this;
@@ -195,9 +190,18 @@ class Player
      *
      * @return int
      */
-    public function getPosition()
-    {
+    public function getPosition() {
         return $this->position;
+    }
+
+    public function setTurn($turn) {
+        $this->turn = $turn;
+
+        return $this;
+    }
+
+    public function getTurn() {
+        return $this->turn;
     }
 
     /**
@@ -207,8 +211,7 @@ class Player
      *
      * @return Player
      */
-    public function setUser(\Afpa\PokerGameBundle\Entity\User $user = null)
-    {
+    public function setUser(\Afpa\PokerGameBundle\Entity\User $user = null) {
         $this->user = $user;
 
         return $this;
@@ -219,8 +222,7 @@ class Player
      *
      * @return \Afpa\PokerGameBundle\Entity\User
      */
-    public function getUser()
-    {
+    public function getUser() {
         return $this->user;
     }
 
@@ -231,8 +233,7 @@ class Player
      *
      * @return Player
      */
-    public function setTablePoker(\Afpa\PokerGameBundle\Entity\TablePoker $tablePoker = null)
-    {
+    public function setTablePoker(\Afpa\PokerGameBundle\Entity\TablePoker $tablePoker = null) {
         $this->tablePoker = $tablePoker;
 
         return $this;
@@ -243,8 +244,8 @@ class Player
      *
      * @return \Afpa\PokerGameBundle\Entity\TablePoker
      */
-    public function getTablePoker()
-    {
+    public function getTablePoker() {
         return $this->tablePoker;
     }
+
 }

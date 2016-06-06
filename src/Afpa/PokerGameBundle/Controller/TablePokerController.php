@@ -110,7 +110,7 @@ class TablePokerController extends Controller {
 
             if ($userExist == false && $this->inscriptionTable['action'] == 'in') {
                 $this->miseAJourPlayerCredit($request, $user->getId(), $table->getBuyIn() * -1);
-                $table->setNbInscrit(++$nbInscrit);
+                $table->setNbInscrit( ++$nbInscrit);
                 $this->em->persist($player);
                 $this->em->flush();
                 if (!$this->session->get('partie')) {
@@ -122,7 +122,7 @@ class TablePokerController extends Controller {
                 }
             } elseif ($userExist == true && $this->inscriptionTable['action'] == 'out') {
                 $this->miseAJourPlayerCredit($request, $user->getId(), $table->getBuyIn());
-                $table->setNbInscrit(--$nbInscrit);
+                $table->setNbInscrit( --$nbInscrit);
                 $this->em->remove($onePlayer);
                 $this->em->flush();
                 if (count($this->session->get('partie')) < 2) {
@@ -266,7 +266,7 @@ class TablePokerController extends Controller {
 
         $this->session = $request->getSession();
         $this->em = $this->getDoctrine()->getManager();
-        $arrayPartie = $this->session->get('partie');
+        $arrayPartie = $this->session->get('partie') ? $this->session->get('partie') : array();
         foreach ($arrayPartie as $key => $value) {
             $table = $this->em->getRepository('AfpaPokerGameBundle:TablePoker')->findOneById($key);
 
@@ -342,8 +342,8 @@ class TablePokerController extends Controller {
 //Tableau Avatars
                 $repo2 = $this->getDoctrine()->getRepository('AfpaPokerGameBundle:User');
                 for ($i = 0; $i < $nbPlayer; $i++) {
-
                     $aAvatar[] = $aListPlayer[$i]->getUser()->getAvatar();
+                    $aPseudo[] = $aListPlayer[$i]->getUser()->getPseudo();
                 }
 
 
@@ -352,6 +352,7 @@ class TablePokerController extends Controller {
                 return $this->render('AfpaPokerGameBundle:TablePoker:play.html.twig', array(
                             'listPlayer' => $aListPlayer,
                             'avatar' => $aAvatar,
+                            'pseudo' => $aPseudo,
                             'idTable' => $idTable,
                 ));
             } else {
@@ -393,10 +394,12 @@ class TablePokerController extends Controller {
 
 
 
-//PlayerList
+//Player
         $repoP = $this->getDoctrine()->getRepository('AfpaPokerGameBundle:Player');
         $aListPlayer = $repoP->findBy(array('tablePoker' => $idTable));
         $playerUser = $repoP->findOneBy(array('tablePoker' => $idTable, 'user' => $oSession->get('user')->getId()))->getId();
+        $bTurnPlay = !$repoP->findOneBy(array('tablePoker' => $idTable, 'user' => $oSession->get('user')->getId()))->getTurn();
+
 
 
 //En cours jetons
@@ -411,12 +414,13 @@ class TablePokerController extends Controller {
 
 
         //Création du formulaire de betting
+
         $oForm = $this->createFormBuilder()
                 ->add('bet', IntegerType::class, array('data' => $initialBet))
                 ->add('bet2', RangeType::class, array('attr' => array('value' => $initialBet, 'min' => $initialBet, 'max' => $enCours, 'step' => $initialBet)))
-                ->add('fold', SubmitType::class, array('label' => 'fold'))
-                ->add('check', SubmitType::class, array('label' => 'check'))
-                ->add('raise', SubmitType::class, array('label' => 'raise'))
+                ->add('fold', SubmitType::class, array('label' => 'fold', 'disabled' => $bTurnPlay))
+                ->add('check', SubmitType::class, array('label' => 'check', 'disabled' => $bTurnPlay))
+                ->add('raise', SubmitType::class, array('label' => 'raise', 'disabled' => $bTurnPlay))
                 ->getForm();
 
 
@@ -429,6 +433,27 @@ class TablePokerController extends Controller {
                     'user' => $oSession->get('user')->getId(),
                     'PlayerUser' => $playerUser,
         ));
+    }
+
+    /**
+     * @Route("/check/{idTable}", name="_check_view")
+     */
+    public function checkAction($idTable, Request $request) {
+        $oSession = $request->getSession();
+        $this->em = $this->getDoctrine()->getManager();
+        $this->session = $request->getSession();
+
+        $repoP = $this->getDoctrine()->getRepository('AfpaPokerGameBundle:Player');
+
+
+        $enCours = $repoP->findOneBy(array('tablePoker' => $idTable, 'user' => $oSession->get('user')->getId()))->getEncoursJetons();
+
+
+        //TablePoker en cours
+        $repo = $this->getDoctrine()->getRepository('AfpaPokerGameBundle:TablePoker');
+        $oTablePoker = $repo->find($idTable);
+
+        //
     }
 
 }
