@@ -8,21 +8,24 @@
 {% block body %}
 
 
+    <section id="tablePlay">
+        <img class="table" src="{{ asset('env/images/table.png') }}" alt="photo de table">
+        <span class="tableNumber invisible" >{{idTable}}</span>
 
-    <span class="tableNumber invisible"Table >{{idTable}}</span>
+        {% for a in avatar %}
+            {%set av = avatar[loop.index0]%}
+            <div id="a{{loop.index}}">
+                <img class="avatar" src="{{asset('env/images/profil/'~avatar[loop.index0])}}" >
+                <span class="pseudo">{{pseudo[loop.index0]}}</span>
+            </div>
+        {% endfor %}
 
-    {% for a in avatar %}
-        {%set av=avatar[loop.index0]%}
-        <div id="a{{loop.index}}">
-            {{pseudo[loop.index0]}}
-            <img class="avatar" src="{{asset('env/images/profil/'~avatar[loop.index0])}}" >
+
+        <div id="game">
+            {{ render(controller('AfpaPokerGameBundle:TablePoker:gameView', {'idTable': idTable})) }}
         </div>
-    {% endfor %}
-
-
-    <div id="game">
-        {{ render(controller('AfpaPokerGameBundle:TablePoker:gameView', {'idTable': idTable})) }}
-    </div>
+    </section>
+    
 
 {% endblock %}
 {% block javascripts %}

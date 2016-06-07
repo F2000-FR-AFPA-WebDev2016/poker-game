@@ -8,7 +8,7 @@ Class Card {
 //Pique, Coeur, Carreau, Trèfle => Spades, Hearts, Diamonds, Clubs
     private $colorCard = array('S', 'H', 'D', 'C');
 //
-    private $valueCard = array('A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2');
+    private $valueCard = array('X', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2');
     protected $deck;
 
     public function __construct() {

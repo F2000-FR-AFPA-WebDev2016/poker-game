@@ -4,7 +4,6 @@
             $cible = '';
 
 
-
     if ($arrayPath.length > 2) {
         if ($arrayPath[1] === 'app_dev.php') {
             $dev = true;
@@ -16,37 +15,30 @@
         $cible = $arrayPath[1] === '' ? 'home' : $arrayPath[1];
     }
 
+    function initialisePlay(){
+        var $table = $('section .tableNumber').html(),
+            $game = $('#game');
+        $.ajax({
+            url: "../newMain/"+$table,
+            method: 'POST',
+            success: function (data) {
+                $game.html(data);
+            }
 
-
-    /*function refreshGameView() {
-     // appel JQuery
-     // + modification $('#game')
-
-     // TODO : timer
-
-     var game = $('#game'),
-     table = $('.tableNumber').html();
-     $.ajax({
-     url: "../view/"+table,
-     method: 'POST',
-     success: function (data) {
-     game.html(data);
-     }
-
-     });
-
-     window.setTimeout(function () {
-     refreshGameView();
-     }, 3000);
-
-     }
-     refreshGameView();*/
+        });
+    }
+    
+    if($('#game .initialise') !== null){
+        
+        window.setTimeout(function () {
+            initialisePlay();
+        }, 5000);
+        window.setTimeout(function () {
+            $('#game .banque .pot').html('Tirage du dealer')
+        }, 2000);
+    }
 
     function refreshListTable() {
-        // appel JQuery
-        // + modification $('#game')
-
-        // TODO : timer
 
         var $table = $('#list_table table');
         $.ajax({
@@ -57,10 +49,6 @@
             }
 
         });
-
-        /*window.setTimeout(function () {
-         refreshListTable();
-         }, 3000);*/
     }
 
     function openTable() {
@@ -87,7 +75,9 @@
         });
     }
     if ($cible === 'listTable') {
-        refreshListTable();
+        window.setInterval(function () {
+            refreshListTable();
+        }, 3000);
     }
 
     if ($cible !== 'play') {
@@ -95,26 +85,26 @@
             openTable();
         }, 5000);
     }
-    console.log($cible);
-
-
-
-
-
-    $('form').on('click', function (e) {
+    
+/*
+    $('#betting form').on('click', function (e) {
         e.preventDefault();
         var table = $('.tableNumber').html(),
-                action = e.target.id.split('_')[1];
+                action = e.target.id.split('_')[1],
+                token = $('#form__token').attr('value');
 
 
         $.ajax({
-            url: "../" + action + "/" + table,
+            url: "../view/" + table,
             method: 'POST',
+            data : { 'form[bet]': 400, 'form[check]': "", 'form[_token]' : token},
             success: function (data) {
                 $('#betting').html(data);
             },
         })
-    })
+    })*/
+    
+    
 
 })(jQuery);
 

@@ -3,25 +3,200 @@ html{
     font-size: 62.5%;
     height: 100%;
 }
-#game{
+
+.invisible{
+    display:none;
+}
+
+#tablePlay{
+    width: 1000px;
+    height: 600px;
+    margin: auto;
     text-align: center;
+    position: relative;
+}
+
+#tablePlay img.table{
+    width: 700px;
 }
 
 .avatar{
-    max-height: 5rem;
+    max-height: 10rem;
 }
 
 #a1{
     position: absolute;
-    right: 100px;
     top: 5rem;
+    width: 20rem;
+    left: 0;
 }
 
 #a2{
     position: absolute;
-    left: 100px;
+    width: 20rem;
+    top: 5rem;
+    right: 0;
+}
+
+#a2 span, #a1 span{
+    display: block;
+    font-size: 2rem;
+}
+#game{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+}
+
+#game .cartes img{
+    height: 9rem;
+}
+
+#game .j1, #game .j2{
+    position: absolute;
+    top: 19rem;
+    width : 35rem;
+}
+
+#game .j1{
+    left: 0;
+}
+
+#game .j2{
+    right: 0;
+}
+
+#game .j1 .cartes, #game .j2 .cartes{
+    width: 14rem;
+    height: 9rem;
+    display: block;
+    position: absolute;
+}
+
+#game .carteMasque{
+    position : absolute;
+    left: calc(50% - 3rem);
+    animation: show-card ;
+    animation-fill-mode: forwards;
+    -webkit-animation-delay: 1.5s; 
+    animation-delay: 1.5s;
+    -webkit-animation-duration: 1.5s; 
+    animation-duration: 1.5s;
+    opacity: 0;
+}
+
+#game .carteVisible{
+    position : absolute;
+    left: calc(50% - 3rem);
+    animation: hide-card ;
+    animation-fill-mode: forwards;
+    -webkit-animation-delay: 0s; 
+    animation-delay: 0s;
+    -webkit-animation-duration: 1.5s; 
+    animation-duration: 1.5s;
+}
+
+#game .j1 .cartes{
+    left: 3rem;
+}
+
+#game .j2 .cartes{
+    right: 3rem;
+}
+
+#game .j1 .jetons, #game .j2 .jetons{
+    width: 10rem;
+    height: 5rem;
+    display: block;
+    position: absolute;
+    font-size: 1.8rem;
+    color: #fff;
+    font-weight: bold;
     top: 5rem;
 }
+
+#game .j1 .jetons{
+    left: 20.5rem;
+}
+
+#game .j2 .jetons{
+    right: 20.5rem;
+}
+
+#game .j1 .mise, #game .j2 .mise{
+    width: 10rem;
+    height: 5rem;
+    display: block;
+    position: absolute;
+    font-size: 1.8rem;
+    color: #fff;
+    font-weight: bold;
+}
+
+#game .j1 .mise{
+    left: 22.5rem;
+}
+
+#game .j2 .mise{
+    right: 22.5rem;
+}
+
+#game .j1 .dealer, #game .j2 .dealer{
+    width: 2rem;
+    height: 2rem;
+    display: block;
+    position: absolute;
+    font-size: 1.8rem;
+    color: #fff;
+    font-weight: bold;
+    top: 3rem;
+}
+
+#game .j1 .dealer{
+    left: 18.5rem;
+}
+
+#game .j2 .dealer{
+    right: 18.5rem;
+}
+
+#game .dealer.false{
+    opacity: 0;
+}
+
+#game .banque{
+    position: absolute;
+    top: 14rem;
+    left: calc(50% - 17.5rem);
+    width: 35rem;
+    margin:auto;
+}
+
+#game .banque .pot{
+    display: block;
+    height: 4rem;
+    font-size: 2.2rem;
+    color: #fff;
+    margin-bottom: 3rem;
+}
+
+#game .banque .cartes{
+    height: 10rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 .player{
     position: absolute;
     top: 12rem;
@@ -49,4 +224,62 @@ html{
     text-align: center;
     margin: auto;
     bottom: 12rem;
+}
+
+
+
+/* animation */
+
+
+/* hide card */
+
+@-moz-keyframes hide-card {
+    0% { transform : rotateY(0deg); }
+    100% { transform : rotateY(-90deg); }
+}
+
+@-webkit-keyframes hide-card {
+        0% { transform : rotateY(0deg); }
+        100% { transform : rotateY(-90deg); }
+}
+
+@-ms-keyframes hide-card {
+        0% { transform : rotateY(0deg); }
+        100% { transform : rotateY(-90deg); }
+}
+
+@keyframes hide-card {
+    
+        0% { 
+            display: block;
+            transform : rotateY(0deg); }
+        100% { 
+            display: block;
+            transform : rotateY(-90deg); }
+}
+
+/* show card */
+
+@-moz-keyframes show-card {
+    0% { top: -5em; }
+    100% { transform : rotateY(90deg); }
+}
+
+@-webkit-keyframes show-card {
+        0% { top: -5em; }
+        100% { transform : rotateY(90deg); }
+}
+
+@-ms-keyframes show-card {
+        0% { top: -5em; }
+        100% { transform : rotateY(90deg); }
+}
+
+@keyframes show-card {
+        0% { transform : rotateY(90deg);
+             opacity: 1;
+        }
+        100% { transform : rotateY(0deg); 
+            opacity: 1;
+        }
 }
