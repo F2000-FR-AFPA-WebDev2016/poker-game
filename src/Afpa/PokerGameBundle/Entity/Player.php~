@@ -255,4 +255,28 @@ class Player {
         return $this->tablePoker;
     }
 
+
+    /**
+     * Set dealer
+     *
+     * @param boolean $dealer
+     *
+     * @return Player
+     */
+    public function setDealer($dealer)
+    {
+        $this->dealer = $dealer;
+
+        return $this;
+    }
+
+    /**
+     * Get dealer
+     *
+     * @return boolean
+     */
+    public function getDealer()
+    {
+        return $this->dealer;
+    }
 }
