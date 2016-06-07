@@ -1,16 +1,30 @@
 
-{%if newMain is defined %}
-{{dump(newMain)}}
+{%if initPartie is defined %}
+    <span class='initialise'>
+        <span class='{{initPartie.dateDepart}}'>
+            
+        </span>
+    </span>
+    <div class="banque">
+        <span class="pot">Démarrage de la partie dans quelques instants</span>
+        <div class="cartes">
+        </div>
+        <div class="plus"></div>
+    </div>
+{%endif%}
+{%if dealCards is defined %}
+    
 {%endif%}
 
-{%if initPartie is defined %}
+{%if initPartie2 is defined %}
     {% for line in initPartie %}
         
-        <div class="j{{loop.index}} initialise">
+        <div class="j{{loop.index}} initialise ">
             <span class="cartes ">
                 <img class="carteMasque" src="{{asset('env/images/'~line.carteDeal~'.png')}}" >
                 <img class="carteVisible" src="{{asset('env/images/VERSO.png')}}" >
             </span>
+        <span class="dealer {{line.dealer}}">D</span>
         </div>
     {% endfor %}
     <div class="banque">
@@ -20,6 +34,68 @@
         <div class="plus"></div>
     </div>
 {%endif%}
+
+{%if initPartie2 is defined %}
+    {% for line in initPartie %}
+        
+        <div class="j{{loop.index}} initialise">
+            <span class="cartes ">
+                <img class="carteMasque" src="{{asset('env/images/'~line.carteDeal~'.png')}}" >
+                <img class="carteVisible" src="{{asset('env/images/VERSO.png')}}" >
+            </span>
+        <span class="dealer {{line.dealer}}">D</span>
+        </div>
+    {% endfor %}
+    <div class="banque">
+        <span class="pot">Démarrage de la partie</span>
+        <div class="cartes">
+        </div>
+        <div class="plus"></div>
+    </div>
+{%endif%}
+
+{%if newMain is defined %}
+    <div class="j2">
+        <span class="cartes">
+            <img src="{{asset('env/images/VERSO.png')}}" >
+            <img src="{{asset('env/images/VERSO.png')}}" >
+        </span>
+        <span class="jetons">5000</span>
+        <span class="mise">100</span>
+        <span class="dealer false">D</span>
+    </div>
+    <div class="j1">
+        <span class="cartes">
+            <img src="{{asset('env/images/VERSO.png')}}" >
+            <img src="{{asset('env/images/VERSO.png')}}" >
+        </span>
+        <span class="jetons">5000</span>
+        <span class="mise">100</span>
+        <span class="dealer true">D</span>
+    </div>
+    <div class="banque">
+        <span class="pot">10000</span>
+        <div class="cartes">
+            <span class="c1"><img src="{{asset('env/images/VERSO.png')}}" ></span>
+            <span class="c2"><img src="{{asset('env/images/VERSO.png')}}" ></span>
+            <span class="c3"><img src="{{asset('env/images/VERSO.png')}}" ></span>
+            <span class="c4"><img src="{{asset('env/images/VERSO.png')}}" ></span>
+            <span class="c5"><img src="{{asset('env/images/VERSO.png')}}" ></span>
+        </div>
+        <div class="plus"></div>
+    </div>
+{%endif%}
+
+
+
+
+
+
+
+
+
+
+
 
 {%if playPartie is defined %}
     <div class="j2">

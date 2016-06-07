@@ -71,16 +71,23 @@ class Player {
     /**
      * @var boolean
      *
-     * @ORM\Column(name="turn", type="boolean",  options={"default":false})
+     * @ORM\Column(name="turn", type="boolean", nullable=true)
      */
     private $turn;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="dealer", type="boolean",  options={"default":false})
+     * @ORM\Column(name="dealer", type="boolean", nullable=true)
      */
     private $dealer;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tirageDeal", type="string", length=255, nullable=true)
+     */
+    private $tirageDeal;
 
     /**
      * Get id
@@ -278,5 +285,29 @@ class Player {
     public function getDealer()
     {
         return $this->dealer;
+    }
+
+    /**
+     * Set tirageDeal
+     *
+     * @param string $tirageDeal
+     *
+     * @return Player
+     */
+    public function setTirageDeal($tirageDeal)
+    {
+        $this->tirageDeal = $tirageDeal;
+
+        return $this;
+    }
+
+    /**
+     * Get tirageDeal
+     *
+     * @return string
+     */
+    public function getTirageDeal()
+    {
+        return $this->tirageDeal;
     }
 }

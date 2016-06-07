@@ -1,8 +1,9 @@
 (function ($) {
     var $arrayPath = window.location.pathname.split('/'),
             $dev = false,
+            $nbOpen = 0,
             $cible = '';
-
+    
 
     if ($arrayPath.length > 2) {
         if ($arrayPath[1] === 'app_dev.php') {
@@ -15,11 +16,11 @@
         $cible = $arrayPath[1] === '' ? 'home' : $arrayPath[1];
     }
 
-    function initialisePlay(){
+    function initialiseVersDeal(){
         var $table = $('section .tableNumber').html(),
             $game = $('#game');
         $.ajax({
-            url: "../newMain/"+$table,
+            url: "../deal/"+$table,
             method: 'POST',
             success: function (data) {
                 $game.html(data);
@@ -28,14 +29,21 @@
         });
     }
     
-    if($('#game .initialise') !== null){
+    if($('#game .initialise').length > 0){
         
-        window.setTimeout(function () {
+        var $departPartie = $('#game .initialise span').attr('class'),
+            $attente = 10,
+            $refresh = ($.now() / 1000).toPrecision(10),
+            difference = ($departPartie - $refresh + $attente) * 1000;
+            
+    
+        /*window.setTimeout(function () {
             initialisePlay();
-        }, 5000);
+        }, 5000);*/
         window.setTimeout(function () {
             $('#game .banque .pot').html('Tirage du dealer')
-        }, 2000);
+            initialiseVersDeal();
+        }, difference);
     }
 
     function refreshListTable() {
@@ -53,13 +61,14 @@
 
     function openTable() {
         var $table = $('#openRefresh'),
-                $open = $('footer span.table');
-
+            $open = $('footer span.table');
+        
         $.each($open, function () {
             var $numTable = $(this).attr('class').split(' '),
                     $permission = $(this).children('span.permission').html(),
                     $ouverture = $(this).children('span.ouverture').html();
             if ($ouverture === '' && $permission === '1') {
+                $ouverture = $(this).children('span.ouverture').html('1');
                 var myWindow = window.open("http://poker-game.dev/app_dev.php/play/" + $numTable[1], "_blank");
             }
         });
@@ -71,8 +80,20 @@
             success: function (data) {
                 $table.html(data);
             }
-
         });
+        
+        if ($cible !== 'play' && $('footer span.table').length > 0) {
+            if($nbOpen < 3){
+                window.setTimeout(function () {
+                    openTable();
+                    $nbOpen++;
+                }, 500);
+            }else{
+                window.setTimeout(function () {
+                    openTable();
+                }, 3000);
+            }
+        }
     }
     if ($cible === 'listTable') {
         window.setInterval(function () {
@@ -80,11 +101,16 @@
         }, 3000);
     }
 
-    if ($cible !== 'play') {
-        window.setInterval(function () {
+    if ($cible !== 'play' && $('footer span.table').length > 0) {
+        
+        window.setTimeout(function () {
             openTable();
-        }, 5000);
+        }, 100);
+        
     }
+    
+    
+    
 
     
 /*

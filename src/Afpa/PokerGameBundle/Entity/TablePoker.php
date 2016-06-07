@@ -48,16 +48,16 @@ class TablePoker {
     private $timeLevel;
 
     /**
-     * @var \DateTime
+     * @var \int
      *
-     * @ORM\Column(name="time_start", type="datetime", nullable=true)
+     * @ORM\Column(name="time_start", type="integer", nullable=true)
      */
     private $timeStart;
 
-    /**
-     * @var \DateTime
+    /** 
+     * @var \int
      *
-     * @ORM\Column(name="time_end", type="datetime", nullable=true)
+     * @ORM\Column(name="time_end", type="integer", nullable=true)
      */
     private $timeEnd;
 
@@ -225,50 +225,6 @@ class TablePoker {
      */
     public function getTimeLevel() {
         return $this->timeLevel;
-    }
-
-    /**
-     * Set timeStart
-     *
-     * @param \DateTime $timeStart
-     *
-     * @return TablePoker
-     */
-    public function setTimeStart($timeStart) {
-        $this->timeStart = $timeStart;
-
-        return $this;
-    }
-
-    /**
-     * Get timeStart
-     *
-     * @return \DateTime
-     */
-    public function getTimeStart() {
-        return $this->timeStart;
-    }
-
-    /**
-     * Set timeEnd
-     *
-     * @param \DateTime $timeEnd
-     *
-     * @return TablePoker
-     */
-    public function setTimeEnd($timeEnd) {
-        $this->timeEnd = $timeEnd;
-
-        return $this;
-    }
-
-    /**
-     * Get timeEnd
-     *
-     * @return \DateTime
-     */
-    public function getTimeEnd() {
-        return $this->timeEnd;
     }
 
     /**
@@ -658,5 +614,54 @@ class TablePoker {
     public function getOC5()
     {
         return $this->oC5;
+    }
+
+
+    /**
+     * Set timeStart
+     *
+     * @param integer $timeStart
+     *
+     * @return TablePoker
+     */
+    public function setTimeStart($timeStart)
+    {
+        $this->timeStart = $timeStart;
+
+        return $this;
+    }
+
+    /**
+     * Get timeStart
+     *
+     * @return integer
+     */
+    public function getTimeStart()
+    {
+        return $this->timeStart;
+    }
+
+    /**
+     * Set timeEnd
+     *
+     * @param integer $timeEnd
+     *
+     * @return TablePoker
+     */
+    public function setTimeEnd($timeEnd)
+    {
+        $this->timeEnd = $timeEnd;
+
+        return $this;
+    }
+
+    /**
+     * Get timeEnd
+     *
+     * @return integer
+     */
+    public function getTimeEnd()
+    {
+        return $this->timeEnd;
     }
 }
