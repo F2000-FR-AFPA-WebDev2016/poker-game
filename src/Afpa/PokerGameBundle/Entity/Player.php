@@ -76,6 +76,13 @@ class Player {
     private $turn;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="dealer", type="boolean",  options={"default":false})
+     */
+    private $dealer;
+
+    /**
      * Get id
      *
      * @return int
@@ -248,4 +255,28 @@ class Player {
         return $this->tablePoker;
     }
 
+
+    /**
+     * Set dealer
+     *
+     * @param boolean $dealer
+     *
+     * @return Player
+     */
+    public function setDealer($dealer)
+    {
+        $this->dealer = $dealer;
+
+        return $this;
+    }
+
+    /**
+     * Get dealer
+     *
+     * @return boolean
+     */
+    public function getDealer()
+    {
+        return $this->dealer;
+    }
 }

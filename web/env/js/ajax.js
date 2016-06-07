@@ -101,7 +101,7 @@
 
 
 
-    $('form').on('click', function (e) {
+    $('#betting').on('click', function (e) {
         e.preventDefault();
         var table = $('.tableNumber').html(),
                 action = e.target.id.split('_')[1];
