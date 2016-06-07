@@ -12,12 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class TablePoker {
 
-    
     /**
      * @ORM\OneToMany(targetEntity="Player", mappedBy="tablePoker")
      */
     protected $players;
-    
+
     /**
      * @var int
      *
@@ -100,9 +99,37 @@ class TablePoker {
     /**
      * @var string
      *
-     * @ORM\Column(name="open_cards", type="string", length=255, nullable=true)
+     * @ORM\Column(name="oC1", type="string", length=2, nullable=true)
      */
-    private $openCards;
+    private $oC1;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="oC2", type="string", length=2, nullable=true)
+     */
+    private $oC2;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="oC3", type="string", length=2, nullable=true)
+     */
+    private $oC3;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="oC4", type="string", length=2, nullable=true)
+     */
+    private $oC4;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="oC5", type="string", length=2, nullable=true)
+     */
+    private $oC5;
 
     /**
      * @var string
@@ -442,7 +469,6 @@ class TablePoker {
         return $this->packOfCards;
     }
 
-
     /**
      * Add user
      *
@@ -450,8 +476,7 @@ class TablePoker {
      *
      * @return TablePoker
      */
-    public function addUser(\Afpa\PokerGameBundle\Entity\User $user)
-    {
+    public function addUser(\Afpa\PokerGameBundle\Entity\User $user) {
         $this->users[] = $user;
 
         return $this;
@@ -462,8 +487,7 @@ class TablePoker {
      *
      * @param \Afpa\PokerGameBundle\Entity\User $user
      */
-    public function removeUser(\Afpa\PokerGameBundle\Entity\User $user)
-    {
+    public function removeUser(\Afpa\PokerGameBundle\Entity\User $user) {
         $this->users->removeElement($user);
     }
 
@@ -472,8 +496,7 @@ class TablePoker {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getUsers()
-    {
+    public function getUsers() {
         return $this->users;
     }
 
@@ -484,8 +507,7 @@ class TablePoker {
      *
      * @return TablePoker
      */
-    public function addPlayer(\Afpa\PokerGameBundle\Entity\Player $player)
-    {
+    public function addPlayer(\Afpa\PokerGameBundle\Entity\Player $player) {
         $this->players[] = $player;
 
         return $this;
@@ -496,8 +518,7 @@ class TablePoker {
      *
      * @param \Afpa\PokerGameBundle\Entity\Player $player
      */
-    public function removePlayer(\Afpa\PokerGameBundle\Entity\Player $player)
-    {
+    public function removePlayer(\Afpa\PokerGameBundle\Entity\Player $player) {
         $this->players->removeElement($player);
     }
 
@@ -506,18 +527,136 @@ class TablePoker {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPlayers()
-    {
+    public function getPlayers() {
         return $this->players;
     }
-    
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
         $this->players = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+
+    /**
+     * Set oC1
+     *
+     * @param string $oC1
+     *
+     * @return TablePoker
+     */
+    public function setOC1($oC1)
+    {
+        $this->oC1 = $oC1;
+
+        return $this;
+    }
+
+    /**
+     * Get oC1
+     *
+     * @return string
+     */
+    public function getOC1()
+    {
+        return $this->oC1;
+    }
+
+    /**
+     * Set oC2
+     *
+     * @param string $oC2
+     *
+     * @return TablePoker
+     */
+    public function setOC2($oC2)
+    {
+        $this->oC2 = $oC2;
+
+        return $this;
+    }
+
+    /**
+     * Get oC2
+     *
+     * @return string
+     */
+    public function getOC2()
+    {
+        return $this->oC2;
+    }
+
+    /**
+     * Set oC3
+     *
+     * @param string $oC3
+     *
+     * @return TablePoker
+     */
+    public function setOC3($oC3)
+    {
+        $this->oC3 = $oC3;
+
+        return $this;
+    }
+
+    /**
+     * Get oC3
+     *
+     * @return string
+     */
+    public function getOC3()
+    {
+        return $this->oC3;
+    }
+
+    /**
+     * Set oC4
+     *
+     * @param string $oC4
+     *
+     * @return TablePoker
+     */
+    public function setOC4($oC4)
+    {
+        $this->oC4 = $oC4;
+
+        return $this;
+    }
+
+    /**
+     * Get oC4
+     *
+     * @return string
+     */
+    public function getOC4()
+    {
+        return $this->oC4;
+    }
+
+    /**
+     * Set oC5
+     *
+     * @param string $oC5
+     *
+     * @return TablePoker
+     */
+    public function setOC5($oC5)
+    {
+        $this->oC5 = $oC5;
+
+        return $this;
+    }
+
+    /**
+     * Get oC5
+     *
+     * @return string
+     */
+    public function getOC5()
+    {
+        return $this->oC5;
+    }
 }

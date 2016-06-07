@@ -85,9 +85,11 @@
             openTable();
         }, 5000);
     }
+
     
 /*
     $('#betting form').on('click', function (e) {
+    
         e.preventDefault();
         var table = $('.tableNumber').html(),
                 action = e.target.id.split('_')[1],

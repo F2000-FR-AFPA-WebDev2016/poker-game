@@ -252,7 +252,7 @@ body._home section img{
 section .profil{
     width: 109rem;
     margin: auto;
-    background-color: #fcfcfc;
+    background-color: rgba(173, 255, 47, 0.4);
     text-align: left;
     position: relative;
     border-radius: 1rem;
@@ -286,7 +286,7 @@ section .profil{
 
 .profil .info h3{
     text-align: center;
-    color: #ccc;
+    color: #ADFF2F;
     font-size: 2.2rem;
     margin: 0 0 3rem 0;
     padding-top: 5rem;
@@ -305,7 +305,7 @@ section .profil{
 }
 
 .profil .info ul li span:first-child{
-    color: #565656;
+    color: #ADFF2F;
     width: calc(38% - 0.5rem);
 }
 
