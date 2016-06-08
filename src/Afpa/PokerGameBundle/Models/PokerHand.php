@@ -187,8 +187,11 @@ class PokerHand {
             $tabTemp[$card] = $key;
         }
         arsort($tabTemp);
+
+        $aFlush = $this->handSuite($tabTemp);
         $finalHand = array_slice($tabTemp, 0, 5);
-        return $finalHand;
+
+        return ($aFlush ? $aFlush : $finalHand);
     }
 
     public function rang($sValueCard) {
