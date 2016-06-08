@@ -153,6 +153,13 @@ class TablePoker {
     private $packOfCards;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="tour", type="integer", nullable=true)
+     */
+    private $tour;
+
+    /**
      * Get id
      *
      * @return int
@@ -614,6 +621,55 @@ class TablePoker {
     public function getOC5()
     {
         return $this->oC5;
+    }
+
+
+    /**
+     * Set timeStart
+     *
+     * @param integer $timeStart
+     *
+     * @return TablePoker
+     */
+    public function setTimeStart($timeStart)
+    {
+        $this->timeStart = $timeStart;
+
+        return $this;
+    }
+
+    /**
+     * Get timeStart
+     *
+     * @return integer
+     */
+    public function getTimeStart()
+    {
+        return $this->timeStart;
+    }
+
+    /**
+     * Set timeEnd
+     *
+     * @param integer $timeEnd
+     *
+     * @return TablePoker
+     */
+    public function setTimeEnd($timeEnd)
+    {
+        $this->timeEnd = $timeEnd;
+
+        return $this;
+    }
+
+    /**
+     * Get timeEnd
+     *
+     * @return integer
+     */
+    public function getTimeEnd()
+    {
+        return $this->timeEnd;
     }
 
 }

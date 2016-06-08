@@ -90,6 +90,27 @@ class Player {
     private $tirageDeal;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="playMain", type="boolean", nullable=true)
+     */
+    private $playMain;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="allIn", type="boolean", nullable=true)
+     */
+    private $allIn;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="lastPlayer", type="boolean", nullable=true)
+     */
+    private $lastPlayer;
+
+    /**
      * Get id
      *
      * @return int
@@ -309,5 +330,77 @@ class Player {
     public function getTirageDeal()
     {
         return $this->tirageDeal;
+    }
+
+    /**
+     * Set playMain
+     *
+     * @param boolean $playMain
+     *
+     * @return Player
+     */
+    public function setPlayMain($playMain)
+    {
+        $this->playMain = $playMain;
+
+        return $this;
+    }
+
+    /**
+     * Get playMain
+     *
+     * @return boolean
+     */
+    public function getPlayMain()
+    {
+        return $this->playMain;
+    }
+
+    /**
+     * Set allIn
+     *
+     * @param boolean $allIn
+     *
+     * @return Player
+     */
+    public function setAllIn($allIn)
+    {
+        $this->allIn = $allIn;
+
+        return $this;
+    }
+
+    /**
+     * Get allIn
+     *
+     * @return boolean
+     */
+    public function getAllIn()
+    {
+        return $this->allIn;
+    }
+
+    /**
+     * Set lastPlayer
+     *
+     * @param boolean $lastPlayer
+     *
+     * @return Player
+     */
+    public function setLastPlayer($lastPlayer)
+    {
+        $this->lastPlayer = $lastPlayer;
+
+        return $this;
+    }
+
+    /**
+     * Get lastPlayer
+     *
+     * @return boolean
+     */
+    public function getLastPlayer()
+    {
+        return $this->lastPlayer;
     }
 }

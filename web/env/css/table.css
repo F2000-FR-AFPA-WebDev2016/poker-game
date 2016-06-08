@@ -198,7 +198,7 @@ html{
     height: 7rem;
 }
 
-.inputRaise{
+.inputRaise, .inputBet{
     display: inline-block;
 }
 

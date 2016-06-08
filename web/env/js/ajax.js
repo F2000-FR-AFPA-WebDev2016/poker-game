@@ -64,19 +64,50 @@
         initialiseVersDeal();
     }
     
+    $( "#game .gameEnCours" ).load(function() {
+        console.log('oui');
+    });
+    
+    $(document).ready(function() {
+        loadGame();
+    });
+    
+    function loadGame(){
+        var $table = $('section .tableNumber').html(),
+            $game = $('#game');
+        if($( "#game .gameEnCours" ).length > 0 && $( "#playSuiv" ).length === 0){
+            $.ajax({
+                url: "../newMain/"+$table,
+                method: 'POST',
+                success: function (data) {
+                    $game.html(data);
+                }
+            });
+        }
+        window.setTimeout(function () {
+            loadGame();
+        }, 2000);
+    }
     
     $(document).on('click', '#playSuiv span', function (e) {
         var action = e.target.className;
-        console.log(action);
         if(action === 'bet'){
-            var raise = parseInt($('#playSuiv .bet p').html());
-            actionPlayGame(action, "/"+raise);
+            if($('#playSuiv .inputBet input').length > 0 && $('#playSuiv .inputBet input').val() > 0){
+                var raise = parseInt($('#playSuiv .inputBet input').val());
+                actionPlayGame(action, "/"+raise);
+            }else if(parseInt($('#playSuiv .bet p').html()) > 0 ){
+                var raise = parseInt($('#playSuiv .bet p').html());
+                actionPlayGame(action, "/"+raise);
+            }
+            
         }else if(action === 'raise'){
-            var raise = parseInt($('#playSuiv .raise p').html()),
+            var raise = $('#playSuiv .raise p').html() === '' ? 0 : parseInt($('#playSuiv .raise p').html()),
                 input = parseInt($('#playSuiv .inputRaise input').val()),
                 diff  = input - raise;
-            actionPlayGame(action, "/"+diff);
-        }else{
+            if($('#playSuiv .inputRaise input').val() > 0){
+                actionPlayGame(action, "/"+diff);
+            }
+        }else if(action === 'fold' | action === 'check'){
             actionPlayGame(action, "");
         }
     });
@@ -157,7 +188,6 @@
     }
 
     if ($cible === 'play' && $play < 5) {
-        console.log('ok');
         setInterval(
         function ()
         {
