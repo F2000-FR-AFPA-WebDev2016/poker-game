@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Afpa\PokerGameBundle\Entity\User;
 use Afpa\PokerGameBundle\Entity\TablePoker;
 use Afpa\PokerGameBundle\Entity\Player;
+use Afpa\PokerGameBundle\Models\PokerHand;
 use Afpa\PokerGameBundle\Models\Card;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -274,17 +275,17 @@ class TablePokerController extends Controller {
      * @Route("/openTableRefresh", name="_open_table_refresh")
      */
     public function openTableRefreshAction(Request $request) {
-        
+
         $arraySessionPartie = array();
         $array = array();
         $this->session = $request->getSession();
         $this->em = $this->getDoctrine()->getManager();
-        
+
         if ($this->session->get('user') instanceof User) {
             $session = new Session();
             $partiesUser = $this->em->getRepository('AfpaPokerGameBundle:Player')->findByUser($this->session->get('user')->getId());
-            if(count($partiesUser) > 0){
-                foreach($partiesUser as $valueUser){
+            if (count($partiesUser) > 0) {
+                foreach ($partiesUser as $valueUser) {
                     $arraySessionPartie[$valueUser->getTablePoker()->getId()] = $valueUser;
                 }
             }
@@ -292,40 +293,36 @@ class TablePokerController extends Controller {
 
 
             foreach ($partiesUser as $key => $value) {
-                
-                
+
+
                 $table = $this->em->getRepository('AfpaPokerGameBundle:TablePoker')->findOneById($value->getTablePoker()->getId());
-                if($table->getNbInscrit() == $table->getNbPosition() && count($this->session->get('ouverture')) > 0){
-                    if(isset($this->session->get('ouverture')[$value->getTablePoker()->getId()])
-                            && $this->session->get('ouverture')[$value->getTablePoker()->getId()]['allReady'] == FALSE 
-                            && $this->session->get('ouverture')[$value->getTablePoker()->getId()]['permission'] == FALSE){
+                if ($table->getNbInscrit() == $table->getNbPosition() && count($this->session->get('ouverture')) > 0) {
+                    if (isset($this->session->get('ouverture')[$value->getTablePoker()->getId()]) && $this->session->get('ouverture')[$value->getTablePoker()->getId()]['allReady'] == FALSE && $this->session->get('ouverture')[$value->getTablePoker()->getId()]['permission'] == FALSE) {
                         $array[$value->getTablePoker()->getId()] = array(
                             'table' => $value->getTablePoker()->getId(),
                             'permission' => true,
                             'allReady' => false);
-                    }elseif(isset($this->session->get('ouverture')[$value->getTablePoker()->getId()])){
+                    } elseif (isset($this->session->get('ouverture')[$value->getTablePoker()->getId()])) {
                         $array[$value->getTablePoker()->getId()] = array(
                             'table' => $value->getTablePoker()->getId(),
                             'permission' => false,
                             'allReady' => true);
-                    }else{
+                    } else {
                         $array[$value->getTablePoker()->getId()] = array(
                             'table' => $value->getTablePoker()->getId(),
                             'permission' => true,
                             'allReady' => false);
                     }
-                }else{
+                } else {
                     $array[$value->getTablePoker()->getId()] = array(
                         'table' => $value->getTablePoker()->getId(),
                         'permission' => false,
                         'allReady' => false);
                 }
-
             }
             $session->set('ouverture', $array);
-            
         }
-        
+
         return $this->render('AfpaPokerGameBundle:TablePoker:open_table_refresh.html.twig', array(
                     'popUp' => $array,
         ));
@@ -437,16 +434,14 @@ class TablePokerController extends Controller {
             $oTablePoker->setTimeStart($date);
             $this->em->persist($oTablePoker);
             $this->em->flush();
-            
-        }else{
+        } else {
             $oTablePoker = $this->em->getRepository('AfpaPokerGameBundle:TablePoker')->find($idTable);
             $date = $oTablePoker->getTimeStart() != null ? $oTablePoker->getTimeStart() : false;
         }
         return $date;
     }
 
-    
-    public function initialisePlay($idTable, Request $request, $init = null){
+    public function initialisePlay($idTable, Request $request, $init = null) {
         $array = array();
         if($init != false){
             $array['initPartie']['dateDepart'] = $this->startPlay($idTable, $init);
@@ -820,20 +815,28 @@ class TablePokerController extends Controller {
      * @Route("test", name="test")
      */
     public function test() {
+
+//
         $oCard = new Card();
         $toto = $oCard->getDeck();
         for ($i = 1; $i <= 7; $i++) {
             $aPokerHand[] = array_pop($toto);
         }
-        //$aPokerHand = array('XC', 'XD', '2C', '3C', '9D', '4C', '6C');
+        ///$aPokerHand = array('2H', '6D', '2C', 'TC', '4D', '4C', '5C');
+//
+        //       $sortPH = PokerHand::SortPokerHand($aPokerHand);
+        //       $ahandColor = PokerHand::handSameColor($aPokerHand);
+        ///$handSuite = $oPokerHand->handSuite($aPokerHand);
+        // dump($handSuite);
+        //  die;
+        //$iResultat =
+        $oPokerHand = new PokerHand($aPokerHand);
+        $oPokerHand->getForceHand($aPokerHand);
 
-        $sortPG = Card::SortPokerHand($aPokerHand);
-        $bIsColor = Card::isSameColor($aPokerHand);
-        $bIsSuite = $oCard->isSuite($aPokerHand);
 
-        $iResultat = $oCard->EvalPokerHand($sortPG, $bIsColor, $bIsSuite);
         dump($aPokerHand);
-        dump($iResultat);
+        dump($oPokerHand->getTypeHand($aPokerHand));
+        dump($oPokerHand->getForceHand($aPokerHand));
         die;
 
         return $this->render('AfpaPokerGameBundle:TablePoker:test.html.twig', array(
