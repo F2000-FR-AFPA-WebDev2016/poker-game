@@ -29,6 +29,16 @@ class TablePokerController extends Controller {
         'Heads up' => array('nbPos' => 2, 'factor' => 2, 'timeLevel' => 2, 'initialBet' => 15, 'stack' => 5000, 'buyIn' => 5, 'nbInscrit' => 0),
         'Heads up turbo' => array('nbPos' => 2, 'factor' => 2, 'timeLevel' => 1, 'initialBet' => 100, 'stack' => 1500, 'buyIn' => 10, 'nbInscrit' => 0));
 
+    public function init(Request $request){
+        $this->em = $this->getDoctrine()->getManager();
+        $this->session = $request->getSession();
+        if (!$this->session->get('user') instanceof User) { 
+            return false;
+        }
+        return true;
+    }
+    
+    
     /**
      * @Route("/listTable", name="_list_table")
      */
@@ -414,10 +424,9 @@ class TablePokerController extends Controller {
         }
 
         $array = $this->initialisePlay($idTable, $request, $this->startPlay($idTable) == false ? true : false);
-
-
+        
         return $this->render('AfpaPokerGameBundle:TablePoker:gameView.html.twig', array(
-                    'initPartie' => $array
+                    key($array) => current($array)
         ));
     }
 
@@ -432,7 +441,6 @@ class TablePokerController extends Controller {
         }else{
             $oTablePoker = $this->em->getRepository('AfpaPokerGameBundle:TablePoker')->find($idTable);
             $date = $oTablePoker->getTimeStart() != null ? $oTablePoker->getTimeStart() : false;
-            
         }
         return $date;
     }
@@ -441,15 +449,16 @@ class TablePokerController extends Controller {
     public function initialisePlay($idTable, Request $request, $init = null){
         $array = array();
         if($init != false){
-            $array['dateDepart'] = $this->startPlay($idTable, $init);
+            $array['initPartie']['dateDepart'] = $this->startPlay($idTable, $init);
         }elseif($this->startPlay($idTable) > time() - 10){
-            die();
-            $array['dateDepart'] = '' ;
             
-            
+            $array['initPartie']['dateDepart'] = $this->startPlay($idTable, $init) ;
+        }elseif($this->startPlay($idTable) > time() - 16){
+            $array = $this->dealAction($idTable, $request, true);
         }else{
-            $array['dateDepart'] = '';
+            $array = $this->newMainAction($idTable, $request, true);
         }
+        
         return $array;
     }
 
@@ -458,7 +467,6 @@ class TablePokerController extends Controller {
         $oTablePoker = $this->em->getRepository('AfpaPokerGameBundle:TablePoker')->find($idTable);
 //PlayerList
         $aListPlayer = $this->em->getRepository('AfpaPokerGameBundle:Player')->findByTablePoker($idTable);
-//$nbPlayer = count($aListPlayer);
         $nbPlayer = $oTablePoker->getNbPosition();
         $player = array();
         $dealer = '';
@@ -466,60 +474,265 @@ class TablePokerController extends Controller {
         $verifNew = '';
         $cardsColor = Card::recupValueCard('color');
         $cardsValue = Card::recupValueCard('value');
-        for ($i = 0; $i < $nbPlayer; $i++) {
-            $carte = unserialize($oTablePoker->getPackOfCards());
-            if($dealer == ''){
-                $dealer = $carte[$i];
-            }else{
-                $valCardDeal = substr($dealer, 0, 1);
-                $colCardDeal = substr($dealer, 1, 1);
-                $valCardNew = substr($carte[$i], 0, 1);
-                $colCardNew = substr($carte[$i], 1, 1);
-                foreach($cardsValue as $k => $v){
-                    if($valCardDeal == $v){
-                        $verifDeal = $k;
+        if($aListPlayer[0]->getTirageDeal() == null){
+            for ($i = 0; $i < $nbPlayer; $i++) {
+                $carte = unserialize($oTablePoker->getPackOfCards());
+                if($dealer == ''){
+                    $dealer = $carte[$i];
+                }else{
+                    $valCardDeal = substr($dealer, 0, 1);
+                    $colCardDeal = substr($dealer, 1, 1);
+                    $valCardNew = substr($carte[$i], 0, 1);
+                    $colCardNew = substr($carte[$i], 1, 1);
+                    foreach($cardsValue as $k => $v){
+                        if($valCardDeal == $v){
+                            $verifDeal = $k;
+                        }
+                        if($valCardNew == $v){
+                            $verifNew = $k;
+                        }
                     }
-                    if($valCardNew == $v){
-                        $verifNew = $k;
+                    if($verifDeal == $verifNew){
+                        foreach($cardsColor as $kcol => $vcol){
+                            if($colCardDeal == $vcol){
+                                $verifDeal = $kcol;
+                            }
+                            if($colCardNew == $vcol){
+                                $verifNew = $kcol;
+                            }
+                        }
+
                     }
+                    $dealer = $verifDeal < $verifNew ? $dealer : $carte[$i];
                 }
-                if($verifDeal == $verifNew){
-                    foreach($cardsColor as $kcol => $vcol){
-                        if($colCardDeal == $vcol){
-                            $verifDeal = $kcol;
-                        }
-                        if($colCardNew == $vcol){
-                            $verifNew = $kcol;
-                        }
-                    }
+                $player[] = array(
+                    'id' => $aListPlayer[$i]->getUser()->getId(),
+                    'pseudo' => $aListPlayer[$i]->getUser()->getPseudo(),
+
+                    'carteDeal' => $carte[$i],
+                    'dealer' => 'false'
+                        );
+            }
+            foreach($player as $key => $value){
+                if($value['carteDeal'] == $dealer){
+
+                    $player[$key]['dealer'] = 'true';
+                    $playerDealer = $this->em->getRepository('AfpaPokerGameBundle:Player')->findBy(array('user' => $player[$key]['id'], 'tablePoker' => $idTable));
+                    $playerDealer[0]->setDealer(true);
+                    $this->em->persist($playerDealer[0]);
                     
                 }
-                $dealer = $verifDeal < $verifNew ? $dealer : $carte[$i];
-            }
-            $player[] = array(
-                'id' => $aListPlayer[$i]->getUser()->getId(),
-                'pseudo' => $aListPlayer[$i]->getUser()->getPseudo(),
-
-                'carteDeal' => $carte[$i],
-                'dealer' => 'false'
-                    );
-        }
-        foreach($player as $key => $value){
-            if($value['carteDeal'] == $dealer){
+                $playerTirage = $this->em->getRepository('AfpaPokerGameBundle:Player')->findBy(array('user' => $player[$key]['id'], 'tablePoker' => $idTable));
+                $playerTirage[0]->setTirageDeal($value['carteDeal']);
+                $this->em->persist($playerTirage[0]);
                 
-                $player[$key]['dealer'] = 'true';
-                $playerDealer = $this->em->getRepository('AfpaPokerGameBundle:Player')->findBy(array('user' => $player[$key]['id'], 'tablePoker' => $idTable));
-                $playerDealer[0]->setDealer(true);
-                $this->em->persist($playerDealer[0]);
-                $this->em->flush();
             }
-            $playerTirage = $this->em->getRepository('AfpaPokerGameBundle:Player')->findBy(array('user' => $player[$key]['id'], 'tablePoker' => $idTable));
-            $playerTirage[0]->setTirageDeal($value['carteDeal']);
-            $this->em->persist($playerTirage[0]);
-            $this->em->flush();
+            
+        }else{
+            for ($i = 0; $i < $nbPlayer; $i++) {
+                $carte = unserialize($oTablePoker->getPackOfCards());
+                
+                $player[] = array(
+                    'id' => $aListPlayer[$i]->getUser()->getId(),
+                    'pseudo' => $aListPlayer[$i]->getUser()->getPseudo(),
+                    'carteDeal' => $aListPlayer[$i]->getTirageDeal(),
+                    'dealer' => $aListPlayer[$i]->getDealer() == null ? 'false' : 'true'
+                        );
+            }
         }
+        $this->em->flush();
         return $player;
     }
+
+    /**
+     * @Route("/deal/{idTable}", name="_deal")
+     */
+    public function dealAction($idTable, Request $request, $init = null) {
+        $verif = $this->init($request);
+        if($verif == FALSE){ 
+            return $this->redirect($this->generateUrl('_home'));
+        }
+        
+        $players = $this->tirageDeal($idTable);
+        
+        
+        if($init == true){
+            $tab['dealCards'] = $players;
+            return $tab;
+        }
+        return $this->render('AfpaPokerGameBundle:TablePoker:gameView.html.twig', array(
+            'dealCards' => $players
+        ));
+    }    
+    
+    /**
+     * @Route("/newMain/{idTable}", name="_new_main")
+     */
+    public function newMainAction($idTable, Request $request, $init = null) {
+        $verif = $this->init($request);
+        if($verif == FALSE){ 
+            return $this->redirect($this->generateUrl('_home'));
+        }
+
+        $newPack = new Card();
+        $packOfCard = $newPack->getDeck();
+        $table = $this->em->getRepository('AfpaPokerGameBundle:TablePoker')->find($idTable);
+        $players = $this->em->getRepository('AfpaPokerGameBundle:Player')->findByTablePoker($idTable);
+        if($players[0]->getCardOne() == null){
+            foreach ($players as $player) {
+                $player->setEncoursJetons($table->getStackTable());
+                $player->setCardOne(array_pop($packOfCard));
+                array_pop($packOfCard);
+                $player->setCardTwo(array_pop($packOfCard));
+                array_pop($packOfCard);
+                $this->em->persist($player);
+                if($player->getDealer() == 1){
+                    $positionDealer = $player->getPosition();
+                }
+            }
+            $table->setOC1(array_pop($packOfCard));
+            array_pop($packOfCard);
+            $table->setOC2(array_pop($packOfCard));
+            array_pop($packOfCard);
+            $table->setOC3(array_pop($packOfCard));
+            array_pop($packOfCard);
+            $table->setOC4(array_pop($packOfCard));
+            array_pop($packOfCard);
+            $table->setOC5(array_pop($packOfCard));
+            array_pop($packOfCard);
+            $table->setPackOfCards(serialize($packOfCard));
+            $this->em->persist($table);
+            
+            $aQuiDeJouer = $this->trouvePlace($table->getNbINscrit(), $positionDealer, 3);
+            $insertAquiDeJouer = $this->em->getRepository('AfpaPokerGameBundle:Player')->findBy(array( 'tablePoker' => $idTable,'position' => $aQuiDeJouer));
+            $insertAquiDeJouer[0]->setTurn(true);
+            
+            $petiteBlind = $this->trouvePlace($table->getNbINscrit(), $positionDealer, 1);
+            $insertPetiteBlind = $this->em->getRepository('AfpaPokerGameBundle:Player')->findBy(array( 'tablePoker' => $idTable,'position' => $petiteBlind));
+            $insertPetiteBlind[0]->setMiseJetons($table->getInitialBet());
+            $insertPetiteBlind[0]->setEncoursJetons($table->getStackTable() - $table->getInitialBet());
+            
+            $grosseBlind = $this->trouvePlace($table->getNbINscrit(), $positionDealer, 2);
+            $insertGrosseBlind = $this->em->getRepository('AfpaPokerGameBundle:Player')->findBy(array( 'tablePoker' => $idTable,'position' => $grosseBlind));
+            $insertGrosseBlind[0]->setMiseJetons($table->getInitialBet() * 2);
+            $insertGrosseBlind[0]->setEncoursJetons($table->getStackTable() - $table->getInitialBet() * 2);
+            
+            
+            
+            
+            $this->em->persist($insertAquiDeJouer[0]);
+            $this->em->persist($insertPetiteBlind[0]);
+            $this->em->persist($insertGrosseBlind[0]);
+             
+        }
+        
+        $user = $this->session->get('user')->getId();
+        $array = array();
+        foreach($players as $key => $value){
+            if($value->getUser()->getId() == $user){
+                $array[$key]['cardOne'] = $value->getCardOne();
+                $array[$key]['cardTwo'] = $value->getCardTwo();
+                if($value->getTurn() != null){
+                    $array[$key]['turn'] = 'true';
+                }
+            }else{
+                $array[$key]['cardOne'] = 'VERSO';
+                $array[$key]['cardTwo'] = 'VERSO';
+            }
+            $array[$key]['encoursJetons'] = $value->getEncoursJetons();
+            $array[$key]['miseJetons'] = $value->getMiseJetons();
+            $array[$key]['dealer'] = $value->getDealer() == true ? 'true' : 'false';
+            
+            $array[$key]['pot'] = $table->getPot();
+            $array[$key]['c1'] = 'VERSO';
+            $array[$key]['c2'] = 'VERSO';
+            $array[$key]['c3'] = 'VERSO';
+            $array[$key]['c4'] = 'VERSO';
+            $array[$key]['c5'] = 'VERSO';
+        }
+        
+        
+        if($init == true){
+            $tab['newMain'] = $array;
+            return $tab;
+        }
+        
+        $this->em->flush();
+        return $this->render('AfpaPokerGameBundle:TablePoker:gameView.html.twig', array(
+                    'newMain' => $array
+        ));
+    }
+    
+    
+    
+    
+        /**
+     * @Route("/check/{idTable}", name="check")
+     */
+    public function checkAction($idTable, Request $request) {
+        dump($idTable); die();
+        return $this->render('AfpaPokerGameBundle:TablePoker:gameView.html.twig');
+    }
+
+    /**
+     * @Route("/fold/{idTable}", name="fold")
+     */
+    public function foldAction($idTable, Request $request) {
+        dump($idTable); die();
+        return $this->render('AfpaPokerGameBundle:TablePoker:gameView.html.twig');
+    }
+
+    /**
+     * @Route("/bet/{idTable}/{montant}", name="bet")
+     */
+    public function betAction($idTable, Request $request, $montant) {
+        dump($montant); die();
+        return $this->render('AfpaPokerGameBundle:TablePoker:gameView.html.twig');
+    }
+
+    /**
+     * @Route("/raise/{idTable}/{montant}", name="raise")
+     */
+    public function raiseAction($idTable, Request $request, $montant) {
+        dump($montant); die();
+        return $this->render('AfpaPokerGameBundle:TablePoker:gameView.html.twig');
+    } 
+    
+    public function trouvePlace($nbInscrit, $positionDealer, $var){
+        
+        $placeRecherche = $positionDealer + $var;
+        if($placeRecherche > $nbInscrit){
+            $placeRecherche = $placeRecherche % $nbInscrit;
+            if($placeRecherche == 0){
+                $placeRecherche = $nbInscrit;
+            }
+        }
+        
+        return $placeRecherche;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     /**
      * @Route("/view2/{idTable}", name="_game_view2")
@@ -586,111 +799,22 @@ class TablePokerController extends Controller {
                     'posts' => $_POST != null ? $_POST : array()
         ));
     }
-
-    /**
-     * @Route("/check/{idTable}", name="check")
-     */
-    public function checkAction($idTable, Request $request) {
-
-        $this->em = $this->getDoctrine()->getManager();
-        $this->session = $request->getSession();
-
-        $repoP = $this->getDoctrine()->getRepository('AfpaPokerGameBundle:Player');
-
-
-        $enCours = $repoP->findOneBy(array('tablePoker' => $idTable, 'user' => $this->session->get('user')->getId()))->getEncoursJetons();
-
-
-        //TablePoker en cours
-        $repo = $this->getDoctrine()->getRepository('AfpaPokerGameBundle:TablePoker');
-        $oTablePoker = $repo->find($idTable);
-
-        //
-    }
-
-    /**
-     * @Route("/fold/{idTable}", name="fold")
-     */
-    /* public function foldAction($idTable, Request $request) {
-
-      } */
-
-    /**
-     * @Route("/bet/{idTable}", name="bet")
-     */
-    /* public function betAction($idTable, Request $request) {
-
-      } */
-
-    /**
-     * @Route("/raise/{idTable}", name="raise")
-     */
-    /* public function raiseAction($idTable, Request $request) {
-
-      } */
-
-    /**
-     * @Route("/deal/{idTable}", name="_deal")
-     */
-    public function dealAction($idTable, Request $request) {
-        $array = array();
-        $this->em = $this->getDoctrine()->getManager();
-        $this->session = $request->getSession();
-        //test user connecté
-        $oSession = $request->getSession();
-        if (!$oSession->get('user') instanceof User) { 
-            return $this->redirect($this->generateUrl('_home'));
-        }
-        
-        $players = $this->em->getRepository('AfpaPokerGameBundle:Player')->findByTablePoker($idTable);
-        foreach ($players as $val){
-            $array[] = $val->getTirageDeal();
-        }
-        
-        
-        return $this->render('AfpaPokerGameBundle:TablePoker:gameView.html.twig', array(
-            'dealCards' => $array
-        ));
-    }
-
-    /**
-     * @Route("/newMain/{idTable}", name="_new_main")
-     */
-
-    public function newMainAction($idTable, Request $request) {
-        
-        $this->em = $this->getDoctrine()->getManager();
-        $this->session = $request->getSession();
-
-        if (!$this->session->get('user') instanceof User) {
-            return $this->redirect($this->generateUrl('_home'));
-        }
-
-        $newPack = new Card();
-        $packOfCard = $newPack->getDeck();
-        $table = $this->em->getRepository('AfpaPokerGameBundle:TablePoker')->find($idTable);
-        $players = $this->em->getRepository('AfpaPokerGameBundle:Player')->findByTablePoker($idTable);
-        foreach ($players as $player) {
-            $player->setCardOne(array_pop($packOfCard));
-            array_pop($packOfCard);
-            $player->setCardTwo(array_pop($packOfCard));
-            array_pop($packOfCard);
-        }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 
 
 
-
-        //$oTablePoker->setPackOfCards(serialize($aCards));
-
-
-        /* $this->em->persist($oTablePoker);
-          $this->em->flush(); */
-
-        return $this->render('AfpaPokerGameBundle:TablePoker:gameView.html.twig', array(
-                    'newMain' => $players
-        ));
-    }
 
     /**
      * @Route("test", name="test")

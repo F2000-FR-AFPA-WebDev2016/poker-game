@@ -2,7 +2,8 @@
     var $arrayPath = window.location.pathname.split('/'),
             $dev = false,
             $nbOpen = 0,
-            $cible = '';
+            $cible = '',
+            $play = 0;
     
 
     if ($arrayPath.length > 2) {
@@ -27,23 +28,69 @@
             }
 
         });
+        window.setTimeout(function () {
+            $('#game .banque .pot').html('Tirage du dealer')
+            distribCartes();
+        }, 6000);
+        
+    }
+    
+    function distribCartes(){
+        var $table = $('section .tableNumber').html(),
+            $game = $('#game');
+        $.ajax({
+            url: "../newMain/"+$table,
+            method: 'POST',
+            success: function (data) {
+                $game.html(data);
+            }
+
+        });
     }
     
     if($('#game .initialise').length > 0){
         
-        var $departPartie = $('#game .initialise span').attr('class'),
-            $attente = 10,
-            $refresh = ($.now() / 1000).toPrecision(10),
-            difference = ($departPartie - $refresh + $attente) * 1000;
-            
+        var $departPartie = parseFloat($('#game .initialise span').attr('class') + '000') ,
+            $attente = 10000,
+            $refresh = $.now() ,
+            difference = ($departPartie - $refresh + $attente);
     
-        /*window.setTimeout(function () {
-            initialisePlay();
-        }, 5000);*/
         window.setTimeout(function () {
-            $('#game .banque .pot').html('Tirage du dealer')
             initialiseVersDeal();
         }, difference);
+    }
+    
+    if($('#game .dealCards').length > 0){
+        initialiseVersDeal();
+    }
+    
+    
+    $(document).on('click', '#playSuiv span', function (e) {
+        var action = e.target.className;
+        console.log(action);
+        if(action === 'bet'){
+            var raise = parseInt($('#playSuiv .bet p').html());
+            actionPlayGame(action, "/"+raise);
+        }else if(action === 'raise'){
+            var raise = parseInt($('#playSuiv .raise p').html()),
+                input = parseInt($('#playSuiv .inputRaise input').val()),
+                diff  = input - raise;
+            actionPlayGame(action, "/"+diff);
+        }else{
+            actionPlayGame(action, "");
+        }
+    });
+
+    function actionPlayGame(action, val){
+        var $table = $('section .tableNumber').html(),
+            $game = $('#game');
+        $.ajax({
+                url: "../" + action + "/" + $table + val,
+                method: 'POST',
+                success: function (data) {
+                    $game.html(data);
+                },
+            })
     }
 
     function refreshListTable() {
@@ -106,6 +153,16 @@
         window.setTimeout(function () {
             openTable();
         }, 100);
+        
+    }
+
+    if ($cible === 'play' && $play < 5) {
+        console.log('ok');
+        setInterval(
+        function ()
+        {
+          $('#load_donnees').load('mes_donnees.php').fadeIn("slow");
+        }, 10000);
         
     }
     

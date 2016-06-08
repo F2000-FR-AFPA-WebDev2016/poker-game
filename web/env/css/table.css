@@ -186,8 +186,55 @@ html{
     height: 10rem;
 }
 
+#playSuiv{
+    position: absolute;
+    width: 100%;
+    height: 15rem;
+    bottom: 0;
+}
 
+.miseDefault{
+    position: relative;
+    height: 7rem;
+}
 
+.inputRaise{
+    display: inline-block;
+}
+
+.fold, .bet, .check, .raise{
+    display: inline-block;
+    text-align: center;
+    margin: 0 1rem;
+    width: 10rem;
+    height: 6.5rem;
+    line-height: 6.5rem;
+    font-size: 2.2rem;
+    border: 3px solid #cccccc;
+    background-color: #7B1A1C;
+    box-shadow: 0 0 2rem #000 inset;
+    border-radius: 1.5rem;
+    text-shadow: 0 0 0.2rem #999999;
+    cursor: pointer;
+}
+
+.miseDefault span p{
+    display: none;
+}
+
+.miseDefault input{
+    display: inline-block;
+    text-align: center;
+    margin: 0 1rem;
+    width: 10rem;
+    height: 4rem;
+    line-height: 4rem;
+    font-size: 2.2rem;
+    border: 3px solid #7B1A1C;
+    background-color: #cccccc;
+    box-shadow: 0 0 2rem #000;
+    border-radius: 1.5rem;
+}
 
 
 
