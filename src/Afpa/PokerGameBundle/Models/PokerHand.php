@@ -125,7 +125,16 @@ class PokerHand {
             }
         }
         arsort($aArray);
+        $aRustine = is_array(array_slice($aArray, 2, 2)) ? array_slice($aArray, 2, 2, $preserve_keys = true) : false;
 
+        if ($aRustine) {
+            $elem1 = current($aRustine);
+            $elem2 = next($aRustine);
+            if ($elem1['cpt'] == 2 && $elem2['rang'] > $elem1['rang']) {
+                $aArray = array_slice($aArray, 0, 2, $preserve_keys = true);
+                $aArray[] = $elem2;
+            }
+        }
         return($aArray);
     }
 
