@@ -92,7 +92,7 @@
     {% set miseEnCours = 0 %}
     {% for line in newMain %}
         
-        <div class="j{{loop.index}} gameEnCours">
+        <div class="j{{loop.index}} gameEnCours id{{line.idUser}}">
             <span class="cartes ">
                 <img class="carteMas" src="{{asset('env/images/'~line.cardOne~'.png')}}" >
                 <img class="carteMas" src="{{asset('env/images/'~line.cardTwo~'.png')}}" >

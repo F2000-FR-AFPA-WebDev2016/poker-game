@@ -114,12 +114,13 @@
                         $game.html(data);
                     }
                 });
-            }, 1000);
+            }, 5000);
         }
     }
     
     $(document).on('click', '#playSuiv span', function (e) {
-        var action = e.target.className;
+        var action = e.target.className,
+            player = $('section .userId').html();
         if(action === 'bet'){
             if($('#playSuiv .inputBet input').length > 0 && $('#playSuiv .inputBet input').val() > 0){
                 var raise = parseInt($('#playSuiv .inputBet input').val());
@@ -130,11 +131,19 @@
             }
             
         }else if(action === 'raise'){
-            var raise = $('#playSuiv .raise p').html() === '' ? 0 : parseInt($('#playSuiv .raise p').html()),
+            var raise = $('#playSuiv .raise p').html() === '' 
+                        ? 0 : parseInt($('#playSuiv .raise p').html()),
                 input = parseInt($('#playSuiv .inputRaise input').val()),
-                diff  = input - raise;
-            if($('#playSuiv .inputRaise input').val() > 0){
+                diff  = input - raise,
+                jetons = $('#game .id'+player+' .jetons').html() === ''
+                        ? 0 : parseInt($('#game .id'+player+' .jetons').html()),
+                mise = $('#game .id'+player+' .mise').html() === ''
+                        ? 0 : parseInt($('#game .id'+player+' .mise').html()),
+                $max = jetons + mise;
+            if($('#playSuiv .inputRaise input').val() > 0 && $('#playSuiv .inputRaise input').val() <= $max){
                 actionPlayGame(action, "/"+diff);
+            }else if ($('#playSuiv .inputRaise input').val() > 0){
+                $('#playSuiv .inputRaise input').val($max);
             }
         }else if(action === 'fold' | action === 'check'){
             actionPlayGame(action, "");

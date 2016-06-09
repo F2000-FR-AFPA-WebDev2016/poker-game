@@ -11,7 +11,7 @@
     <section id="tablePlay">
         <img class="table" src="{{ asset('env/images/table.png') }}" alt="photo de table">
         <span class="tableNumber invisible" >{{idTable}}</span>
-
+        <span class="userId invisible" >{{idUser}}</span>
         {% for a in avatar %}
             {%set av = avatar[loop.index0]%}
             <div id="a{{loop.index}}">
