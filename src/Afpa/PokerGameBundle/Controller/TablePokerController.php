@@ -383,6 +383,7 @@ class TablePokerController extends Controller {
                             'avatar' => $aAvatar,
                             'pseudo' => $aPseudo,
                             'idTable' => $idTable,
+                            'idUser' => $user
                 ));
             } else {
 //sinon on rendra just_view
@@ -395,6 +396,10 @@ class TablePokerController extends Controller {
             return $this->redirect($this->generateUrl('_list_partie'));
         }
     }
+    
+    
+    
+    
 
     /**
      * @Route("/justView/{idTable}", name="_just_view")
@@ -583,7 +588,7 @@ class TablePokerController extends Controller {
         $players = $this->em->getRepository('AfpaPokerGameBundle:Player')->findByTablePoker($idTable);
         if ($players[0]->getCardOne() == null) {
             foreach ($players as $player) {
-                $newStack = $player->getEncoursJetons() == null ?  $table->getStackTable() : $player->getEncoursJetons();
+                $newStack = $player->getEncoursJetons() === null ?  $table->getStackTable() : $player->getEncoursJetons();
                 $player->setEncoursJetons($newStack);
                 $player->setCardOne(array_pop($packOfCard));
                 array_pop($packOfCard);
@@ -678,6 +683,7 @@ class TablePokerController extends Controller {
             $array[$key]['c3'] = $table->getTour() == 0 ? 'VERSO' : $table->getOC3();
             $array[$key]['c4'] = $table->getTour() <= 1 ? 'VERSO' : $table->getOC4();
             $array[$key]['c5'] = $table->getTour() <= 2 ? 'VERSO' : $table->getOC5();
+            $array[$key]['idUser'] = $value->getUser()->getId();
         }
 
 
