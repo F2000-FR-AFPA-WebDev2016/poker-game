@@ -122,7 +122,7 @@ class TablePokerController extends Controller {
 
             if ($userExist == false && $this->inscriptionTable['action'] == 'in') {
                 $this->miseAJourPlayerCredit($request, $user->getId(), $table->getBuyIn() * -1);
-                $table->setNbInscrit(++$nbInscrit);
+                $table->setNbInscrit( ++$nbInscrit);
                 $this->em->persist($player);
                 $this->em->flush();
                 if (!$this->session->get('partie')) {
@@ -134,7 +134,7 @@ class TablePokerController extends Controller {
                 }
             } elseif ($userExist == true && $this->inscriptionTable['action'] == 'out') {
                 $this->miseAJourPlayerCredit($request, $user->getId(), $table->getBuyIn());
-                $table->setNbInscrit(--$nbInscrit);
+                $table->setNbInscrit( --$nbInscrit);
                 $this->em->remove($onePlayer);
                 $this->em->flush();
                 if (count($this->session->get('partie')) < 2) {
@@ -711,7 +711,7 @@ class TablePokerController extends Controller {
         for ($i = 1; $i <= 7; $i++) {
             $aPokerHand[] = array_pop($toto);
         }
-        //$aPokerHand = array('QC', '6C', '2C', '4C', '4D', '3C', '5C');
+        //$aPokerHand = array('8H', 'TD', '8C', '4S', 'TH', '4D', '9D');
 
         $oPokerHand = new PokerHand($aPokerHand);
         $oPokerHand->getForceHand($aPokerHand);
