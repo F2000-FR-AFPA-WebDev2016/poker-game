@@ -44,87 +44,84 @@
                 $audio.attr('src', $val + '');
             }, 3200);
         }
+
+        $(document).on('click', '#openFooter', function () {
+            $('#credits').toggle('slow', function () {})
+        })
     });
 })(jQuery);
 
 
-var tootye = (function() { 
-    "use strict"; 
+var tootye = (function () {
+    "use strict";
     var app = {
-
-        tag : {
-            head : {},
+        tag: {
+            head: {},
             body: {}
         },
-        id : {},
-        valScroll : {
-            top : $(window).scrollTop(),
+        id: {},
+        valScroll: {
+            top: $(window).scrollTop(),
             bottom: $(window).scrollTop() + $(window).height(),
         },
-        init: function() {
-            
-            $.each($('*'), function( ) {
-                app.id[$(this).attr('id')] = { 
+        init: function () {
+
+            $.each($('*'), function ( ) {
+                app.id[$(this).attr('id')] = {
                     "name": "#" + $(this).attr('id'),
                     "loc": $("#" + $(this).attr('id')),
-                    "width" : parseInt($(this).outerWidth(true)),
-                    "height" : parseInt($(this).outerHeight(true)),
-                    "positionHaut" : $(this).offset().top,
-                    "positionBas" : $(this).offset().top + parseInt($(this).outerHeight(true)),
-                    "tier" : parseInt($(this).outerHeight(true)) / 3 + $(this).offset().top,
-                    "tier2" : parseInt($(this).outerHeight(true)) / 3 * 2 + $(this).offset().top
+                    "width": parseInt($(this).outerWidth(true)),
+                    "height": parseInt($(this).outerHeight(true)),
+                    "positionHaut": $(this).offset().top,
+                    "positionBas": $(this).offset().top + parseInt($(this).outerHeight(true)),
+                    "tier": parseInt($(this).outerHeight(true)) / 3 + $(this).offset().top,
+                    "tier2": parseInt($(this).outerHeight(true)) / 3 * 2 + $(this).offset().top
                 },
                 app.body($(this))
-                    
+
             }),
-            
-            app.scroll()
-                        
-	},
-        
-        body: function(val){
+                    app.scroll()
+
+        },
+        body: function (val) {
             val = val.context.tagName.toLowerCase();
-            if(!app.tag.body[val]){
-                    app.tag.body[val] = $(val)
-                }
+            if (!app.tag.body[val]) {
+                app.tag.body[val] = $(val)
+            }
         },
-        
-        actuScroll: function(){
+        actuScroll: function () {
             app.valScroll.top = $(window).scrollTop(),
-            app.valScroll.bottom = $(window).scrollTop() + $(window).height()
+                    app.valScroll.bottom = $(window).scrollTop() + $(window).height()
         },
-        
-        scroll: function(){
+        scroll: function () {
             app.actuScroll();
-            $.each(app.tag.body.section, function( ) {
+            $.each(app.tag.body.section, function ( ) {
                 var tab = app.id[($(this).attr('id'))],
-                nom = tab.name,
-                dep = tab.positionHaut,
-                arr = tab.positionBas,
-                tier = tab.tier,
-                tier2 = tab.tier2,
-                haut = tab.positionHaut,
-                bas = tab.positionBas;
-                if(tier < app.valScroll.bottom && tier2 > app.valScroll.top){
+                        nom = tab.name,
+                        dep = tab.positionHaut,
+                        arr = tab.positionBas,
+                        tier = tab.tier,
+                        tier2 = tab.tier2,
+                        haut = tab.positionHaut,
+                        bas = tab.positionBas;
+                if (tier < app.valScroll.bottom && tier2 > app.valScroll.top) {
                     $(this).addClass('show');
                     $(this).removeClass('hide');
-                }else{
+                } else {
                     $(this).removeClass('show');
                     $(this).addClass('hide');
                 }
-                
+
             });
         },
-        
-        head: function(meta){
-            $.each($(meta).children(), function( ) {
-                
+        head: function (meta) {
+            $.each($(meta).children(), function ( ) {
+
                 app.chaine = app.chaine + ', ' + this.tagName;
             });
-            
-        },
-	
 
-    }; 
-    app.init(); return app; 
+        },
+    };
+    app.init();
+    return app;
 })();

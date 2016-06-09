@@ -38,8 +38,25 @@
 
 
 {% endblock %}
+{% block footer %}
 
-
+    <div id="credits" style="display: none;">
+        Un grand Merci à :
+        <ul>
+            <li>à Fabien qui fut un chef d'ochestre Symfony efficace.</br>
+                Il a su diriger Fred(solos et tous types d'instruments) et Michel (triangle et symbales).</li>
+            <li>à Martine pour son délicieux petit déjeuner d'anniversaire
+            <li>à Jennifer pour le développement de la technique du "footer à droite"</li>
+            <li>à Héléna pour su rester vigilante sur les débordement d'horaires ...Hé!</li>
+            <li>à Laurent, fournisseur officiel de lunettes de rechange.</li>
+            <li>à Eric pour pour ses conseils avisés sur la future évolution de notre projet en ms-dos/d-Base.</li>
+            <li>à Yann, pour avoir tenter de nous monter la <strong>Voie</strong>.</li>
+            <li>à Omar pour la diffusion de ses techniques de copier/coller.</li>
+            <li>à Christian, pour sa vision novatrice et séduisante du jeu d'échec.</li>
+        </ul>
+    </div>
+    <div id="openFooter"> -> Crédits <-  </div>
+{% endblock %}
 {% block javascripts %}
     {{parent()}}
     <script src="{{ asset('env/js/main.js') }}" type="text/javascript"></script>

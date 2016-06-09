@@ -38,11 +38,19 @@ body section.first{
     width: 6.5rem;
 
 }
+#openFooter{
+    position: absolute;
+    margin-right: 10%;
+    right: 0;
+    color: #FFFFFF;
+    font-size: 1.5rem;
+}
 #credits{
     color: #FFFFFF;
-    position: absolute;
-    left: 0px;
-
+    position: relative;
+    font-size: 1.2rem;
+    z-index: 15;
+    line-height: 1.5rem;
 }
 
 p.notice{
@@ -178,15 +186,21 @@ nav form button{
     border: 0.1rem solid #fff;
 }
 
-section{
+section, footer{
     position: relative;
     width: 100%;
     text-align: center;
     z-index: 10;
 }
-
-#firstImg, #secondImg{
+#secondImg{
     position: absolute;
+    top: 12rem;
+    width: 100%;
+    text-align: center;
+    z-index: 10;
+}
+#firstImg {
+    position: relative;
     top: 12rem;
     width: 100%;
     text-align: center;
