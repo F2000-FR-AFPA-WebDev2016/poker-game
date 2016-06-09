@@ -38,6 +38,12 @@ body section.first{
     width: 6.5rem;
 
 }
+#credits{
+    color: #FFFFFF;
+    position: absolute;
+    left: 0px;
+
+}
 
 p.notice{
     text-align: center;
@@ -320,13 +326,16 @@ section .profil{
     border-radius: 1rem;
     border: 3px solid #ccc;
     box-shadow: 0px 0px 5px  #000 inset;
+    box-shadow: 0rem 0rem 1.5rem #a5a5a5;
     padding-left: 2rem;
     font-size: 1.6rem;
     color: #000;
+
 }
 
 .profil .info input:focus{
     box-shadow: 0px 0px 2px  #ccc;
+
 }
 
 .profil .info button{
@@ -426,7 +435,6 @@ section .profil{
     color: #FF8C00;
     text-decoration:none;
 }
-
 
 
 #list_table a:hover{

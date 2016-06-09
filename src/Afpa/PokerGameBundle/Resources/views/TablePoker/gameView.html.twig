@@ -1,3 +1,58 @@
+{%if gagnant is defined%}
+    {% for line in gagnant %}
+        <div class="j{{loop.index}} winMainGame">
+            <span class="cartes ">
+                <img class="carteMas" src="{{asset('env/images/'~line.cardOne~'.png')}}" >
+                <img class="carteMas" src="{{asset('env/images/'~line.cardTwo~'.png')}}" >
+            </span>
+        <div class="resultMain"> {{line.resultMain}}</div>
+        <span class="jetons">{{line.encoursJetons}}</span>
+        <span class="mise">{{line.miseJetons}}</span>
+        <span class="dealer {{line.dealer}}">D</span>
+        </div>
+        {%if line.gagnantMain is defined%}
+            <div class="banque">
+                <span class="pot">Pot : {{gagnant.0.pot}}</span>
+                <div class="cartes">
+                    <span class="c1"><img src="{{asset('env/images/'~gagnant.0.c1~'.png')}}" ></span>
+                    <span class="c2"><img src="{{asset('env/images/'~gagnant.0.c2~'.png')}}" ></span>
+                    <span class="c3"><img src="{{asset('env/images/'~gagnant.0.c3~'.png')}}" ></span>
+                    <span class="c4"><img src="{{asset('env/images/'~gagnant.0.c4~'.png')}}" ></span>
+                    <span class="c5"><img src="{{asset('env/images/'~gagnant.0.c5~'.png')}}" ></span>
+                </div>
+                <div class="plus"></div>
+            </div>
+
+            <div id="playSuiv" class="gagnant">
+                <p> Le gagnant est <span class="{{line.pseudo}}">{{line.pseudo}}</span> il remporte {{gagnant.0.pot}} jetons</p>
+            </div>
+            
+        {%endif%}
+        {%if line.egaliteMain is defined%}
+            <div class="banque">
+                <span class="pot">Pot : {{gagnant.0.pot}}</span>
+                <div class="cartes">
+                    <span class="c1"><img src="{{asset('env/images/'~gagnant.0.c1~'.png')}}" ></span>
+                    <span class="c2"><img src="{{asset('env/images/'~gagnant.0.c2~'.png')}}" ></span>
+                    <span class="c3"><img src="{{asset('env/images/'~gagnant.0.c3~'.png')}}" ></span>
+                    <span class="c4"><img src="{{asset('env/images/'~gagnant.0.c4~'.png')}}" ></span>
+                    <span class="c5"><img src="{{asset('env/images/'~gagnant.0.c5~'.png')}}" ></span>
+                </div>
+                <div class="plus"></div>
+            </div>
+
+            <div id="playSuiv" class="egalite">
+                <p> Egalite entre
+                    
+                    {% for line2 in line.egaliteMain %}
+                    <span class="{{line2}}">{{line2}}</span>
+                    {%endfor%}
+                    ils se partagent {{gagnant.0.pot}} jetons
+                </p>
+            </div>
+        {%endif%}
+    {% endfor %}
+{%endif%}
 
 {%if initPartie is defined %}
     <span class='initialise'>
@@ -103,162 +158,3 @@
     </div>
 {%endif%}
 
-
-
-{%if initPartie2 is defined %}
-    {% for line in initPartie %}
-        
-        <div class="j{{loop.index}} initialise ">
-            <span class="cartes ">
-                <img class="carteMasque" src="{{asset('env/images/'~line.carteDeal~'.png')}}" >
-                <img class="carteVisible" src="{{asset('env/images/VERSO.png')}}" >
-            </span>
-        <span class="dealer {{line.dealer}}">D</span>
-        </div>
-    {% endfor %}
-    <div class="banque">
-        <span class="pot">Démarrage de la partie</span>
-        <div class="cartes">
-        </div>
-        <div class="plus"></div>
-    </div>
-{%endif%}
-
-{%if initPartie2 is defined %}
-    {% for line in initPartie %}
-        
-        <div class="j{{loop.index}} initialise">
-            <span class="cartes ">
-                <img class="carteMasque" src="{{asset('env/images/'~line.carteDeal~'.png')}}" >
-                <img class="carteVisible" src="{{asset('env/images/VERSO.png')}}" >
-            </span>
-        <span class="dealer {{line.dealer}}">D</span>
-        </div>
-    {% endfor %}
-    <div class="banque">
-        <span class="pot">Démarrage de la partie</span>
-        <div class="cartes">
-        </div>
-        <div class="plus"></div>
-    </div>
-{%endif%}
-
-{%if newMain2 is defined %}
-    <div class="j2">
-        <span class="cartes">
-            <img src="{{asset('env/images/VERSO.png')}}" >
-            <img src="{{asset('env/images/VERSO.png')}}" >
-        </span>
-        <span class="jetons">5000</span>
-        <span class="mise">100</span>
-        <span class="dealer false">D</span>
-    </div>
-    <div class="j1">
-        <span class="cartes">
-            <img src="{{asset('env/images/VERSO.png')}}" >
-            <img src="{{asset('env/images/VERSO.png')}}" >
-        </span>
-        <span class="jetons">5000</span>
-        <span class="mise">100</span>
-        <span class="dealer true">D</span>
-    </div>
-    <div class="banque">
-        <span class="pot">10000</span>
-        <div class="cartes">
-            <span class="c1"><img src="{{asset('env/images/VERSO.png')}}" ></span>
-            <span class="c2"><img src="{{asset('env/images/VERSO.png')}}" ></span>
-            <span class="c3"><img src="{{asset('env/images/VERSO.png')}}" ></span>
-            <span class="c4"><img src="{{asset('env/images/VERSO.png')}}" ></span>
-            <span class="c5"><img src="{{asset('env/images/VERSO.png')}}" ></span>
-        </div>
-        <div class="plus"></div>
-    </div>
-{%endif%}
-
-
-
-
-
-
-
-
-
-
-
-
-{%if playPartie is defined %}
-    <div class="j2">
-        <span class="cartes">
-            <img src="{{asset('env/images/VERSO.png')}}" >
-            <img src="{{asset('env/images/VERSO.png')}}" >
-        </span>
-        <span class="jetons">5000</span>
-        <span class="mise">100</span>
-        <span class="dealer false">D</span>
-    </div>
-    <div class="j1">
-        <span class="cartes">
-            <img src="{{asset('env/images/VERSO.png')}}" >
-            <img src="{{asset('env/images/VERSO.png')}}" >
-        </span>
-        <span class="jetons">5000</span>
-        <span class="mise">100</span>
-        <span class="dealer true">D</span>
-    </div>
-    <div class="banque">
-        <span class="pot">10000</span>
-        <div class="cartes">
-            <span class="c1"><img src="{{asset('env/images/VERSO.png')}}" ></span>
-            <span class="c2"><img src="{{asset('env/images/VERSO.png')}}" ></span>
-            <span class="c3"><img src="{{asset('env/images/VERSO.png')}}" ></span>
-            <span class="c4"><img src="{{asset('env/images/VERSO.png')}}" ></span>
-            <span class="c5"><img src="{{asset('env/images/VERSO.png')}}" ></span>
-        </div>
-        <div class="plus"></div>
-    </div>
-{%endif%}
-
-{%if listPlayer is defined %}
-    {% for player in listPlayer %}
-        <div class="player" id="player{{player.position}}">
-            {% if player.user.id==user%}
-                <img class="card" src="{{asset('env/images/' ~ player.cardOne ~ '.png')}}" >
-                <img class="card" src="{{asset('env/images/' ~ player.cardTwo ~ '.png')}}" >
-            {% else %}
-                <img class="card" src="{{asset('env/images/VERSO.png')}}" >
-                <img class="card" src="{{asset('env/images/VERSO.png')}}" >
-            {% endif %}
-            <div id="enCours{{player.position}}">
-
-                jetons {{player.encoursJetons}}
-            </div>
-        </div>
-
-    {% endfor %}
-
-
-
-<div id="pot">
-    pot {{tablePoker.pot}}
-</div>
-
-<div id="#oc" class="oc" >
-    <img class="card" src="{{asset('env/images/4D.png')}}">
-    <img class="card" src="{{asset('env/images/5D.png')}}">
-    <img class="card" src="{{asset('env/images/6D.png')}}">
-    <img class="card" src="{{asset('env/images/JC.png')}}">
-    <img class="card" src="{{asset('env/images/AH.png')}}">
-</div>
-
-
-<div id='betting'>
-    {{ form_start(formBet) }}
-    <span>{{form_widget(formBet.bet)}}</span>
-    <span>{{form_widget(formBet.check)}}</span>
-
-    {{ form_end(formBet) }}
-</div>
-<span>
-    {{dump(posts)}}
-    </span>
-        {%endif%}

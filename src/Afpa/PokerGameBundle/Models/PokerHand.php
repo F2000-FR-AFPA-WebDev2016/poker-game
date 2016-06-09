@@ -28,36 +28,54 @@ class PokerHand {
     public function __construct($aPokerHand) {
         $sortPH = PokerHand::SortPokerHand($aPokerHand);
         $ahandColor = PokerHand::handSameColor($aPokerHand);
-        $bIsSuite = $this->handSuite($aPokerHand);
-        arsort($sortPH);
-        $iEval1 = array_values($sortPH)[0];
-        $iEval2 = array_values($sortPH)[1];
-        if (is_array($ahandColor) && is_array($bIsSuite)) {
+        $ahandColorSort = is_array($ahandColor) ? self::mySort($ahandColor) : false;
+        $iFlush = is_array($ahandColorSort) ? max($ahandColorSort) - min($ahandColorSort) : 0;
+        $bIsFlush = ($iFlush == 4);
+        $aHandSuite = $this->handSuite($aPokerHand);
+
+        $iEval1 = array_values($sortPH)[0]['cpt'];
+        $iEval2 = array_values($sortPH)[1]['cpt'];
+        $iRang1 = array_values($sortPH)[0]['rang'];
+        $iRang2 = array_values($sortPH)[1]['rang'];
+        $iRang3 = array_key_exists(2, array_values($sortPH)) ? array_values($sortPH)[2]['rang'] : "";
+        $iRang4 = array_key_exists(3, array_values($sortPH)) ? array_values($sortPH)[3]['rang'] : "";
+        $iRang5 = array_key_exists(4, array_values($sortPH)) ? array_values($sortPH)[4]['rang'] : "";
+
+
+        if ($bIsFlush) {
             $this->setForceHand(9);
             $this->setTypeHand(self::FLUSH);
         } elseif ($iEval1 == 4) {
-            $this->setForceHand(8);
+            $fH = '8' . '-' . $iRang1 . '-' . $iRang2;
+            $this->setForceHand($fH);
             $this->setTypeHand(self::CARRE);
         } elseif ($iEval1 == 3 && $iEval2 == 2) {
-            $this->setForceHand(7);
+            $fH = '7' . '-' . $iRang1 . '-' . $iRang2;
+            $this->setForceHand($fH);
             $this->setTypeHand(self::FULL);
-        } elseif (is_array($ahandColor)) {
-            $this->setForceHand(6);
+        } elseif ($ahandColorSort) {
+            $fH = '6' . '-' . array_values($ahandColorSort)[0] . '-' . array_values($ahandColorSort)[1] . '-' . array_values($ahandColorSort)[2] . '-' . array_values($ahandColorSort)[3] . '-' . array_values($ahandColorSort)[4];
+            $this->setForceHand($fH);
             $this->setTypeHand(self::COULEUR);
-        } elseif (is_array($bIsSuite)) {
-            $this->setForceHand(5);
+        } elseif ($aHandSuite) {
+            $fH = '5' . '-' . array_values($aHandSuite)[0] . '-' . array_values($aHandSuite)[1] . '-' . array_values($aHandSuite)[2] . '-' . array_values($aHandSuite)[3] . '-' . array_values($aHandSuite)[4];
+            $this->setForceHand($fH);
             $this->setTypeHand(self::QUINTE);
         } elseif ($iEval1 == 3) {
-            $this->setForceHand(4);
+            $fH = '4' . '-' . $iRang1 . '-' . $iRang2 . '-' . $iRang3;
+            $this->setForceHand($fH);
             $this->setTypeHand(self::BRELAN);
         } elseif ($iEval1 == 2 && $iEval2 == 2) {
-            $this->setForceHand(3);
+            $fH = '3' . '-' . $iRang1 . '-' . $iRang2 . '-' . $iRang3;
+            $this->setForceHand($fH);
             $this->setTypeHand(self::DEUXPAIRES);
         } elseif ($iEval1 == 2) {
-            $this->setForceHand(2);
+            $fH = '2' . '-' . $iRang1 . '-' . $iRang2 . '-' . $iRang3 . '-' . $iRang4;
+            $this->setForceHand($fH);
             $this->setTypeHand(self::PAIRE);
         } else {
-            $this->setForceHand(1);
+            $fH = '1' . '-' . $iRang1 . '-' . $iRang2 . '-' . $iRang3 . '-' . $iRang4 . '-' . $iRang5;
+            $this->setForceHand($fH);
             $this->setTypeHand(self::CARTE);
         }
     }
@@ -92,14 +110,22 @@ class PokerHand {
             $aCardSub = substr($sCard, 0, 1);
             if (count($aArray) > 0) {
                 if (isset($aArray[$aCardSub])) {
-                    $aArray[$aCardSub] = $aArray[$aCardSub] + 1;
+                    $aArray[$aCardSub]['cpt'] = $aArray[$aCardSub]['cpt'] + 1;
                 } else {
-                    $aArray[$aCardSub] = 1;
+                    $aArray[$aCardSub] = array(
+                        'cpt' => 1,
+                        'rang' => $this->rang($aCardSub)
+                    );
                 }
             } else {
-                $aArray[$aCardSub] = 1;
+                $aArray[$aCardSub] = array(
+                    'cpt' => 1,
+                    'rang' => $this->rang($aCardSub)
+                );
             }
         }
+        arsort($aArray);
+
         return($aArray);
     }
 
@@ -119,10 +145,7 @@ class PokerHand {
             }
         }
         foreach ($aArray as $key => $value) {
-
             if (count($value) >= 5) {
-                dump($value);
-                self::mySort($value);
                 return $value;
             }
         }
@@ -133,44 +156,48 @@ class PokerHand {
         $aArray = array();
         $oCard = new card();
         foreach ($aPokerHand as $sCard) {
-            $search = substr($sCard, 0, 1);
-            $rang = array_search($search, $oCard->getValueCard());
-            $aArray[$sCard] = $rang;
+            $aArray[$sCard] = $this->rang(substr($sCard, 0, 1));
         }
+
         asort($aArray);
-        $cpt = 1;
-        dump($aArray);
-        $aTemp = array_values($aArray);
 
-        for ($i = 0; $i < count($aArray) - 1; $i++) {
-            if ($aTemp[$i + 1] == $aTemp[$i] + 1) {
-                $cpt ++;
-            } elseif (($aTemp[$i + 1] == $aTemp[$i])) {
+        $tabTemp1 = array_unique(array_slice($aArray, 0, 5));
+        $tabTemp2 = array_unique(array_slice($aArray, 1, 5));
+        $tabTemp3 = array_unique(array_slice($aArray, 2, 6));
+        $tabTemp4 = array_unique(array_slice($aArray, 0, 6));
+        $tabTemp5 = array_unique(array_slice($aArray, 1, 6));
+        $tabTemp6 = array_unique($aPokerHand);
 
-            } else {
-                $cpt = 1;
+
+        for ($i = 6; $i >= 1; $i--) {
+            $hand = ${'tabTemp' . $i};
+            $res = max($hand) - min($hand);
+            if ($res == 4 && count($hand) == 5) {
+                arsort($hand);
+                return ($hand);
             }
-        }
-        if ($cpt == 5) {
-            return $aArray;
         }
         return false;
     }
 
-    public function EvalPokerHand($aPokerHand) {
-
-    }
-
     public function mySort($aArray) {
-        $valueCard = array('X', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2');
-        dump($aArray);
+        $oCard = new card();
         foreach ($aArray as $card) {
-            $key = array_search(substr($card, 0, 1), $valueCard);
+            $key = $this->rang(substr($card, 0, 1));
             $tabTemp[$card] = $key;
         }
-        asort($tabTemp);
-        //$finalHand = array_slice($tabTemp, 0, 5);
-        return $tabTemp;
+        arsort($tabTemp);
+
+        $aFlush = $this->handSuite($tabTemp);
+        $finalHand = array_slice($tabTemp, 0, 5);
+
+        return ($aFlush ? $aFlush : $finalHand);
+    }
+
+    public function rang($sValueCard) {
+        $oCard = new card();
+        $rang = 14 - array_search($sValueCard, $oCard->getValueCard());
+        return $rang;
     }
 
 }

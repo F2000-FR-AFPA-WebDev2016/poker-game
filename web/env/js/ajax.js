@@ -69,7 +69,8 @@
     });
     
     $(document).ready(function() {
-        loadGame();
+            loadGame();
+            winMainGame();
     });
     
     function loadGame(){
@@ -87,6 +88,38 @@
         window.setTimeout(function () {
             loadGame();
         }, 2000);
+    }
+    
+    setInterval(function () {
+        winMainGame();
+    }, 2000);
+    
+    function winMainGame(){
+        var $table = $('section .tableNumber').html(),
+            $gagnant = '',
+            $game = $('#game');
+        if($( "#game .winMainGame" ).length > 0 ){
+            if($( "#playSuiv.egalite p" ).length > 0 ){
+                $.each($( "#playSuiv.egalite p span" ), function () {
+                    if( $gagnant === ''){
+                        $gagnant = $(this).html();
+                    }else{
+                        $gagnant += '+'+$(this).html();
+                    }
+                });
+            }else if(($( "#playSuiv.gagnant p" ).length > 0 )){
+                $gagnant = $('#playSuiv.gagnant p span').html();
+            }
+            window.setTimeout(function () {
+                $.ajax({
+                    url: "../nextMain/"+$table+ "/" + $gagnant,
+                    method: 'POST',
+                    success: function (data) {
+                        $game.html(data);
+                    }
+                });
+            }, 1000);
+        }
     }
     
     $(document).on('click', '#playSuiv span', function (e) {
