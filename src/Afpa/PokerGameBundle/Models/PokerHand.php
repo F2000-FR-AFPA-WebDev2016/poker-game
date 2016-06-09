@@ -143,7 +143,6 @@ class PokerHand {
         foreach ($aPokerHand as $sCard) {
             $aCardSub = substr($sCard, 1, 1);
             if (count($aArray) > 0) {
-
                 if (array_key_exists($aCardSub, $aArray)) {
                     $aArray[$aCardSub][] = $sCard;
                 } else {

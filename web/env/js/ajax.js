@@ -64,10 +64,6 @@
         initialiseVersDeal();
     }
     
-    $( "#game .gameEnCours" ).load(function() {
-        console.log('oui');
-    });
-    
     $(document).ready(function() {
             loadGame();
             winMainGame();
